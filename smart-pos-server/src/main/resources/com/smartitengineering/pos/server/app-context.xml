@@ -19,48 +19,12 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <import resource="classpath:com/smartitengineering/pos/app-context-datasource.xml" />
     <import resource="classpath:com/smartitengineering/pos/app-context-hibernate-definition.xml" />
 <!--    <import resource="classpath:com/smartitengineering/pos/security/app-context-security.xml" />-->
-    <import resource="classpath:com/smartitengineering/pos/app-context-observer.xml" />
+<!--    <import resource="classpath:com/smartitengineering/pos/app-context-observer.xml" />-->
 
 <!--    <context:component-scan base-package="com.smartitengineering.user.ws.resources"/>-->
 
 <!--     ****************************************************************
      ******************** Initialize Roles ************************** 
      **************************************************************** -->
-    <bean id="initialUserFactory" class="com.smartitengineering.user.initialization.InitialUserFactory">
-        <property name="privilegeService">
-            <ref bean="privilegeServiceObserver"/>
-        </property>
-        <property name="organizationService">
-            <ref bean="organizationServiceObserver"/>
-        </property>
-        <property name="userService">
-            <ref bean="userServiceObserver"/>
-        </property>
-        <property name="securedObjectService">
-            <ref bean="securedObjectServiceObserver"/>
-        </property>
-        <property name="roleService">
-            <ref bean="roleServiceObserver"/>
-        </property>
-        <property name="userPersonService">
-            <ref bean="userPersonServiceObserver"/>
-        </property>
-    </bean>
-    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="initialUserFactory"/>
-        <property name="targetMethod" value="initializeInformation" />
-    </bean>
-    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-        <property name="jobDetail" ref="jobDetail" />
-        <property name="startDelay" value="500" />
-        <property name="repeatInterval" value="500" />
-        <property name="repeatCount" value="0" />
-    </bean>
-    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="triggers">
-            <list>
-                <ref bean="simpleTrigger" />
-            </list>
-        </property>
-    </bean>
+
 </beans>

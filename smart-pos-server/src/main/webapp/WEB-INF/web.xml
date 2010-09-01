@@ -22,10 +22,10 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    <filter>
+<!--    <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>    
+    </filter>    -->
     <filter>
         <filter-name>Jersey Filter</filter-name>
         <filter-class>com.sun.jersey.spi.container.servlet.ServletContainer</filter-class>
@@ -39,17 +39,17 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>com.smartitengineering.user.ws.resources</param-value>
+            <param-value>com.smartitengineering.smartpos.admin.resource</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
             <param-value>/(images|css|jsp|script)/.*</param-value>
         </init-param>
     </filter>
-    <filter-mapping>
+<!--    <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
     <filter-mapping>
         <filter-name>Jersey Filter</filter-name>
         <url-pattern>/*</url-pattern>

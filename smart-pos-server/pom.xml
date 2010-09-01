@@ -177,6 +177,16 @@
       <artifactId>aspectjweaver</artifactId>
     </dependency>
     <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>${commons.collection.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>${commons.lang.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.smartitengineering.smart-util</groupId>
       <artifactId>smart-bean-spring-util</artifactId>
       <version>0.2-SNAPSHOT</version>
