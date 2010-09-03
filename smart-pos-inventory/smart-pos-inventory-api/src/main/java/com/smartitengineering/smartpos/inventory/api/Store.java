@@ -9,6 +9,7 @@ import com.smartitengineering.domain.AbstractPersistentDTO;
 import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.smartpos.admin.api.Address;
 import com.smartitengineering.smartpos.admin.api.Organization;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -18,9 +19,22 @@ public class Store extends AbstractPersistentDTO<Store>{
 
   private String name;
 
+  private String code;
+
   private Organization organization;
   
   private Address address;
+
+  private Integer organizationID;
+
+  @JsonIgnore
+  public Integer getOrganizationID() {
+    return organizationID;
+  }
+
+  public void setOrganizationID(Integer organizationID) {
+    this.organizationID = organizationID;
+  }
 
   public Address getAddress() {
     return address;
@@ -36,6 +50,14 @@ public class Store extends AbstractPersistentDTO<Store>{
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
   }
 
   public Organization getOrganization() {
