@@ -1,0 +1,136 @@
+/* 
+    Document   : style
+    Created on : Aug 4, 2010, 11:56:53 AM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+  display: block;
+}
+body{
+  background-color:#EEEEFF;
+  width:auto;
+  text-align: center;
+}
+
+.main_template{
+  text-align: left;
+  padding: 5px;
+  margin: 0 auto;
+  width:950px;
+}
+
+.main_template_header{
+  /*background: url(/images/hdr.jpg) repeat;*/
+  background: url(../images/hdrftr.jpg);
+  background-repeat:repeat;
+  background-color: #FFFFFF;
+  width: 100%;
+  height: 90px;
+}
+
+.sitel_logo_container{
+  padding-left:0px;
+  height:70px;;
+}
+
+.sitel_slogan_container{
+  padding-left: 0px;
+}
+
+.sitel_slogan_container label{
+  font-family: verdana, tahoma;
+  font-size: 10pt;
+  font-weight:  bolder;
+  font-style: oblique;
+  letter-spacing: 1px;
+  /*color: #99BB99;*/
+  color:#75ECFD;
+}
+
+#img_sitel_logo{
+  position: absolute;
+  margin-top:-19px;
+  width: 180px;
+  height: 90px;
+}
+
+.main_template_options{
+  background: url(../images/bgg.png);
+  /*background: url(../images/footer2.jpg);*/
+  /*background: url(/images/hdr.jpg) repeat;*/
+  background-repeat:repeat;
+  width: auto;
+  height:60px;
+}
+
+.optionsSignout{
+  float: right;
+  margin-top: 20px;
+  margin-right: 10px;
+  /*border-left:1px solid;*/
+  padding-left: 3px;
+  /*border-left-color:black;*/
+}
+
+.optionsSignout a{
+  font-family: sans-serif;
+  font-size: 11pt;
+  color: black;
+}
+
+.optionsSignout a:hover{
+  color:white;
+}
+
+.main_template_options form{
+  padding: 3px 2px 2px 10px;
+}
+
+.template_content{
+  background: url(../images/bg_shadow_bot.gif) repeat;
+  height:587px;
+  float: right;
+  width: 73.6%;
+}
+
+.left_menu{
+  height:587px;;
+  float: left;
+  width: 26%;
+  border-color: #24E0FB;
+  background-color:#B4CFEC;
+}
+
+.main_template_footer{
+  background: url(../images/hdrftr.jpg) repeat;
+  width: auto;
+  height: 70px;
+}
+
+.footer_label_container{
+  padding-top: 28px;
+  text-align: center;
+  height:auto;
+}
+
+.footer_label_container label{
+  font-family:monospace;
+  font-variant: normal;
+  font-style: oblique;
+  font-weight: bold;
+  /*color:teal;*/
+  color:#75ECFD;
+  letter-spacing: 1px;
+}
+
+.clear{
+  clear: both;
+}

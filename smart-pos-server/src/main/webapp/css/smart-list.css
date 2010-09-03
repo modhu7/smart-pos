@@ -1,0 +1,176 @@
+/* 
+    Document   : smart-list
+    Created on : Aug 22, 2010, 1:52:11 PM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+  display: block;
+}
+
+#showList{
+  width: auto;
+}
+
+.header_of_list{
+  background-color: #CCCCFF;
+  height: 30px;
+  text-align: center;
+}
+
+.header_of_list label{
+  font-family: sans-serif;
+  font-size: 14pt;
+  font-weight: bold;
+  font-variant: normal;
+  text-align: center;
+  text-decoration: none;
+  color: #333366;
+}
+
+.tableheadname{
+  text-align: left;
+  float: left;
+  width: 50%;
+  height: auto;
+}
+
+.tablehead_label{
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: bold;
+  color:#333366;
+}
+
+.list_column_names{
+  height: 20px;
+  background-color: #cbd0c8;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 20px;
+  
+}
+
+.tablecontentname{
+  text-align:left;
+  float: left;
+  width: 100%;
+}
+
+.row_of_list{
+  padding: 10px 0px 0px 0px;
+  width: 100%;
+  height: 25px;
+  border-color:#009999;
+  border-bottom-style: double;
+}
+
+.orgName_column{
+  padding-left: 20px;
+  text-align: left;
+  float: left;
+  width: 45%;
+}
+
+a{
+  font-family: sans-serif;
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: oblique;
+  text-decoration: none;
+  color: #333399;
+}
+
+a:hover{
+  color: orange;
+}
+
+.orgShortName_column{
+  padding-left: 25px;
+  text-align: left;
+  float: left;
+  width: 45%;
+}
+
+.navigation_container{
+  padding: 10px 10px 2px 2px;
+}
+
+.list_navigation_links{
+  text-align: center;
+  float: right;
+  width: 15%;
+  /*height: 40px;*/
+  /*border: 1px solid;*/
+}
+
+/*#next{
+ 	  background-image:url(/images/31_32x32.png);
+    display:block;
+	  height:32px;
+    width:32px;
+}
+
+#prev{
+   	  background-image:url(/images/23.png);
+    display:block;
+	  height:55px;
+    width:65px;
+
+}*/
+
+.list_navigation_links a{
+  text-decoration: none;
+}
+
+.list_navigation_links a:hover{
+  color: #FF0000;
+  font-weight:bolder;
+}
+
+/*.list_nav{
+  border: none;
+  height: 25px;
+  width: 35px;
+}
+
+.list_nav:hover{
+  background-color: green;
+}*/
+
+/*userlist data*/
+
+.tableheadname_user{
+  text-align: left;
+  float: left;
+  width: 33%;
+  height: auto;
+}
+
+.userId_column{
+  padding-left: 20px;
+  text-align: left;
+  float: left;
+  width: 30%;
+}
+
+.userName_column{
+  padding-left: 15px;
+  text-align: left;
+  float: left;
+  width: 30%;
+}
+
+.userFullName_column{
+  padding-left: 13px;
+  text-align: left;
+  float: left;
+  width: 30%;
+}

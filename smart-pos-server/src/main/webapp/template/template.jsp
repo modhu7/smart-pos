@@ -44,7 +44,7 @@
 
     <div id="main" class="main_template">
       <div id="header" class="main_template_header">
-        <div id="sitel_logo" class="sitel_logo_container"><img src="/images/site ultimate build 1.0.0.5.png" alt="Smart IT Engineering Limited" id="img-sitel-logo"></div>
+        <div id="sitel_logo" class="sitel_logo_container"><%--<img src="/images/site ultimate build 1.0.0.5.png" alt="Smart IT Engineering Limited" id="img-sitel-logo">--%></div>
         <div id="sitel_slogan" class="sitel_slogan_container"><label>IT for smarter living</label></div>
       </div>
       <div id="options" class="main_template_options"></div>
