@@ -19,5 +19,14 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-util</groupId>
+      <artifactId>smart-bean-spring-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-pos.inventory</groupId>
+      <artifactId>smart-pos-inventory-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>
