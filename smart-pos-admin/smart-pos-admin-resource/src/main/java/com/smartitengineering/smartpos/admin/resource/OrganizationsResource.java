@@ -44,30 +44,30 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs")
 public class OrganizationsResource extends AbstractResource {
 
-  static final UriBuilder ORGANIZATION_URI_BUILDER;
-  static final UriBuilder ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER;
-  static final UriBuilder ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER;
+//  static final UriBuilder ORGANIZATION_URI_BUILDER;
+//  static final UriBuilder ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER;
+//  static final UriBuilder ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER;
   @Context
   private HttpServletRequest servletRequest;
 
-  static {
-    ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
-    ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
-
-    try {
-      ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER.path(OrganizationsResource.class.getMethod("getBefore", String.class));
-    }
-    catch (Exception ex) {
-      ex.printStackTrace();
-    }
-    ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
-    try {
-      ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER.path(OrganizationsResource.class.getMethod("getAfter", String.class));
-    }
-    catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
+//  static {
+//    ORGANIZATION_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
+//    ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
+//
+//    try {
+//      ORGANIZATION_BEFORE_SHORTNAME_URI_BUILDER.path(OrganizationsResource.class.getMethod("getBefore", String.class));
+//    }
+//    catch (Exception ex) {
+//      ex.printStackTrace();
+//    }
+//    ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationsResource.class);
+//    try {
+//      ORGANIZATION_AFTER_SHORTNAME_URI_BUILDER.path(OrganizationsResource.class.getMethod("getAfter", String.class));
+//    }
+//    catch (Exception ex) {
+//      ex.printStackTrace();
+//    }
+//  }
 //    @QueryParam("name")
 //    private String nameLike;
   @QueryParam("shortname")
