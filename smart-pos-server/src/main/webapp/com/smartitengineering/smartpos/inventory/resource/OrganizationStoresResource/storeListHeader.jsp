@@ -5,15 +5,23 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
-    </head>
-    <body>
-    </body>
-</html>
 
+<script type="text/javascript" src="/script/user-validation.js"></script>
+<script text="text/javascript">
+  $(document).ready(function(){
+    $("#storeform").validate({
+      rules:{
+        storeName: "required",
+        code: "required",
+        houseNo: "required",
+        street: "required",
+        city: "required",
+        state: "required",
+        country: "required",
+        zip: "required",
+        phone: "required"
+      }
+    });
+  });
+</script>
