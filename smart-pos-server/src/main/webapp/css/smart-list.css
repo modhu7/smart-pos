@@ -55,7 +55,7 @@ root {
   padding-top: 6px;
   padding-bottom: 6px;
   padding-left: 20px;
-  
+
 }
 
 .tablecontentname{
@@ -169,6 +169,27 @@ a:hover{
 }
 
 .userFullName_column{
+  padding-left: 13px;
+  text-align: left;
+  float: left;
+  width: 30%;
+}
+
+/*Store List Data*/
+
+.storeOrgs_column{
+  padding-left: 20px;
+  text-align: left;
+  float: left;
+  width: 30%;
+}
+.storeName_column{
+  padding-left: 15px;
+  text-align: left;
+  float: left;
+  width: 30%;
+}
+.storeCode_column{
   padding-left: 13px;
   text-align: left;
   float: left;
