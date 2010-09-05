@@ -211,9 +211,12 @@ public class OrganizationsResource extends AbstractResource {
 
     com.smartitengineering.smartuser.client.api.OrganizationsResource organizationsResource = loginResource.getOrganizationsResource();
 
-//    for(OrganizationResource organizationResource : organizationsResource){
-//
-//    }
+    List<com.smartitengineering.smartuser.client.api.OrganizationResource> organizationResourceList = organizationsResource.getOrganizationResources();
+
+    
+    for(com.smartitengineering.smartuser.client.api.OrganizationResource organizationResource : organizationResourceList){
+      organizationResource.getOrganization();
+    }
 
     servletRequest.setAttribute("templateHeadContent",
                                 "/com/smartitengineering/user/ws/resources/OrganizationsResource/OrganizationHeader.jsp");
