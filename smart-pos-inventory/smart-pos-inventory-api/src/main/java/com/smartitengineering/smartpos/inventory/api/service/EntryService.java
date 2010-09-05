@@ -27,7 +27,7 @@ public interface EntryService {
 
   // paginated version (pagination by entry date)
   public Collection<Entry> getByOrganization(String organizationUniqueShortName, Date entryDate, boolean isSmallerThan,
-                                             int count);
+                                             int count);   
 
   // non paginated version
   public Collection<Entry> getByOrganizationAndStore(String organizationUniqueShortName, String storeCode);
@@ -51,4 +51,6 @@ public interface EntryService {
   public Collection<Entry> getByOrganizationAndProductAndStore(String organizationUniqueShortName, String productCode,
                                                                String storeCode, Date entryDate, boolean isSmallerThan,
                                                                int count);
+
+  public Entry getByOrganizationAndEntryDate(String organizationUniqueShortName, Date entryDate);
 }

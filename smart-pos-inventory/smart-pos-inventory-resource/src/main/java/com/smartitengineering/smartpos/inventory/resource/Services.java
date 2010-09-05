@@ -10,6 +10,7 @@ import com.smartitengineering.smartpos.inventory.api.service.ProductService;
 import com.smartitengineering.smartpos.inventory.api.service.StoreService;
 import com.smartitengineering.smartpos.inventory.api.service.SupplierService;
 import com.smartitengineering.smartpos.inventory.api.service.UomService;
+import com.smartitengineering.smartpos.inventory.impl.service.EntryServiceImpl;
 import com.smartitengineering.smartpos.inventory.impl.service.ProductServiceImpl;
 import com.smartitengineering.smartpos.inventory.impl.service.StoreServiceImpl;
 import com.smartitengineering.smartpos.inventory.impl.service.SupplierServiceImpl;
@@ -75,6 +76,17 @@ public class Services {
   public void setUomService(UomService uomService) {
     this.uomService = uomService;
   }
+
+  public EntryService getEntryService() {
+    //return entryService;
+    return new EntryServiceImpl();
+  }
+
+  public void setEntryService(EntryService entryService) {
+    this.entryService = entryService;
+  }
+
+
 
 
   
