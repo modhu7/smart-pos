@@ -19,9 +19,11 @@ public class Product extends AbstractPersistentDTO<Product>{
   private String name;
   private String productCode;
   private String description;
+  private UOM sku;
   private Organization organization;
 
   private Integer parentOrganizationID;
+  private Integer skuID;
 
   public String getDescription() {
     return description;
@@ -61,6 +63,22 @@ public class Product extends AbstractPersistentDTO<Product>{
 
   public void setParentOrganizationID(Integer parentOrganizationID) {
     this.parentOrganizationID = parentOrganizationID;
+  }
+
+  public UOM getSku() {
+    return sku;
+  }
+
+  public void setSku(UOM sku) {
+    this.sku = sku;
+  }
+
+  public Integer getSkuID() {
+    return skuID;
+  }
+
+  public void setSkuID(Integer skuID) {
+    this.skuID = skuID;
   }
 
   public boolean isValid(){
