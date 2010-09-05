@@ -129,21 +129,6 @@ public class OrganizationStoresResource extends AbstractResource {
     Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, null, false, count);
 
-//    Set<Store> Stores = new HashSet<Store>();
-//    for (Store user : users) {
-//      Store Store = Services.getInstance().getStoreService().getStoreByUsernameAndOrgName(
-//          user.getUsername(), user.getOrganization().getUniqueShortName());
-//      if (Store != null) {
-//        Stores.add(Store);
-//      }
-//      else {
-//        Store newStore = new Store();
-//        newStore.setUser(user);
-//        newStore.setPerson(new Person());
-//        Stores.add(newStore);
-//      }
-//
-//    }
     Viewable view = new Viewable("storeFrags.jsp", Stores, OrganizationStoresResource.class);
     responseBuilder.entity(view);
     return responseBuilder.build();
