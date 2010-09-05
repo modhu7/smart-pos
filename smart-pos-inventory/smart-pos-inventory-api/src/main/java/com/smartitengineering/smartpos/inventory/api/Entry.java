@@ -6,8 +6,9 @@
 package com.smartitengineering.smartpos.inventory.api;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
+import com.smartitengineering.smartpos.admin.api.Organization;
 import java.util.Date;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -20,9 +21,11 @@ public class Entry extends AbstractPersistentDTO<Entry>{
   private Double quantity;
   private Date entryDate;
   private Date expiryDate;
+  private Organization organization;
 
   private Integer productID;
   private Integer storeID;
+  private Integer organizationID;
 
 
   public Date getEntryDate() {
@@ -81,6 +84,23 @@ public class Entry extends AbstractPersistentDTO<Entry>{
     this.storeID = storeID;
   }
 
+  public Organization getOrganization() {
+    return organization;
+  }
+
+  public void setOrganization(Organization organization) {
+    this.organization = organization;
+  }
+
+  public Integer getOrganizationID() {
+    return organizationID;
+  }
+
+  public void setOrganizationID(Integer organizationID) {
+    this.organizationID = organizationID;
+  }
+
+  @JsonIgnore
   public boolean isValid(){
     if(product == null || store == null || quantity.equals(0.0))
       return false;
