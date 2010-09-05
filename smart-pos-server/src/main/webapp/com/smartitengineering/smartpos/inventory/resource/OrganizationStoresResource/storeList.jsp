@@ -29,7 +29,7 @@
 
 <div class="show" id="showList">
   <div id="title_of_organization" class="header_of_list">
-    <label><fmt:message key="org.title"/></label>
+    <label><fmt:message key="str.title"/></label>
   </div>
   <div id="top_row" class="list_column_names">
     <div class="tableheadname_user">
