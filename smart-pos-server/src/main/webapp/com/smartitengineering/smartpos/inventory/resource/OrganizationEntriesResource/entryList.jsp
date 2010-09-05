@@ -5,15 +5,20 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+<c:if test="${param['lang']!=null}">
+  <fmt:setLocale scope="session" value="${param['lang']}"/>
+</c:if>
+
+<div id="title_of_organization_users" class="header_of_list">
+  <label><fmt:message key="inv.prdentrytitle"/></label>
+</div>
+  <form action="" accept="application/json" enctype="" id="entryList" method="post">
+    <div class="" id=""><label><fmt:message key="inv.prdentryinput1" ></label><input type="text" name="entryDate" id="entryDate" class="textfield"></div>
+      <div class="" id=""><label><fmt:message key="inv.prdentryinput2" ></label><input type="text" name="expiryDate" id="expiryDate" class="textfield"></div>
+        <div class="" id=""><label><fmt:message key="inv.prdentryinput3" ></label><input type="text" name="product" id="product" class="textfield"></div>
+          <div class="" id=""><label><fmt:message key="inv.prdentryinput4" ></label><input type="text" name="productCode" id="productCode" class="textfield"></div>
+            <div class="" id=""><label><fmt:message key="inv.prdentryinput5" ></label><input type="text" name="expiryDate" id="expiryDate" class="textfield"></div>
+            </form>
