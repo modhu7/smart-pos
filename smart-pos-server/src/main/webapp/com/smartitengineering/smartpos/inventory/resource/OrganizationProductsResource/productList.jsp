@@ -56,6 +56,9 @@
       <div class="form_label"><label><fmt:message key="inv.prdinput3"/></label></div>
       <div class="form_textField"><input type="text" name="description" id="description" class="textfield"></div>
       <div class="clear"></div>
+      <div class="form_label"><label><fmt:message key="inv.prdinput4"/></label></div>
+      <div class="form_textField"><input type="text" name="sku" id="sku" class="textfield"></div>
+      <div class="clear"></div>
       <div class="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submitbtn" value="SUBMIT"></div>
       <div class="clear"></div>
     </form>
