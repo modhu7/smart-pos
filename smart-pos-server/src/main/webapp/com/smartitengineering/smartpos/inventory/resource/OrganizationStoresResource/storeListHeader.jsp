@@ -16,10 +16,11 @@
   </c:otherwise>
 </c:choose>
 
-<script type="text/javascript" src="/script/user-validation.js"></script>
+
 <script type="text/javascript">
-  $(document).ready(function(){
-    $("#storeform").validate({
+  
+  $(document).ready(function(){    
+    $('#storeform').validate({
       rules:{
         storeName: "required",
         code: "required",
@@ -33,25 +34,24 @@
       }
     });
 
-
-  <%--var url = "/orgs/sn/${orgInitial}/stores/frags${qParam}";--%>
-      $("#tablecontentid").pagination(url,"linkcontainer");
-      $("#wrong").hide();
-      $("#code").blur(function(){
-        var cde =$("#code").val();
-        $.ajax({
-          type: "GET",
-  <%--url: "http://localhost:9090/orgs/sn/${orgInitial}/users/un/"+usn,--%>
-          dataType: "xml",
-          success: function(xhr){
-            $("#wrong").show();
-            $("#alertlabel").html('Store Code is not unique: try another');
-          },
-          error: function(xhr){
-            $("#wrong").hide();
-            $("#alertlabel").html('');
-          }
-        });
+    var url = "/orgs/sn/${orgInitial}/stores/frags${qParam}";
+    $("#tablecontentid").pagination(url,"linkcontainer");
+    $("#wrong").hide();
+    $("#code").blur(function(){
+      var cde =$("#code").val();
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:9090/orgs/sn/${orgInitial}/users/un/"+usn,
+        dataType: "xml",
+        success: function(xhr){
+          $("#wrong").show();
+          $("#alertlabel").html('Store Code is not unique: try another');
+        },
+        error: function(xhr){
+          $("#wrong").hide();
+          $("#alertlabel").html('');
+        }
       });
     });
+  });
 </script>
