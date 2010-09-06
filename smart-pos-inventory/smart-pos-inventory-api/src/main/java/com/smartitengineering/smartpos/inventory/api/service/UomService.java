@@ -7,6 +7,7 @@ package com.smartitengineering.smartpos.inventory.api.service;
 
 import com.smartitengineering.smartpos.admin.api.Organization;
 import com.smartitengineering.smartpos.inventory.api.UOM;
+import java.util.Collection;
 
 /**
  *
@@ -23,14 +24,14 @@ public interface UomService {
   public void getAllUoms();
 
   // non paginated version
-  public Organization getByOrganization(String organizatinUniqueShortName);
+  public Collection<UOM> getByOrganization(String organizatinUniqueShortName);
 
   // paginated version
-  public Organization getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count);
+  public Collection<UOM> getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count);
 
   // non paginated version
-  public Organization getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName);
+  public UOM getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName);
 
   // paginated version
-  public Organization getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name, boolean isSmallerThan, int count);
+  public UOM getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name, boolean isSmallerThan, int count);
 }

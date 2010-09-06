@@ -8,6 +8,9 @@ package com.smartitengineering.smartpos.inventory.impl.service;
 import com.smartitengineering.smartpos.admin.api.Organization;
 import com.smartitengineering.smartpos.inventory.api.UOM;
 import com.smartitengineering.smartpos.inventory.api.service.UomService;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -36,23 +39,37 @@ public class UomServiceImpl implements UomService{
   }
 
   @Override
-  public Organization getByOrganization(String organizatinUniqueShortName) {
+  public Collection<UOM> getByOrganization(String organizatinUniqueShortName) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public Organization getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count) {
+  public Collection<UOM> getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan,
+                                           int count) {
+    //throw new UnsupportedOperationException("Not supported yet.");
+    List<UOM> uomList = new ArrayList<UOM>();
+    UOM uom1 = new UOM();
+    uom1.setName("UOM 1");
+    
+    uomList.add(uom1);
+
+    UOM uom2 = new UOM();
+    uom2.setName("UOM 2");
+    
+    uomList.add(uom2);
+
+    Collection<UOM> uoms = uomList;
+    return uoms;
+  }
+
+  @Override
+  public UOM getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public Organization getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public Organization getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name,
-                                              boolean isSmallerThan, int count) {
+  public UOM getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name,
+                                     boolean isSmallerThan, int count) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

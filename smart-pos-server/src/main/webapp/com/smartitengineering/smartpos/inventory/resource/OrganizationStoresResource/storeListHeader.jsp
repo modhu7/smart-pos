@@ -16,17 +16,32 @@
   </c:otherwise>
 </c:choose>
 
-<script type="text/javascript" src="/script/user-validation.js"></script>
+
 <script type="text/javascript">
-  $(document).ready(function(){
-    <%--var url = "/orgs/sn/${orgInitial}/stores/frags${qParam}";--%>
+  
+  $(document).ready(function(){    
+    $('#storeform').validate({
+      rules:{
+        storeName: "required",
+        code: "required",
+        houseNo: "required",
+        street: "required",
+        city: "required",
+        state: "required",
+        country: "required",
+        zip: "required",
+        phone: "required"
+      }
+    });
+
+    var url = "/orgs/sn/${orgInitial}/stores/frags${qParam}";
     $("#tablecontentid").pagination(url,"linkcontainer");
     $("#wrong").hide();
     $("#code").blur(function(){
       var cde =$("#code").val();
       $.ajax({
         type: "GET",
-        <%--url: "http://localhost:9090/orgs/sn/${orgInitial}/users/un/"+usn,--%>
+        url: "http://localhost:9090/orgs/sn/${orgInitial}/users/un/"+usn,
         dataType: "xml",
         success: function(xhr){
           $("#wrong").show();
@@ -38,5 +53,5 @@
         }
       });
     });
-});
+  });
 </script>
