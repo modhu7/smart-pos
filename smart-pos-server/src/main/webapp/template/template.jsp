@@ -19,6 +19,7 @@
     <link rel="Stylesheet" href="/css/style.css">
     <link rel="Stylesheet" href="/css/smart-list.css">
     <link rel="Stylesheet" href="/css/smart-forms-style.css">
+    <link rel="Stylesheet" href="/css/smart-pos-forms.css">
     <link rel="Stylesheet" href="/css/smart-menu.css">
 
     <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
@@ -44,7 +45,7 @@
 
     <div id="main" class="main_template">
       <div id="header" class="main_template_header">
-        <div id="sitel_logo" class="sitel_logo_container"><%--<img src="/images/site ultimate build 1.0.0.5.png" alt="Smart IT Engineering Limited" id="img-sitel-logo">--%></div>
+        <div id="sitel_logo" class="sitel_logo_container"><img src="/images/site ultimate build 1.0.0.5.png" alt="Smart IT Engineering Limited" id="img_sitel_logo"></div>
         <div id="sitel_slogan" class="sitel_slogan_container"><label>IT for smarter living</label></div>
       </div>
       <div id="options" class="main_template_options"></div>
