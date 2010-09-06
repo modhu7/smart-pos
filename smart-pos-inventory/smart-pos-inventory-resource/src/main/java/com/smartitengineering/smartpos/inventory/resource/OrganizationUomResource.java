@@ -91,9 +91,9 @@ public class OrganizationUomResource extends AbstractResource{
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUomResource/uomDetailsHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationUomResource/uomDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/organizationUomDetails.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationUomResource/uomDetails.jsp");
     Viewable view = new Viewable("/template/template.jsp", uom);
 
     responseBuilder.entity(view);
