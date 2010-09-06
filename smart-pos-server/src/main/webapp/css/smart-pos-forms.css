@@ -1,0 +1,123 @@
+/* 
+    Document   : smart-pos-forms
+    Created on : Sep 6, 2010, 10:42:22 AM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+  display: block;
+}
+
+.show{
+  display: block;
+}
+.hide{
+  display: none;
+}
+
+.header_entry_form_pos{
+  margin-top: 2px;
+  background-image: url(/images/tdcornertl.gif), url(/images/tdcornertr.gif);
+  background-repeat: no-repeat, no-repeat;
+  background-position: top left, top right;
+  width: auto;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  height: 20px;
+  background-color:#C2E2E0;
+}
+
+.toRoundBox{
+  margin: 2px 5px 2px 2px;
+  -moz-background-size: cover;
+  background-size: cover;
+}
+
+.header_entry_form_pos label{
+  font-family: vardana, sans-serif;
+  text-decoration: none;
+  font-size: 12pt;
+  font-weight: bold;
+  font-style: normal;
+  color:#59955C;
+}
+
+.entry_form_pos{
+  width:auto;
+  padding: 10px 10px 10px 10px;
+  font-family: Arial,Helvetica,sans-serif;
+  /*background-color:#FDFDF0;*/
+  background-color:#E8FFD9;
+}
+
+.individual_field_container{
+  /*border: 1px solid;*/
+  height: 35px;
+}
+
+.form_label_pos{
+  margin: 4px 0px 0px 95px;
+  float: left;
+  width:20%;
+  /*border: 1px solid;*/
+}
+
+.form_label_pos label{
+  font-family: sans-serif;
+  font-size: 11pt;
+  /*font-weight:600;*/
+  color:#59955C;
+}
+
+.form_textField_pos{
+  float: left;
+  width: 50%;
+  /*border: 1px solid;*/
+}
+
+.textFieldPos{
+  height: 28px;
+  width: 325px;
+  font-size: 10pt;
+}
+
+.textFieldpos:hover{
+  border: 1px solid;
+  border-color:#59955C;
+}
+
+.insertField{
+  margin-right: 125px;
+  margin-top: 10px;
+  float:right;
+  width: auto;
+  text-align: center;
+}
+
+.insertBtn{
+  background-color:#F3F8F4;
+  font-family: sans-serif;
+  font-size:10pt;
+  font-weight: bold;
+  color:#59955C;
+  border: 2px outset;
+  height: 25px;
+  width: 75px;
+}
+
+.insertBtn:hover{
+  background-color:#D2FFC4;
+
+}
+
+.clear{
+  clear: both;
+}
