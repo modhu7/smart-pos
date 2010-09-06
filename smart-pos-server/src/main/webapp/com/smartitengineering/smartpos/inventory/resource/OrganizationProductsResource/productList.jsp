@@ -23,7 +23,7 @@
 
     <div class="show" id="showList">
   <div id="title_of_organization_users" class="header_of_list">
-    <label><fmt:message key="inv.prdtitle"/></label>
+    <label><fmt:message key="inv.prdtabletitle"/></label>
   </div>
   <div id="top_row" class="list_column_names">
     <div class="tableheadname_user">
@@ -42,7 +42,7 @@
 
 <div class="hide"  id="create">
   <div id="header_organization_users" class="header_entry_form">
-    <label><fmt:message key="inv.prdentrytitle"/></label>
+    <label><fmt:message key="inv.prdtitle"/></label>
   </div>
 
   <div id="form_organizationentry" class="entry_form">
