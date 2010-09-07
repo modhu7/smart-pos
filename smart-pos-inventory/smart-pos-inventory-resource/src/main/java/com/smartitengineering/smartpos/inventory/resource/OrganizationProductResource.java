@@ -91,9 +91,9 @@ public class OrganizationProductResource extends AbstractResource{
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/userDetailsHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/OrganizationUserDetails.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productDetails.jsp");
     Viewable view = new Viewable("/template/template.jsp", product);
 
     responseBuilder.entity(view);
@@ -111,8 +111,7 @@ public class OrganizationProductResource extends AbstractResource{
       if (product.getParentOrganizationID() == null) {
         throw new Exception("No organization found");
       }
-
-      //Services.getInstance().getOrganizationService().populateOrganization(newUserPerson.getUser());
+      
       Services.getInstance().getProductService().update(product);
       responseBuilder = Response.ok(getProductFeed());
     }

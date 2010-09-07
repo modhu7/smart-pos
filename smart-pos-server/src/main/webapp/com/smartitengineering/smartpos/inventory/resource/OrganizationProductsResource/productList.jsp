@@ -45,7 +45,6 @@
     <div id="header_organization_users" class="header_entry_form_pos">
       <label><fmt:message key="inv.prdtitle"/></label>
     </div>
-
     <div id="form_organizationentry" class="entry_form_pos">
       <form action="" accept="application/json" enctype="" id="productEntryForm" method="post">
         <div class="individual_field_container">
