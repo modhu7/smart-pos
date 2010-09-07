@@ -24,5 +24,7 @@
     <module>smart-pos-inventory-api</module>
     <module>smart-pos-inventory-impl</module>
     <module>smart-pos-inventory-resource</module>
+    <module>smart-pos-inventory-client-api</module>
+    <module>smart-pos-inventory-client-impl</module>
   </modules>
 </project>
