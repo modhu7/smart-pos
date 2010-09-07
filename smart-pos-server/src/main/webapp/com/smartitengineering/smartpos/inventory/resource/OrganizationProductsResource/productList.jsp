@@ -1,7 +1,7 @@
 <%-- 
     Document   : productList
     Created on : Sep 4, 2010, 6:11:23 PM
-    Author     : russel
+    Author     : uzzal
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,18 +12,18 @@
   <fmt:setLocale scope="session" value="${param['lang']}"/>
 </c:if>
 
-<div id="leftmenu_userlist_1" class="leftmenu">
-  <div id="leftmenu_header_userlist_1" class="leftmenu_header"><fmt:message key="inv.prdcreatetitle"/></div>
-  <div id="leftmenu_body_userlist_1" class="leftmenu_body">
+<div id="leftmenu_productlist_1" class="leftmenu">
+  <div id="leftmenu_header_productlist_1" class="leftmenu_header"><label><fmt:message key="inv.prdcreatetitle"/></label></div>
+  <div id="leftmenu_body_productlist_1" class="leftmenu_body">
     <ul>
       <li><a href="javascript: Orgpageselect()"><fmt:message key="inv.prdcreatelink"/></a></li>
     </ul>
   </div>
 </div>
 
-    <div class="show" id="showList">
+<div class="show" id="showList">
   <div id="title_of_organization_users" class="header_of_list">
-    <label><fmt:message key="inv.prdtitle"/></label>
+    <label><fmt:message key="inv.prdtabletitle"/></label>
   </div>
   <div id="top_row" class="list_column_names">
     <div class="tableheadname_user">
@@ -41,23 +41,33 @@
 
 
 <div class="hide"  id="create">
-  <div id="header_organization_users" class="header_entry_form">
-    <label><fmt:message key="inv.prdentrytitle"/></label>
-  </div>
+  <div class="toRoundBox">
+    <div id="header_organization_users" class="header_entry_form_pos">
+      <label><fmt:message key="inv.prdtitle"/></label>
+    </div>
 
-  <div id="form_organizationentry" class="entry_form">
-    <form action="" accept="application/json" enctype="" id="productEntryForm" method="post">
-      <div class="form_label"><label><fmt:message key="inv.prdinput1"/></label></div>
-      <div class="form_textField"><input type="text" name="name" id="name" class="textfield"></div>
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="inv.prdinput2"/></label></div>
-      <div class="form_textField"><input type="text" name="productCode" id="productCode" class="textfield"></div>
-      <div class="clear"></div>
-      <div class="form_label"><label><fmt:message key="inv.prdinput3"/></label></div>
-      <div class="form_textField"><input type="text" name="description" id="description" class="textfield"></div>
-      <div class="clear"></div>
-      <div class="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submitbtn" value="SUBMIT"></div>
-      <div class="clear"></div>
-    </form>
+    <div id="form_organizationentry" class="entry_form_pos">
+      <form action="" accept="application/json" enctype="" id="productEntryForm" method="post">
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.prdinput1"/></label></div>
+          <div class="form_textField_pos"><input type="text" name="name" id="name" class="textFieldPos"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.prdinput2"/></label></div>
+          <div class="form_textField_pos"><input type="text" name="productCode" id="productCode" class="textFieldPos"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.prdinput3"/></label></div>
+          <div class="form_textField_pos"><input type="text" name="description" id="description" class="textFieldPos"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="individual_field_container">
+          <div class="insertField"><input name="submitbtn" type="submit" class="insertBtn" value="INSERT"></div>
+          <div class="clear"></div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

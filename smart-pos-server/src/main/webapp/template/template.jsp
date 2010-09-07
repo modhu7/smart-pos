@@ -39,6 +39,7 @@
       <div id="menu_common_body_1" class="leftmenu_body">
         <ul>
           <li><a href="/orgs">OrganizationList</a></li>
+          <li><a href="/orgs/sn/SITEL/inv/stores">StoreList</a></li>
         </ul>
       </div>
     </div>

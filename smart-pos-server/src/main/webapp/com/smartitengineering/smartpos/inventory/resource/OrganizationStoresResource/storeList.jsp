@@ -1,22 +1,21 @@
 <%-- 
     Document   : storeList
     Created on : Sep 2, 2010, 11:50:36 AM
-    Author     : russel
+    Author     : uzzal
 --%>
 
 <%--Uzzal-start-here--%>
 <%@page import="java.util.Collection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%--<%@page import="com.smartitengineering.user.domain.Organization"%>--%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
 
-<div id="leftmenu_" class="leftmenu">
-  <div id="leftmenu_header_" class="leftmenu_header"><label>Organization-Creation</label></div>
-  <div id="leftmenu_body_" class="leftmenu_body">
+<div id="leftmenu_storelist_1" class="leftmenu">
+  <div id="leftmenu_header_storelist_1" class="leftmenu_header"><label>Store Creation</label></div>
+  <div id="leftmenu_body_storelist_1" class="leftmenu_body">
     <ul>
       <li><a href="javascript: Orgpageselect()">Create</a></li>
     </ul>
