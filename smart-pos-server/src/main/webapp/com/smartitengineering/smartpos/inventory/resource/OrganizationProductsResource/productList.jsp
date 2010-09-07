@@ -42,10 +42,10 @@
 
 <div class="hide"  id="create">
   <div class="toRoundBox">
-    <div id="header_organization_users" class="header_entry_form_pos">
+    <div id="header_products" class="header_entry_form_pos">
       <label><fmt:message key="inv.prdtitle"/></label>
     </div>
-    <div id="form_organizationentry" class="entry_form_pos">
+    <div id="form_ProductionEntry" class="entry_form_pos">
       <form action="" accept="application/json" enctype="" id="productEntryForm" method="post">
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdinput1"/></label></div>
