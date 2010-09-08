@@ -19,12 +19,13 @@
     <link rel="Stylesheet" href="/css/style.css">
     <link rel="Stylesheet" href="/css/smart-list.css">
     <link rel="Stylesheet" href="/css/smart-forms-style.css">
-    <link rel="Stylesheet" href="/css/smart-menu.css">
+    <link rel="Stylesheet" href="/css/smart-menu.css">    
 
     <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
     <script type="text/javascript" src="/script/jquery.validate.js"></script>
     <script type="text/javascript" src="/script/siteljquerylib.js"></script>
     <script type="text/javascript" src="/script/commonScripts.js"></script>
+    <script type="text/javascript" src="/script/jquery.datepick.js"></script>
 
     <c:if test="${not empty templateHeadContent}">
       <jsp:include page="${templateHeadContent}"></jsp:include>

@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <script type="text/javascript">
-  $(document).ready(function(){   
+  $(document).ready(function(){
     $("#entryList").validate({
       rule:{
         entryDate: "required",
@@ -16,5 +16,7 @@
         quantity: "required"
       }
     });
+    $("#entryDate").datepick();
+    $("#expiryDate").datepick();   
   });
 </script>
