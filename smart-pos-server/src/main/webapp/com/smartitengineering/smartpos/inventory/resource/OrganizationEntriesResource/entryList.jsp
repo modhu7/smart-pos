@@ -53,10 +53,10 @@
   </div>
   <form action="" accept="application/json" enctype="" id="entryList" method="post">
     <div class="form_label"><label><fmt:message key="inv.prdentryinput1" /></label></div>
-    <div class="form_textField"><input type="text" name="entryDate" id="entryDate" class="textfield"></div>
+    <div class="form_textField" id="date"><input type="text" name="entryDate" id="entryDate" class="textfield"></div>
     <div class="clear"></div>
     <div class="form_label"><label><fmt:message key="inv.prdentryinput2" /></label></div>
-    <div class="form_textField"><input type="text" name="expiryDate" id="expiryDate" class="textfield"></div>
+    <div class="form_textField" id="date"><input type="text" name="expiryDate" id="expiryDate" class="textfield"></div>
     <div class="clear"></div>
     <div class="form_label"><label><fmt:message key="inv.prdentryinput3" /></label></div>
     <div class="form_textField"><input type="text" name="product" id="product" class="textfield"></div>
