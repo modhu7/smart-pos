@@ -299,8 +299,8 @@ public class OrganizationEntriesResource extends AbstractResource{
         org.apache.abdera.model.Entry entryEntry = abderaFactory.newEntry();
 
         entryEntry.setId(entry.getEntryDate().toString());
-        entryEntry.setTitle(entry.getProduct().getName());
-        entryEntry.setSummary(entry.getProduct().getName());
+//        entryEntry.setTitle(entry.getProduct().getName());
+//        entryEntry.setSummary(entry.getProduct().getName());
 
 
         // setting link to the each individual user
@@ -326,7 +326,7 @@ public class OrganizationEntriesResource extends AbstractResource{
     ResponseBuilder responseBuilder;
 
     try {
-      if (entry.getOrganizationID() == null) {
+      if (entry.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
       //Services.getInstance().getOrganizationService().populateOrganization(user);

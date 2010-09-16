@@ -5,25 +5,19 @@
 
 package com.smartitengineering.smartpos.inventory.api;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
-import com.smartitengineering.smartpos.admin.api.Organization;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import org.apache.commons.lang.StringUtils;
 
 /**
  *
  * @author russel
  */
-public class Product extends AbstractPersistentDTO<Product>{
+public class Product extends AbstractGenericPersistentDTO<Product, String, Long>{
 
   private String name;
-  private String productCode;
   private String description;
-  private UOM sku;
-  private Organization organization;
-
-  private Integer parentOrganizationID;
-  private Integer skuID;
+  private Integer organizationId;
+  private String skuId;
 
   public String getDescription() {
     return description;
@@ -41,44 +35,20 @@ public class Product extends AbstractPersistentDTO<Product>{
     this.name = name;
   }
 
-  public String getProductCode() {
-    return productCode;
+  public Integer getOrganizationId() {
+    return organizationId;
   }
 
-  public void setProductCode(String productCode) {
-    this.productCode = productCode;
-  }  
-
-  public Organization getOrganization() {
-    return organization;
+  public void setOrganizationId(Integer parentOrganizationID) {
+    this.organizationId = parentOrganizationID;
   }
 
-  public void setOrganization(Organization organization) {
-    this.organization = organization;
+  public String getSkuId() {
+    return skuId;
   }
 
-  public Integer getParentOrganizationID() {
-    return parentOrganizationID;
-  }
-
-  public void setParentOrganizationID(Integer parentOrganizationID) {
-    this.parentOrganizationID = parentOrganizationID;
-  }
-
-  public UOM getSku() {
-    return sku;
-  }
-
-  public void setSku(UOM sku) {
-    this.sku = sku;
-  }
-
-  public Integer getSkuID() {
-    return skuID;
-  }
-
-  public void setSkuID(Integer skuID) {
-    this.skuID = skuID;
+  public void setSkuId(String skuID) {
+    this.skuId = skuID;
   }
 
   public boolean isValid(){

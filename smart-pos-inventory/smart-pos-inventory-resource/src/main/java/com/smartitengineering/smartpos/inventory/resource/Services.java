@@ -52,7 +52,7 @@ public class Services {
 
   public ProductService getProductService() {
     //return productService;
-    return new ProductServiceImpl();
+    return (ProductService) new ProductServiceImpl();
   }
 
   public void setProductService(ProductService productService) {
@@ -79,7 +79,7 @@ public class Services {
 
   public EntryService getEntryService() {
     //return entryService;
-    return new EntryServiceImpl();
+    return (EntryService) new EntryServiceImpl();
   }
 
   public void setEntryService(EntryService entryService) {
