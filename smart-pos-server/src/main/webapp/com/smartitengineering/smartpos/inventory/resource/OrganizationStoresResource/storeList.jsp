@@ -61,7 +61,7 @@
       <label>Store Entry Hardcored</label>
     </div>
     <div id="form_storeEntry" class="entry_form_pos">
-      <form action="http://localhost:9090/orgs" method="post" accept="application/json" enctype="" id="storeform">
+      <form action="/orgs" method="post" accept="application/json" enctype="" id="storeform">
         <div class="individual_field_container">
           <div class="form_label_pos" ><label><fmt:message key="str.inputlabel1"/></label></div>
           <div class="form_textField_pos"><input type="text" name="storeName"  class="textFieldPos"></div>

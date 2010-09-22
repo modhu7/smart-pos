@@ -58,7 +58,6 @@
       <div class="clear"></div>
       <div id="footer" class="main_template_footer"><div class="footer_label_container"><label>copyright@smart it engineering limited 2010</label></div></div>
     </div>
-
   </body>
 </html>
 <%--Uzzal--%>
