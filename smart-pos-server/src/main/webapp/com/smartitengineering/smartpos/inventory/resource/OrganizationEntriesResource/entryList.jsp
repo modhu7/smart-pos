@@ -51,12 +51,19 @@
   <div id="title_of_organization_users" class="header_of_list">
     <label><fmt:message key="inv.prdentryhead"/></label>
   </div>
-  <form action="" accept="application/json" enctype="" id="entryList" method="post">
+  <div id="jqtp_clock"></div><div style="margin-top: 50px; float: right; width: 120px"><input type="button" value="Restart Clock" id="restart_btn"/></div>
+<input type="hidden" id="jqtp_clock_hr" name="jqtp_clock_hr" size="2"/>
+      <input type="hidden" id="jqtp_clock_min" name="jqtp_clock_min" size="2"/>
+  <form action="" accept="application/json" enctype="" id="entryList" method="post">   
+   <div class="clear"></div>
     <div class="form_label"><label><fmt:message key="inv.prdentryinput1" /></label></div>
-    <div class="form_textField" id="date"><input type="text" name="entryDate" id="entryDate" class="textfield"></div>
+    <div class="form_textField"><input type="text" name="entryDate" id="entryDate" class="textfield"/></div>
     <div class="clear"></div>
+    <div class="form_label">Entry Time:</div>
+    <div class="form_textField" style="float: left"><input type="text" id="appointment_start" size="8" value=""/></div>
+     <div class="clear"></div>
     <div class="form_label"><label><fmt:message key="inv.prdentryinput2" /></label></div>
-    <div class="form_textField" id="date"><input type="text" name="expiryDate" id="expiryDate" class="textfield"></div>
+    <div class="form_textField"><input type="text" name="expiryDate" id="expiryDate" class="textfield"/></div>
     <div class="clear"></div>
     <div class="form_label"><label><fmt:message key="inv.prdentryinput3" /></label></div>
     <div class="form_textField"><input type="text" name="product" id="product" class="textfield"></div>
