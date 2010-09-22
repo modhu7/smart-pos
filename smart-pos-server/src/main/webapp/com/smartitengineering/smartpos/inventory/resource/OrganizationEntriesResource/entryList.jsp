@@ -13,7 +13,7 @@
 </c:if>
 
 <div id="leftmenu_userlist_1" class="leftmenu">
-  <div id="leftmenu_header_userlist_1" class="leftmenu_header"><fmt:message key="inv.prdentrytitle"/></div>
+  <div id="leftmenu_header_userlist_1" class="leftmenu_header"><label><fmt:message key="inv.prdentrytitle"/></label></div>
   <div id="leftmenu_body_userlist_1" class="leftmenu_body">
     <ul>
       <li><a href="javascript: Orgpageselect()"><fmt:message key="inv.prdentrylink"/></a></li>
@@ -48,26 +48,42 @@
 
 
 <div class="hide"  id="create">
-  <div id="title_of_organization_users" class="header_of_list">
-    <label><fmt:message key="inv.prdentryhead"/></label>
+  <div class="toRoundBox">
+    <div id="title_of_entries" class="header_entry_form_pos">
+      <label><fmt:message key="inv.prdentryhead"/></label>
+    </div>
+    <div id="form_EntriesEntry" class="entry_form_pos">
+      <form action="" accept="application/json" enctype="" id="entryList" method="post">
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.prdentryinput1" /></label></div>
+          <div class="form_textField_pos"><input type="text" name="entryDate" id="entryDate" class="textFieldPos"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.prdentryinput2" /></label></div>
+          <div class="form_textField_pos"><input type="text" name="expiryDate" id="expiryDate" class="textFieldPos"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.prdentryinput3" /></label></div>
+          <div class="form_textField_pos"><input type="text" name="product" id="product" class="textFieldPos"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.prdentryinput4" /></label></div>
+          <div class="form_textField_pos"><input type="text" name="productCode" id="productCode" class="textFieldPos"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.prdentryinput5" /></label></div>
+          <div class="form_textField_pos"><input type="text" name="quantity" id="quantity" class="textFieldPos"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="individual_field_container">
+          <div class="insertField"><input name="submitbtn" type="submit" class="insertBtn" value="INSERT"></div>
+          <div class="clear"></div>
+        </div>
+      </form>
+    </div>
   </div>
-  <form action="" accept="application/json" enctype="" id="entryList" method="post">
-    <div class="form_label"><label><fmt:message key="inv.prdentryinput1" /></label></div>
-    <div class="form_textField"><input type="text" name="entryDate" id="entryDate" class="textfield"></div>
-    <div class="clear"></div>
-    <div class="form_label"><label><fmt:message key="inv.prdentryinput2" /></label></div>
-    <div class="form_textField"><input type="text" name="expiryDate" id="expiryDate" class="textfield"></div>
-    <div class="clear"></div>
-    <div class="form_label"><label><fmt:message key="inv.prdentryinput3" /></label></div>
-    <div class="form_textField"><input type="text" name="product" id="product" class="textfield"></div>
-    <div class="clear"></div>
-    <div class="form_label"><label><fmt:message key="inv.prdentryinput4" /></label></div>
-    <div class="form_textField"><input type="text" name="productCode" id="productCode" class="textfield"></div>
-    <div class="clear"></div>
-    <div class="form_label"><label><fmt:message key="inv.prdentryinput5" /></label></div>
-    <div class="form_textField"><input type="text" name="quantity" id="quantity" class="textfield"></div>
-    <div class="clear"></div>
-    <div class="btnfield"><label><fmt:message key="org.usrinput6" var="submitbtn"/></label><input name="submitbtn" type="submit" class="submitbtn" value="SUBMIT"></div>
-    <div class="clear"></div>
-  </form>
 </div>
