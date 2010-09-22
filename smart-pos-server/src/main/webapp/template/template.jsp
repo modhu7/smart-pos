@@ -19,6 +19,7 @@
     <link rel="Stylesheet" href="/css/style.css">
     <link rel="Stylesheet" href="/css/smart-list.css">
     <link rel="Stylesheet" href="/css/smart-forms-style.css">
+    <link rel="Stylesheet" href="/css/smart-pos-forms.css">
     <link rel="Stylesheet" href="/css/smart-menu.css">
     <link rel="Stylesheet" href="/css/smothness/jquery_ui_datepicker.css">   
     <link rel="Stylesheet" href="/css/jqtp.css">
@@ -43,13 +44,14 @@
       <div id="menu_common_body_1" class="leftmenu_body">
         <ul>
           <li><a href="/orgs">OrganizationList</a></li>
+          <li><a href="/orgs/sn/SITEL/inv/stores">StoreList</a></li>
         </ul>
       </div>
     </div>
 
     <div id="main" class="main_template">
       <div id="header" class="main_template_header">
-        <div id="sitel_logo" class="sitel_logo_container"><%--<img src="/images/site ultimate build 1.0.0.5.png" alt="Smart IT Engineering Limited" id="img-sitel-logo">--%></div>
+        <div id="sitel_logo" class="sitel_logo_container"><img src="/images/site ultimate build 1.0.0.5.png" alt="Smart IT Engineering Limited" id="img_sitel_logo"></div>
         <div id="sitel_slogan" class="sitel_slogan_container"><label>IT for smarter living</label></div>
       </div>
       <div id="options" class="main_template_options"></div>
@@ -61,7 +63,6 @@
       <div class="clear"></div>
       <div id="footer" class="main_template_footer"><div class="footer_label_container"><label>copyright@smart it engineering limited 2010</label></div></div>
     </div>
-
   </body>
 </html>
 <%--Uzzal--%>

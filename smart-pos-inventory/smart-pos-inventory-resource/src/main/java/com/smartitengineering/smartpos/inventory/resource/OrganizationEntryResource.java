@@ -57,12 +57,12 @@ public class OrganizationEntryResource extends AbstractResource{
 
     }
   }
-  @PathParam("organizationShortName")
+  @PathParam("uniqueShortName")
   private String organizationUniqueShortName;
   @PathParam("entryDate")
   private String entryDate;
 
-  public OrganizationEntryResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
+  public OrganizationEntryResource(@PathParam("uniqueShortName") String organizationShortName, @PathParam(
       "entryDate") String entryDate) {
     entry = Services.getInstance().getEntryService().getByOrganizationAndEntryDate(organizationUniqueShortName, null);
 
@@ -108,7 +108,7 @@ public class OrganizationEntryResource extends AbstractResource{
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
 
-      if (entry.getOrganizationID() == null) {
+      if (entry.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
 
@@ -139,7 +139,7 @@ public class OrganizationEntryResource extends AbstractResource{
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(ENTRY_CONTENT_URI_BUILDER.clone().build(entry.getOrganization().getUniqueShortName(),
+    altLink.setHref(ENTRY_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
                                                            entry.getEntryDate().toString()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);

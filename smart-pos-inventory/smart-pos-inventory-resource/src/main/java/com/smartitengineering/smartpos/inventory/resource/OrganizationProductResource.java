@@ -108,7 +108,7 @@ public class OrganizationProductResource extends AbstractResource{
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
 
-      if (product.getParentOrganizationID() == null) {
+      if (product.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
       
@@ -123,7 +123,7 @@ public class OrganizationProductResource extends AbstractResource{
   }
 
   private Feed getProductFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed productFeed = getFeed(product.getProductCode(), new Date());
+    Feed productFeed = getFeed(product.getId(), new Date());
     productFeed.setTitle(product.getName());
 
     // add a self link
@@ -138,8 +138,8 @@ public class OrganizationProductResource extends AbstractResource{
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(PRODUCT_CONTENT_URI_BUILDER.clone().build(product.getOrganization().getUniqueShortName(),
-                                                           product.getProductCode()).toString());
+    altLink.setHref(PRODUCT_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
+                                                           product.getId()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     productFeed.addLink(altLink);

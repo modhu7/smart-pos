@@ -251,7 +251,7 @@ public class OrganizationProductsResource extends AbstractResource {
         nextUri.queryParam(key, values);
         previousUri.queryParam(key, values);
       }
-      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastProduct.getProductCode()).toString());
+      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastProduct.getId()).toString());
 
 
       atomFeed.addLink(nextLink);
@@ -263,7 +263,7 @@ public class OrganizationProductsResource extends AbstractResource {
       Product firstProduct = productList.get(0);
 
       prevLink.setHref(
-          previousUri.build(organizationUniqueShortName, firstProduct.getProductCode()).toString());
+          previousUri.build(organizationUniqueShortName, firstProduct.getId()).toString());
       atomFeed.addLink(prevLink);
 
       //for (User user : users) {
@@ -271,7 +271,7 @@ public class OrganizationProductsResource extends AbstractResource {
 
         Entry productEntry = abderaFactory.newEntry();
 
-        productEntry.setId(product.getProductCode());
+        productEntry.setId(product.getId());
         productEntry.setTitle(product.getName());
         productEntry.setSummary(product.getName());
         
@@ -279,7 +279,7 @@ public class OrganizationProductsResource extends AbstractResource {
         // setting link to the each individual user
         Link productLink = abderaFactory.newLink();
         productLink.setHref(OrganizationProductResource.PRODUCT_URI_BUILDER.clone().build(organizationUniqueShortName, product.
-            getProductCode()).toString());
+            getId()).toString());
         productLink.setRel(Link.REL_ALTERNATE);
         productLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -300,7 +300,7 @@ public class OrganizationProductsResource extends AbstractResource {
     ResponseBuilder responseBuilder;
 
     try {
-      if (product.getParentOrganizationID() == null) {
+      if (product.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
       //Services.getInstance().getOrganizationService().populateOrganization(user);

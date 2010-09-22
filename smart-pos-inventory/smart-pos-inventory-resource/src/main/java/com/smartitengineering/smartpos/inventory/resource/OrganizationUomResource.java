@@ -2,10 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.smartpos.inventory.resource;
 
-import com.smartitengineering.smartpos.inventory.api.UOM;
+import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -38,9 +37,9 @@ import org.apache.commons.lang.StringUtils;
  * @author russel
  */
 @Path("/orgs/sn/{uniqueShortName}/inv/uoms/name/{uomName}")
-public class OrganizationUomResource extends AbstractResource{
+public class OrganizationUomResource extends AbstractResource {
 
-  private UOM uom;
+  private UnitOfMeasurement uom;
   static final UriBuilder UOM_URI_BUILDER = UriBuilder.fromResource(OrganizationUomResource.class);
   static final UriBuilder UOM_CONTENT_URI_BUILDER;
   @Context
@@ -57,20 +56,23 @@ public class OrganizationUomResource extends AbstractResource{
 
     }
   }
-  @PathParam("organizationShortName")
+  @PathParam("uniqueShortName")
   private String organizationUniqueShortName;
   @PathParam("uomName")
   private String uomName;
 
-  public OrganizationUomResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
-      "uomName") String uomName) {
-    uom = Services.getInstance().getUomService().getByOrganizationAndUOM(organizationUniqueShortName, uomName);
+  public OrganizationUomResource(@PathParam("uniqueShortName") String organizationShortName,
+                                 @PathParam("uomName") String uomName) {
+    uom = Services.getInstance().getUomService().getById(uomName);
 
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
+    if (uom == null) {
+      return Response.status(Status.NOT_FOUND).build();
+    }
     Feed userFeed = getUomFeed();
     ResponseBuilder responseBuilder = Response.ok(userFeed);
     return responseBuilder.build();
@@ -103,16 +105,15 @@ public class OrganizationUomResource extends AbstractResource{
   @PUT
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response update(UOM uom) {
+  public Response update(UnitOfMeasurement uom) {
 
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
 
-      if (uom.getOrganizationID() == null) {
+      if (uom.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
 
-      //Services.getInstance().getOrganizationService().populateOrganization(newUserPerson.getUser());
       Services.getInstance().getUomService().update(uom);
       responseBuilder = Response.ok(getUomFeed());
     }
@@ -124,8 +125,8 @@ public class OrganizationUomResource extends AbstractResource{
   }
 
   private Feed getUomFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed uomFeed = getFeed(uom.getName(), new Date());
-    uomFeed.setTitle(uom.getName());
+    Feed uomFeed = getFeed(uom.getId(), new Date());
+    uomFeed.setTitle(uom.getId());
 
     // add a self link
     uomFeed.addLink(getSelfLink());
@@ -139,8 +140,8 @@ public class OrganizationUomResource extends AbstractResource{
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(UOM_CONTENT_URI_BUILDER.clone().build(uom.getOrganization().getUniqueShortName(),
-                                                           uom.getName()).toString());
+    altLink.setHref(UOM_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
+                                                          uom.getId()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     uomFeed.addLink(altLink);
@@ -201,7 +202,7 @@ public class OrganizationUomResource extends AbstractResource{
     }
 
     if (isHtmlPost) {
-      UOM newUom = getStoreFromContent(message);
+      UnitOfMeasurement newUom = getUomFromContent(message);
       try {
         Services.getInstance().getUomService().update(newUom);
         responseBuilder = Response.ok(getUomFeed());
@@ -213,7 +214,7 @@ public class OrganizationUomResource extends AbstractResource{
     return responseBuilder.build();
   }
 
-  private UOM getStoreFromContent(String message) {
+  private UnitOfMeasurement getUomFromContent(String message) {
 
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
@@ -227,7 +228,7 @@ public class OrganizationUomResource extends AbstractResource{
       }
     }
 
-    UOM newUom = new UOM();
+    UnitOfMeasurement newUom = new UnitOfMeasurement();
 
     return newUom;
   }

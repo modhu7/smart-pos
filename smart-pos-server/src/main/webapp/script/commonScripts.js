@@ -14,8 +14,8 @@ function init() {
 $(document).ready(function () {
   $(".leftmenu_body ul li").hover(function () {
     $(this).css({
-//      'background-color' : '#F7F5FE',
-'background-color' : '#EEEEFF',
+      //      'background-color' : '#F7F5FE',
+      'background-color' : '#EEEEFF',
       'color' : 'Black'
     });
   }, function () {
@@ -61,6 +61,24 @@ function showonlyone(thechosenone) {
     }
   }
 }
+
+
+$(document).ready(function () {
+
+  $('#nav li').hover(
+    function () {
+      //show its submenu
+      $('ul', this).slideDown(100);
+
+    },
+    function () {
+      //hide its submenu
+      $('ul', this).slideUp(100);
+    }
+    );
+
+}); 
+
 //uzzal(End)
 
 function Orgpageselect()

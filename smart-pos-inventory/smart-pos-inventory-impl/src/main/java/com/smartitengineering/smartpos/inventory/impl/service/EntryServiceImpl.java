@@ -5,6 +5,9 @@
 
 package com.smartitengineering.smartpos.inventory.impl.service;
 
+import com.smartitengineering.dao.impl.hbase.CommonDao;
+import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
+import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.smartpos.inventory.api.Entry;
 import com.smartitengineering.smartpos.inventory.api.service.EntryService;
 import java.util.ArrayList;
@@ -20,9 +23,20 @@ import java.util.List;
  */
 public class EntryServiceImpl implements EntryService{
 
+  private CommonDao<Entry, String> commonDao;
+
+  {
+    commonDao = new CommonDao<Entry, String>();
+    commonDao.setExecutorService(ProductServiceImpl.getAsyncExecutorService());
+    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
+    providerImpl.setMainTableName("uom");
+    commonDao.setInfoProvider(providerImpl);
+    //commonDao.setConverter(new UOMRowConverter());
+  }
+  
   @Override
   public void save(Entry entry) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    commonDao.save(entry);
   }
 
   @Override

@@ -1,0 +1,5 @@
+curl -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/sn/SITEL/inv/uoms -d '{"id":"KG", "symbol":"KG","uomType":"Length","uomSystem":"SP","organizationId":"1"}'
+
+
+
+

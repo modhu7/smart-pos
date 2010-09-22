@@ -19,7 +19,6 @@ function fetchContent(mainDivId, url, fragsLinkDivId, divno) {
       cacheContent(mainDivId, fragsLinkDivId, divno);
     },
     error: function(xhr){
-      alert(window.location);
     }
   });
 }

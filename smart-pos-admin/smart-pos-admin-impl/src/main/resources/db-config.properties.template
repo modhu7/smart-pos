@@ -1,0 +1,6 @@
+com.smartitengineering.dao.connection.driver_class=com.mysql.jdbc.Driver
+com.smartitengineering.dao.connection.url=jdbc:mysql://localhost:3306/smartuser
+com.smartitengineering.dao.connection.username=root
+com.smartitengineering.dao.connection.password=uzzal123
+com.smartitengineering.dao.dialect=org.hibernate.dialect.MySQLDialect
+com.smartitengineering.dao.show_sql=true

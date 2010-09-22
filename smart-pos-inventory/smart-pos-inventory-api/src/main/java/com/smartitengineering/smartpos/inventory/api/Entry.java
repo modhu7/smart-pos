@@ -2,10 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.smartpos.inventory.api;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import com.smartitengineering.smartpos.admin.api.Organization;
 import java.util.Date;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -14,19 +13,15 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class Entry extends AbstractPersistentDTO<Entry>{
+public class Entry extends AbstractGenericPersistentDTO<Entry, String, Long>{
 
-  private Product product;
-  private Store store;
   private Double quantity;
   private Date entryDate;
   private Date expiryDate;
-  private Organization organization;
-
-  private Integer productID;
-  private Integer storeID;
-  private Integer organizationID;
-
+  
+  private Integer productId;
+  private Integer storeId;
+  private Integer organizationId;
 
   public Date getEntryDate() {
     return entryDate;
@@ -44,14 +39,6 @@ public class Entry extends AbstractPersistentDTO<Entry>{
     this.expiryDate = expiryDate;
   }
 
-  public Product getProduct() {
-    return product;
-  }
-
-  public void setProduct(Product product) {
-    this.product = product;
-  }
-
   public Double getQuantity() {
     return quantity;
   }
@@ -60,51 +47,35 @@ public class Entry extends AbstractPersistentDTO<Entry>{
     this.quantity = quantity;
   }
 
-  public Store getStore() {
-    return store;
+  public Integer getOrganizationId() {
+    return organizationId;
   }
 
-  public void setStore(Store store) {
-    this.store = store;
+  public void setOrganizationId(Integer organizationId) {
+    this.organizationId = organizationId;
   }
 
-  public Integer getProductID() {
-    return productID;
+  public Integer getProductId() {
+    return productId;
   }
 
-  public void setProductID(Integer productID) {
-    this.productID = productID;
+  public void setProductId(Integer productId) {
+    this.productId = productId;
   }
 
-  public Integer getStoreID() {
-    return storeID;
+  public Integer getStoreId() {
+    return storeId;
   }
 
-  public void setStoreID(Integer storeID) {
-    this.storeID = storeID;
-  }
-
-  public Organization getOrganization() {
-    return organization;
-  }
-
-  public void setOrganization(Organization organization) {
-    this.organization = organization;
-  }
-
-  public Integer getOrganizationID() {
-    return organizationID;
-  }
-
-  public void setOrganizationID(Integer organizationID) {
-    this.organizationID = organizationID;
-  }
+  public void setStoreId(Integer storeId) {
+    this.storeId = storeId;
+  }  
 
   @JsonIgnore
-  public boolean isValid(){
-    if(product == null || store == null || quantity.equals(0.0))
+  public boolean isValid() {
+    if (productId == null || storeId == null || quantity.equals(0.0)) {
       return false;
+    }
     return true;
   }
-
 }
