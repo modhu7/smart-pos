@@ -35,6 +35,8 @@ import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -43,12 +45,15 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/sn/{uniqueShortName}/inv/uoms")
 public class OrganizationUomsResource extends AbstractResource{
 
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationUomsResource.class);
+
   static final UriBuilder ORGANIZATION_UOMS_URI_BUILDER;
   static final UriBuilder ORGANIZATION_UOMS_BEFORE_UOMNAME_URI_BUILDER;
   static final UriBuilder ORGANIZATION_UOMS_AFTER_UOMNAME_URI_BUILDER;
 
   public OrganizationUomsResource(@PathParam("uniqueShortName") String organizationUniqueShortName) {
 
+    logger.info("Organization Short Name:"+organizationUniqueShortName);
     this.organizationUniqueShortName = organizationUniqueShortName;
   }
 
@@ -61,7 +66,7 @@ public class OrganizationUomsResource extends AbstractResource{
                                                                                                      String.class));
     }
     catch (Exception ex) {
-      ex.printStackTrace();
+      System.out.println(ex.getMessage());
     }
 
     ORGANIZATION_UOMS_BEFORE_UOMNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationUomsResource.class);
@@ -308,7 +313,7 @@ public class OrganizationUomsResource extends AbstractResource{
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
+      logger.error(ex.getMessage());      
     }
     return responseBuilder.build();
   }

@@ -4,6 +4,8 @@
  */
 package com.smartitengineering.smartpos.inventory.impl.service;
 
+import com.smartitengineering.dao.common.queryparam.QueryParameter;
+import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.CommonDao;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
@@ -12,12 +14,16 @@ import com.smartitengineering.smartpos.inventory.api.service.UomService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author russel
  */
 public class UomServiceImpl implements UomService {
+
+  protected final Logger logger = LoggerFactory.getLogger(UomServiceImpl.class);
 
   private CommonDao<UnitOfMeasurement, String> commonDao;
 
@@ -57,10 +63,14 @@ public class UomServiceImpl implements UomService {
   }
 
   @Override
-  public Collection<UnitOfMeasurement> getByOrganization(String organizatinUniqueShortName, String name,
+  public Collection<UnitOfMeasurement> getByOrganization(String organizationUniqueShortName, String name,
                                                          boolean isSmallerThan,
                                                          int count) {
+
+    QueryParameter qp = QueryParameterFactory.getEqualPropertyParam("organization", organizationUniqueShortName);
+
     //throw new UnsupportedOperationException("Not supported yet.");
+
     List<UnitOfMeasurement> uomList = new ArrayList<UnitOfMeasurement>();
     UnitOfMeasurement uom1 = new UnitOfMeasurement();
     uom1.setId("UOM 1");
@@ -71,6 +81,7 @@ public class UomServiceImpl implements UomService {
     uom2.setId("UOM 2");
 
     uomList.add(uom2);
+
 
     Collection<UnitOfMeasurement> uoms = uomList;
     return uoms;

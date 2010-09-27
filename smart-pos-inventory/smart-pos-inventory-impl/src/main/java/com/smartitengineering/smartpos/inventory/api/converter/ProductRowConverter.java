@@ -12,12 +12,16 @@ import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author russel
  */
 public class ProductRowConverter implements ObjectRowConverter<Product> {
+
+  protected final Logger logger = LoggerFactory.getLogger(ProductRowConverter.class);
 
   public static final byte[][] NAME = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("name")};
   public static final byte[][] DESCRIPTION = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("description")};
@@ -57,5 +61,15 @@ public class ProductRowConverter implements ObjectRowConverter<Product> {
     product.setDescription(Bytes.toString(startRow.getValue(DESCRIPTION[0], DESCRIPTION[1])));
     product.setSkuId(Bytes.toString(startRow.getValue(SKU_ID[0], SKU_ID[1])));
     return product;
+  }
+
+  @Override
+  public LinkedHashMap<String, Put> objectToRows(Product instance, ExecutorService service) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public LinkedHashMap<String, Delete> objectToDeleteableRows(Product instance, ExecutorService service) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }

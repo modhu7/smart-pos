@@ -34,6 +34,8 @@ import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -41,6 +43,8 @@ import org.apache.commons.lang.StringUtils;
  */
 @Path("/orgs/sn/{uniqueShortName}/inv/prds")
 public class OrganizationProductsResource extends AbstractResource {
+
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationProductsResource.class);
 
   static final UriBuilder ORGANIZATION_PRODUCTS_URI_BUILDER;
   static final UriBuilder ORGANIZATION_PRODUCTS_BEFORE_PRODUCTCODE_URI_BUILDER;
@@ -304,6 +308,7 @@ public class OrganizationProductsResource extends AbstractResource {
         throw new Exception("No organization found");
       }
       //Services.getInstance().getOrganizationService().populateOrganization(user);
+      product.setId(organizationUniqueShortName+":"+ product.getId());
       Services.getInstance().getProductService().save(product);
       responseBuilder = Response.status(Status.CREATED);
     }

@@ -15,12 +15,16 @@ import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author russel
  */
 public class EntryRowConverter implements ObjectRowConverter<Entry> {
+
+  protected final Logger logger = LoggerFactory.getLogger(EntryRowConverter.class);
 
   public static final byte[][] QUANTITY = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("quantity")};
   public static final byte[][] ENTRY_DATE = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("entryDate")};
@@ -68,9 +72,19 @@ public class EntryRowConverter implements ObjectRowConverter<Entry> {
     }
 
     entry.setOrganizationId(Bytes.toInt(startRow.getValue(ORG_ID[0], ORG_ID[1])));
-    entry.setProductId(Bytes.toInt(startRow.getValue(PRODUCT_ID[0], PRODUCT_ID[1])));
-    entry.setStoreId(Bytes.toInt(startRow.getValue(STORE_ID[0], STORE_ID[1])));
+    entry.setProductId(Bytes.toString(startRow.getValue(PRODUCT_ID[0], PRODUCT_ID[1])));
+    entry.setStoreId(Bytes.toString(startRow.getValue(STORE_ID[0], STORE_ID[1])));
 
     return entry;
+  }
+
+  @Override
+  public LinkedHashMap<String, Put> objectToRows(Entry instance, ExecutorService service) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public LinkedHashMap<String, Delete> objectToDeleteableRows(Entry instance, ExecutorService service) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }

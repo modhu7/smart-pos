@@ -5,7 +5,9 @@
 
 package com.smartitengineering.smartpos.admin.api;
 
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import com.smartitengineering.smartpos.inventory.api.Product;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -16,7 +18,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author russel
  */
 
-public class Organization extends AbstractPersistentDTO<Organization> {
+public class Organization extends AbstractGenericPersistentDTO<Organization, Long, Long> {
 
 
     private String name;
@@ -27,6 +29,14 @@ public class Organization extends AbstractPersistentDTO<Organization> {
     //private String contactPerson;
 
     private Date lastModifiedDate;
+
+    private Integer[] productIds;
+
+    private Integer[] storeIds;
+
+    private Integer[] uomIds;
+
+    private Integer[] supplierIds;
 
     public Organization() {
     }
@@ -76,9 +86,37 @@ public class Organization extends AbstractPersistentDTO<Organization> {
         this.address = address;
     }
 
+  public Integer[] getProductIds() {
+    return productIds;
+  }
 
-   
+  public void setProductIds(Integer[] productIds) {
+    this.productIds = productIds;
+  }
 
+  public Integer[] getStoreIds() {
+    return storeIds;
+  }
+
+  public void setStoreIds(Integer[] storeIds) {
+    this.storeIds = storeIds;
+  }
+
+  public Integer[] getSupplierIds() {
+    return supplierIds;
+  }
+
+  public void setSupplierIds(Integer[] supplierIds) {
+    this.supplierIds = supplierIds;
+  }
+
+  public Integer[] getUomIds() {
+    return uomIds;
+  }
+
+  public void setUomIds(Integer[] uomIds) {
+    this.uomIds = uomIds;
+  }
 
 //    public String getContactPerson() {
 //        if(contactPerson == null)
@@ -89,6 +127,8 @@ public class Organization extends AbstractPersistentDTO<Organization> {
 //    public void setContactPerson(String contactPerson) {
 //        this.contactPerson = contactPerson;
 //    }
+
+
 
     @JsonIgnore
     public boolean isValid(){
