@@ -57,7 +57,7 @@
       $("#appointment_start").jqtp_object();
       $("#jqtp_clock").jqtp_getTime();
     });
-
+    
     $("#entryList").validate({
       rules: {
         entryDate: {required: true, date: true},
@@ -69,14 +69,19 @@
     });
 
     $(".insertBtn").click(function(){
-      if ($(".textFieldPos").hasClass("active") == false){
-        alert($(".textFieldPos").val());
 
-        $(".textFieldPos").val("");
-        alert($(".textFieldPos").val());
-       
-      }      
+      $(".textFieldPos").each(function(){
+        if ($(this).hasClass("active") == false){
+          
+
+          $(this).val("");
+
+
+      
+        }
+      });
     });
+
   });
 </script>
 

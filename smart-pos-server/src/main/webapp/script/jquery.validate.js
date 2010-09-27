@@ -487,10 +487,10 @@ $.extend($.validator, {
 			var rules = $(element).rules();
 			var dependencyMismatch = false;
 			for( method in rules ) {
-				var rule = { method: method, parameters: rules[method] };
+				var rule = {method: method, parameters: rules[method]};
 				try {
 					var result = $.validator.methods[method].call( this, element.value.replace(/\r/g, ""), element, rule.parameters );
-					
+					alert(method.message);
 					// if a method indicates that the field is optional and therefore valid,
 					// don't mark it as valid when there are no other rules
 					if ( result == "dependency-mismatch" ) {
