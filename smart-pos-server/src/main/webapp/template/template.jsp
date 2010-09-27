@@ -38,7 +38,7 @@
 
   </head>
   <body>
-
+    <c:set var="domain" value="russel"></c:set>
     <div id="menu_common" class="leftmenu">
       <div id="menu_common_header_1" class="leftmenu_header"><label>Common Navigator</label></div>
       <div id="menu_common_body_1" class="leftmenu_body">
