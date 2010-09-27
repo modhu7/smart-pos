@@ -32,6 +32,8 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -39,6 +41,8 @@ import org.apache.commons.lang.StringUtils;
  */
 @Path("/orgs/sn/{uniqueShortName}/inv/entries/entrydate/{entryDate}")
 public class OrganizationEntryResource extends AbstractResource{
+
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationEntryResource.class);
 
   private Entry entry;
   static final UriBuilder ENTRY_URI_BUILDER = UriBuilder.fromResource(OrganizationEntryResource.class);
