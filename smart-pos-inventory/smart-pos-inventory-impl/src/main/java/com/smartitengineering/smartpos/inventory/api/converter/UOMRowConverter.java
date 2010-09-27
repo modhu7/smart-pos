@@ -12,12 +12,16 @@ import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author russel
  */
 public class UOMRowConverter implements ObjectRowConverter<UnitOfMeasurement> {
+
+  protected final Logger logger = LoggerFactory.getLogger(UOMRowConverter.class);
 
   public static final byte[][] SYMBOL = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("symbol")};
   public static final byte[][] TYPE = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("type")};
@@ -57,5 +61,15 @@ public class UOMRowConverter implements ObjectRowConverter<UnitOfMeasurement> {
     measurement.setUomType(Bytes.toString(startRow.getValue(TYPE[0], TYPE[1])));
     measurement.setUomSystem(Bytes.toString(startRow.getValue(SYSTEM[0], SYSTEM[1])));
     return measurement;
+  }
+
+  @Override
+  public LinkedHashMap<String, Put> objectToRows(UnitOfMeasurement instance, ExecutorService service) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public LinkedHashMap<String, Delete> objectToDeleteableRows(UnitOfMeasurement instance, ExecutorService service) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }
