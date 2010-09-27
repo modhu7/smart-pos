@@ -27,7 +27,14 @@ public interface EntryService {
 
   // paginated version (pagination by entry date)
   public Collection<Entry> getByOrganization(String organizationUniqueShortName, Date entryDate, boolean isSmallerThan,
-                                             int count);   
+                                             int count);
+
+  // non paginated version
+  public Collection<Entry> getByOrganizationAndType(String organizationUniqueShortName, Entry.TransactionType type);
+
+  // paginated version (pagination by entry date)
+  public Collection<Entry> getByOrganizationAndType(String organizationUniqueShortName, Entry.TransactionType type,
+                                                    Date entryDate, boolean isSmallerThan, int count);
 
   // non paginated version
   public Collection<Entry> getByOrganizationAndStore(String organizationUniqueShortName, String storeCode);
