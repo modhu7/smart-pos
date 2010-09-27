@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 
@@ -23,6 +25,7 @@ import java.util.List;
  */
 public class EntryServiceImpl implements EntryService{
 
+  protected final Logger logger = LoggerFactory.getLogger(EntryServiceImpl.class);
   private CommonDao<Entry, String> commonDao;
 
   {

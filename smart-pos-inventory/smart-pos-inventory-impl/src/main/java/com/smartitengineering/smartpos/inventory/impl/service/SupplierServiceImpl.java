@@ -5,8 +5,16 @@
 
 package com.smartitengineering.smartpos.inventory.impl.service;
 
+import com.smartitengineering.dao.impl.hbase.CommonDao;
+import com.smartitengineering.dao.impl.hbase.spi.AsyncExecutorService;
+import com.smartitengineering.dao.impl.hbase.spi.impl.MixedExecutorServiceImpl;
+import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
 import com.smartitengineering.smartpos.inventory.api.Supplier;
+import com.smartitengineering.smartpos.inventory.api.converter.SupplierRowConverter;
 import com.smartitengineering.smartpos.inventory.api.service.SupplierService;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -14,19 +22,43 @@ import com.smartitengineering.smartpos.inventory.api.service.SupplierService;
  */
 public class SupplierServiceImpl implements SupplierService{
 
+  protected final Logger logger = LoggerFactory.getLogger(SupplierServiceImpl.class);
+
+  private CommonDao<Supplier, String> supplierDao;
+  private SupplierRowConverter supplierRowConverter;
+  private static final MixedExecutorServiceImpl executorService = new MixedExecutorServiceImpl();
+
+  static {
+    executorService.setConfiguration(HBaseConfiguration.create());
+  }
+
+  public static AsyncExecutorService getAsyncExecutorService() {
+    return executorService;
+  }
+
+  public SupplierServiceImpl(){
+    supplierRowConverter = new SupplierRowConverter();
+    supplierDao = new CommonDao<Supplier, String>();
+    supplierDao.setExecutorService(getAsyncExecutorService());
+    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
+    providerImpl.setMainTableName("supplier");
+    supplierDao.setInfoProvider(providerImpl);
+    supplierDao.setConverter(supplierRowConverter);
+  }
+
   @Override
   public void save(Supplier supplier) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    supplierDao.save(supplier);
   }
 
   @Override
   public void update(Supplier supplier) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    supplierDao.update(supplier);
   }
 
   @Override
   public void delete(Supplier supplier) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    supplierDao.delete(supplier);
   }
 
   @Override

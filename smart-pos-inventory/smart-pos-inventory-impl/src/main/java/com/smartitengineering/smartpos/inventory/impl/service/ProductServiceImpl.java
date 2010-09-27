@@ -15,12 +15,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author russel
  */
 public class ProductServiceImpl implements ProductService {
+
+  protected final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
   private ProductRowConverter productContverter;
   private CommonDao<Product, String> productDao;
@@ -52,12 +56,12 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public void update(Product product) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    productDao.update(product);
   }
 
   @Override
   public void delete(Product product) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    productDao.delete(product);
   }
 
   @Override
