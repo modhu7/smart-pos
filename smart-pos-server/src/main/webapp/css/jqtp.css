@@ -11,10 +11,10 @@
 .jqtp_sec{
    width:1px;
    height:1px;
-   font-size:1px;
-   background:#22ff00;
-   cursor:pointer;
-   color:#22ff00;
+   font-size:1px;   
+   background: green;
+   cursor:pointer;   
+   color: green;
    z-index:3;
    top:0;
    left:0;
