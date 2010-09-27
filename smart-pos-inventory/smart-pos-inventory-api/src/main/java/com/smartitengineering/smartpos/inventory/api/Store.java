@@ -5,8 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.api;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import com.smartitengineering.smartpos.admin.api.Address;
 import com.smartitengineering.smartpos.admin.api.Organization;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -15,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class Store extends AbstractPersistentDTO<Store>{
+public class Store extends AbstractGenericPersistentDTO<Store, String, Long>{
 
   private String name;
 
@@ -26,6 +25,8 @@ public class Store extends AbstractPersistentDTO<Store>{
   private Address address;
 
   private Integer organizationID;
+
+  private String[] productIds;
 
   @JsonIgnore
   public Integer getOrganizationID() {
@@ -67,6 +68,15 @@ public class Store extends AbstractPersistentDTO<Store>{
   public void setOrganization(Organization organization) {
     this.organization = organization;
   }
+
+  @JsonIgnore
+  public String[] getProductIds() {
+    return productIds;
+  }
+
+  public void setProductIds(String[] productIds) {
+    this.productIds = productIds;
+  }  
 
   public boolean isValid(){
     return true;

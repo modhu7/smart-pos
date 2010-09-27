@@ -15,12 +15,22 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 public class Entry extends AbstractGenericPersistentDTO<Entry, String, Long>{
 
+  public static enum TransactionType{
+    INBOUND_PURCHASE,
+    INBOUND_RETURN,
+    INBOUND_WAREHOUSE_RECIEVE,
+    OUTBOUND_SALE,
+    OUTBOUND_RETURN,
+    OUTBOUND_WAREHOUSE_TRANSFER
+  }
+
   private Double quantity;
   private Date entryDate;
   private Date expiryDate;
+  private TransactionType type;
   
-  private Integer productId;
-  private Integer storeId;
+  private String productId;
+  private String storeId;
   private Integer organizationId;
 
   public Date getEntryDate() {
@@ -55,20 +65,28 @@ public class Entry extends AbstractGenericPersistentDTO<Entry, String, Long>{
     this.organizationId = organizationId;
   }
 
-  public Integer getProductId() {
+  public String getProductId() {
     return productId;
   }
 
-  public void setProductId(Integer productId) {
+  public void setProductId(String productId) {
     this.productId = productId;
   }
 
-  public Integer getStoreId() {
+  public String getStoreId() {
     return storeId;
   }
 
-  public void setStoreId(Integer storeId) {
+  public void setStoreId(String storeId) {
     this.storeId = storeId;
+  }
+
+  public TransactionType getType() {
+    return type;
+  }
+
+  public void setType(TransactionType type) {
+    this.type = type;
   }  
 
   @JsonIgnore
