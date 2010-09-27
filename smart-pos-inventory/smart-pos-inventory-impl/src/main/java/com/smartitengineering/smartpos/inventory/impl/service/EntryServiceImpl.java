@@ -9,6 +9,7 @@ import com.smartitengineering.dao.impl.hbase.CommonDao;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
 import com.smartitengineering.domain.PersistentDTO;
 import com.smartitengineering.smartpos.inventory.api.Entry;
+import com.smartitengineering.smartpos.inventory.api.Entry.TransactionType;
 import com.smartitengineering.smartpos.inventory.api.service.EntryService;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -132,6 +133,33 @@ public class EntryServiceImpl implements EntryService{
   @Override
   public Entry getByOrganizationAndEntryDate(String organizationUniqueShortName, Date entryDate) {
     throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Collection<Entry> getByOrganizationAndType(String organizationUniqueShortName, TransactionType type) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Collection<Entry> getByOrganizationAndType(String organizationUniqueShortName, TransactionType type,
+                                                    Date entryDate, boolean isSmallerThan, int count) {
+    //throw new UnsupportedOperationException("Not supported yet.");
+    List<Entry> entryList = new ArrayList<Entry>();
+    Entry entry1 = new Entry();
+    entry1.setQuantity(new Double(10));
+    entry1.setProductId("SITEL:1");
+    entry1.setStoreId("SITEL:1");
+    
+    entryList.add(entry1);
+    
+    Entry entry2 = new Entry();
+    entry2.setQuantity(new Double(20));
+    entry1.setProductId("SITEL:2");
+    entry1.setStoreId("SITEL:2");
+    
+    entryList.add(entry2);
+    
+    return entryList;
   }
 
 }
