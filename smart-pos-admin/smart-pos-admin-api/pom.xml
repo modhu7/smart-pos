@@ -23,11 +23,11 @@
       <groupId>com.smartitengineering</groupId>
       <artifactId>smart-domain</artifactId>
     </dependency>
-    <dependency>
+<!--    <dependency>
       <groupId>com.smartitengineering.smart-pos.inventory</groupId>
       <artifactId>smart-pos-inventory-api</artifactId>
       <version>${project.version}</version>
-    </dependency>
+    </dependency>-->
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
