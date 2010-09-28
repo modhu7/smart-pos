@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.smartpos.inventory.impl.service;
 
+import com.smartitengineering.dao.common.queryparam.MatchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.CommonDao;
@@ -27,19 +28,23 @@ public class UomServiceImpl implements UomService {
 
   private CommonDao<UnitOfMeasurement, String> commonDao;
 
-  {
+  public UomServiceImpl(){
     commonDao = new CommonDao<UnitOfMeasurement, String>();
     commonDao.setExecutorService(ProductServiceImpl.getAsyncExecutorService());
     SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
     providerImpl.setMainTableName("uom");
     commonDao.setInfoProvider(providerImpl);
-    commonDao.setConverter(new UOMRowConverter());
+    commonDao.setConverter(new UOMRowConverter());    
   }
   
 
   @Override
   public void save(UnitOfMeasurement uom) {
-    commonDao.save(uom);
+    try{
+      commonDao.save(uom);
+    }catch(Exception ex){
+      logger.error(ex.getMessage());
+    }
   }
 
   @Override
@@ -67,23 +72,10 @@ public class UomServiceImpl implements UomService {
                                                          boolean isSmallerThan,
                                                          int count) {
 
-    QueryParameter qp = QueryParameterFactory.getEqualPropertyParam("organization", organizationUniqueShortName);
+    QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("id", organizationUniqueShortName, MatchMode.START);
+    List<UnitOfMeasurement> uoms = commonDao.getList(qp);
 
     //throw new UnsupportedOperationException("Not supported yet.");
-
-    List<UnitOfMeasurement> uomList = new ArrayList<UnitOfMeasurement>();
-    UnitOfMeasurement uom1 = new UnitOfMeasurement();
-    uom1.setId("UOM 1");
-
-    uomList.add(uom1);
-
-    UnitOfMeasurement uom2 = new UnitOfMeasurement();
-    uom2.setId("UOM 2");
-
-    uomList.add(uom2);
-
-
-    Collection<UnitOfMeasurement> uoms = uomList;
     return uoms;
   }
 

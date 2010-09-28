@@ -30,7 +30,7 @@ public class UOMRowConverter implements ObjectRowConverter<UnitOfMeasurement> {
   public static final String UOM_TBL_NAME = "uom";
 
   @Override
-  public LinkedHashMap<String, Put> objectToRows(UnitOfMeasurement instance) {
+  public LinkedHashMap<String, Put> objectToRows(UnitOfMeasurement instance) {       
     LinkedHashMap<String, Put> map = new LinkedHashMap<String, Put>();
     Put put = new Put(Bytes.toBytes(instance.getId()));
     put.add(SYMBOL[0], SYMBOL[1], Bytes.toBytes(instance.getSymbol()));

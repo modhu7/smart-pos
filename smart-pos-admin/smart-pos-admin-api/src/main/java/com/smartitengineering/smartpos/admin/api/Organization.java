@@ -6,8 +6,6 @@
 package com.smartitengineering.smartpos.admin.api;
 
 import com.smartitengineering.domain.AbstractGenericPersistentDTO;
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.smartpos.inventory.api.Product;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
