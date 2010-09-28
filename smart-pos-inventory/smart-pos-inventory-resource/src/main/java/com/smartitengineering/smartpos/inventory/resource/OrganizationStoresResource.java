@@ -35,6 +35,8 @@ import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -42,6 +44,8 @@ import org.apache.commons.lang.StringUtils;
  */
 @Path("/orgs/sn/{uniqueShortName}/inv/stores")
 public class OrganizationStoresResource extends AbstractResource {
+
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationStoresResource.class);
 
   static final UriBuilder ORGANIZATION_STORES_URI_BUILDER;
   static final UriBuilder ORGANIZATION_STORES_BEFORE_USERNAME_URI_BUILDER;

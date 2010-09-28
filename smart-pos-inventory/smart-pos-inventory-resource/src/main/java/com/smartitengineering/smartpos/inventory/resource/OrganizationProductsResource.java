@@ -34,6 +34,8 @@ import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -41,6 +43,8 @@ import org.apache.commons.lang.StringUtils;
  */
 @Path("/orgs/sn/{uniqueShortName}/inv/prds")
 public class OrganizationProductsResource extends AbstractResource {
+
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationProductsResource.class);
 
   static final UriBuilder ORGANIZATION_PRODUCTS_URI_BUILDER;
   static final UriBuilder ORGANIZATION_PRODUCTS_BEFORE_PRODUCTCODE_URI_BUILDER;
@@ -251,7 +255,7 @@ public class OrganizationProductsResource extends AbstractResource {
         nextUri.queryParam(key, values);
         previousUri.queryParam(key, values);
       }
-      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastProduct.getProductCode()).toString());
+      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastProduct.getId()).toString());
 
 
       atomFeed.addLink(nextLink);
@@ -263,7 +267,7 @@ public class OrganizationProductsResource extends AbstractResource {
       Product firstProduct = productList.get(0);
 
       prevLink.setHref(
-          previousUri.build(organizationUniqueShortName, firstProduct.getProductCode()).toString());
+          previousUri.build(organizationUniqueShortName, firstProduct.getId()).toString());
       atomFeed.addLink(prevLink);
 
       //for (User user : users) {
@@ -271,7 +275,7 @@ public class OrganizationProductsResource extends AbstractResource {
 
         Entry productEntry = abderaFactory.newEntry();
 
-        productEntry.setId(product.getProductCode());
+        productEntry.setId(product.getId());
         productEntry.setTitle(product.getName());
         productEntry.setSummary(product.getName());
         
@@ -279,7 +283,7 @@ public class OrganizationProductsResource extends AbstractResource {
         // setting link to the each individual user
         Link productLink = abderaFactory.newLink();
         productLink.setHref(OrganizationProductResource.PRODUCT_URI_BUILDER.clone().build(organizationUniqueShortName, product.
-            getProductCode()).toString());
+            getId()).toString());
         productLink.setRel(Link.REL_ALTERNATE);
         productLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -300,10 +304,11 @@ public class OrganizationProductsResource extends AbstractResource {
     ResponseBuilder responseBuilder;
 
     try {
-      if (product.getParentOrganizationID() == null) {
+      if (product.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
       //Services.getInstance().getOrganizationService().populateOrganization(user);
+      product.setId(organizationUniqueShortName+":"+ product.getId());
       Services.getInstance().getProductService().save(product);
       responseBuilder = Response.status(Status.CREATED);
     }

@@ -5,8 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.api;
 
-import com.smartitengineering.domain.AbstractPersistentDTO;
-import com.smartitengineering.domain.PersistentDTO;
+import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import com.smartitengineering.smartpos.admin.api.Address;
 import org.apache.commons.lang.StringUtils;
 
@@ -14,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-public class Supplier extends AbstractPersistentDTO<Supplier>{
+public class Supplier extends AbstractGenericPersistentDTO<Supplier, String, Long>{
 
   private String name;
   private String email;

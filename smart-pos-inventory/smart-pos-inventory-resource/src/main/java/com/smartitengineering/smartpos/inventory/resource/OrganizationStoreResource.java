@@ -31,6 +31,8 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -38,6 +40,8 @@ import org.apache.commons.lang.StringUtils;
  */
 @Path("/orgs/sn/{uniqueShortName}/inv/stores/code/{storeCode}")
 public class OrganizationStoreResource extends AbstractResource {
+
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationStoreResource.class);
 
   private Store store;
   static final UriBuilder STORE_URI_BUILDER = UriBuilder.fromResource(OrganizationStoreResource.class);
@@ -90,9 +94,9 @@ public class OrganizationStoreResource extends AbstractResource {
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/userDetailsHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoreResource/storeDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/OrganizationUserDetails.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoreResource/storeDetails.jsp");
     Viewable view = new Viewable("/template/template.jsp", store);
 
     responseBuilder.entity(view);

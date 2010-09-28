@@ -32,6 +32,8 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -39,6 +41,8 @@ import org.apache.commons.lang.StringUtils;
  */
 @Path("/orgs/sn/{uniqueShortName}/inv/entries/entrydate/{entryDate}")
 public class OrganizationEntryResource extends AbstractResource{
+
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationEntryResource.class);
 
   private Entry entry;
   static final UriBuilder ENTRY_URI_BUILDER = UriBuilder.fromResource(OrganizationEntryResource.class);
@@ -57,12 +61,12 @@ public class OrganizationEntryResource extends AbstractResource{
 
     }
   }
-  @PathParam("organizationShortName")
+  @PathParam("uniqueShortName")
   private String organizationUniqueShortName;
   @PathParam("entryDate")
   private String entryDate;
 
-  public OrganizationEntryResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
+  public OrganizationEntryResource(@PathParam("uniqueShortName") String organizationShortName, @PathParam(
       "entryDate") String entryDate) {
     entry = Services.getInstance().getEntryService().getByOrganizationAndEntryDate(organizationUniqueShortName, null);
 
@@ -91,9 +95,9 @@ public class OrganizationEntryResource extends AbstractResource{
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/userDetailsHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntryResource/entryDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/OrganizationUserDetails.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntryResource/entryDetails.jsp");
     Viewable view = new Viewable("/template/template.jsp", entry);
 
     responseBuilder.entity(view);
@@ -108,7 +112,7 @@ public class OrganizationEntryResource extends AbstractResource{
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
 
-      if (entry.getOrganizationID() == null) {
+      if (entry.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
 
@@ -139,7 +143,7 @@ public class OrganizationEntryResource extends AbstractResource{
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(ENTRY_CONTENT_URI_BUILDER.clone().build(entry.getOrganization().getUniqueShortName(),
+    altLink.setHref(ENTRY_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
                                                            entry.getEntryDate().toString()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);

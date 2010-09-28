@@ -6,7 +6,7 @@
 package com.smartitengineering.smartpos.inventory.resource;
 
 import com.smartitengineering.smartpos.admin.resource.RootResource;
-import com.smartitengineering.smartpos.inventory.api.UOM;
+import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -35,6 +35,8 @@ import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -43,12 +45,15 @@ import org.apache.commons.lang.StringUtils;
 @Path("/orgs/sn/{uniqueShortName}/inv/uoms")
 public class OrganizationUomsResource extends AbstractResource{
 
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationUomsResource.class);
+
   static final UriBuilder ORGANIZATION_UOMS_URI_BUILDER;
   static final UriBuilder ORGANIZATION_UOMS_BEFORE_UOMNAME_URI_BUILDER;
   static final UriBuilder ORGANIZATION_UOMS_AFTER_UOMNAME_URI_BUILDER;
 
   public OrganizationUomsResource(@PathParam("uniqueShortName") String organizationUniqueShortName) {
 
+    logger.info("Organization Short Name:"+organizationUniqueShortName);
     this.organizationUniqueShortName = organizationUniqueShortName;
   }
 
@@ -61,7 +66,7 @@ public class OrganizationUomsResource extends AbstractResource{
                                                                                                      String.class));
     }
     catch (Exception ex) {
-      ex.printStackTrace();
+      System.out.println(ex.getMessage());
     }
 
     ORGANIZATION_UOMS_BEFORE_UOMNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationUomsResource.class);
@@ -98,7 +103,7 @@ public class OrganizationUomsResource extends AbstractResource{
 //    }
 
 
-    Collection<UOM> uoms = Services.getInstance().getUomService().getByOrganization(
+    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getByOrganization(
         organizationUniqueShortName, null, false, count);
 
 
@@ -124,7 +129,7 @@ public class OrganizationUomsResource extends AbstractResource{
     ResponseBuilder responseBuilder = Response.ok();
 //    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
 //                                                                                           null, false, count);
-    Collection<UOM> uoms = Services.getInstance().getUomService().getByOrganization(
+    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getByOrganization(
         organizationUniqueShortName, null, false, count);
 
     Viewable view = new Viewable("uomFrags.jsp", uoms, OrganizationUomsResource.class);
@@ -147,7 +152,7 @@ public class OrganizationUomsResource extends AbstractResource{
     ResponseBuilder responseBuilder = Response.ok();
 //    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
 //        organizationUniqueShortName, beforeUserName, true, count);
-    Collection<UOM> uoms = Services.getInstance().getUomService().getByOrganization(
+    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getByOrganization(
         organizationUniqueShortName, beforeUomName, true, count);
 
     servletRequest.setAttribute("templateContent",
@@ -165,7 +170,7 @@ public class OrganizationUomsResource extends AbstractResource{
 //    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
 //        organizationUniqueShortName, beforeUserName, true, count);
 
-    Collection<UOM> uoms = Services.getInstance().getUomService().getByOrganization(
+    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getByOrganization(
         organizationUniqueShortName, beforeUomName, true, count);
 
     Viewable view = new Viewable("uomFrags.jsp", uoms);
@@ -187,7 +192,7 @@ public class OrganizationUomsResource extends AbstractResource{
 
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<UOM> uoms = Services.getInstance().getUomService().getByOrganization(
+    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getByOrganization(
         organizationUniqueShortName, afterUomName, false, count);
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationUomsResource/uomList.jsp");
@@ -203,7 +208,7 @@ public class OrganizationUomsResource extends AbstractResource{
 
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<UOM> uoms = Services.getInstance().getUomService().getByOrganization(
+    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getByOrganization(
         organizationUniqueShortName, afterUomName, false, count);
 
     Viewable view = new Viewable("uomFrags.jsp", uoms);
@@ -226,13 +231,13 @@ public class OrganizationUomsResource extends AbstractResource{
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
 
-    Collection<UOM> uoms = Services.getInstance().getUomService().getByOrganization(
+    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getByOrganization(
         organizationUniqueShortName, uomName, isBefore, count);
 
     if (uoms != null && !uoms.isEmpty()) {
 
       MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
-      List<UOM> uomList = new ArrayList<UOM>(uoms);
+      List<UnitOfMeasurement> uomList = new ArrayList<UnitOfMeasurement>(uoms);
 
       // uri builder for next and previous organizations according to count
       final UriBuilder nextUri = ORGANIZATION_UOMS_AFTER_UOMNAME_URI_BUILDER.clone();
@@ -242,7 +247,7 @@ public class OrganizationUomsResource extends AbstractResource{
       Link nextLink = abderaFactory.newLink();
       nextLink.setRel(Link.REL_NEXT);
       //User lastUser = userList.get(userList.size() - 1);
-      UOM lastUom = uomList.get(uomList.size() - 1);
+      UnitOfMeasurement lastUom = uomList.get(uomList.size() - 1);
 
 
       for (String key : queryParam.keySet()) {
@@ -250,7 +255,7 @@ public class OrganizationUomsResource extends AbstractResource{
         nextUri.queryParam(key, values);
         previousUri.queryParam(key, values);
       }
-      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastUom.getName()).toString());
+      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastUom.getId()).toString());
 
 
       atomFeed.addLink(nextLink);
@@ -259,26 +264,26 @@ public class OrganizationUomsResource extends AbstractResource{
       Link prevLink = abderaFactory.newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
       //User firstUser = userList.get(0);
-      UOM firstUom = uomList.get(0);
+      UnitOfMeasurement firstUom = uomList.get(0);
 
       prevLink.setHref(
-          previousUri.build(organizationUniqueShortName, firstUom.getName()).toString());
+          previousUri.build(organizationUniqueShortName, firstUom.getId()).toString());
       atomFeed.addLink(prevLink);
 
       //for (User user : users) {
-      for (UOM uom : uoms) {
+      for (UnitOfMeasurement uom : uoms) {
 
         Entry uomEntry = abderaFactory.newEntry();
 
-        uomEntry.setId(uom.getName());
-        uomEntry.setTitle(uom.getName());
-        uomEntry.setSummary(uom.getName());
+        uomEntry.setId(uom.getId());
+        uomEntry.setTitle(uom.getId());
+        uomEntry.setSummary(uom.getId());
         //userEntry.setUpdated(Store.g);
 
         // setting link to the each individual user
         Link uomLink = abderaFactory.newLink();
         uomLink.setHref(OrganizationUomResource.UOM_URI_BUILDER.clone().build(organizationUniqueShortName, uom.
-            getName()).toString());
+            getId()).toString());
         uomLink.setRel(Link.REL_ALTERNATE);
         uomLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -293,13 +298,13 @@ public class OrganizationUomsResource extends AbstractResource{
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response post(UOM uom) {
+  public Response post(UnitOfMeasurement uom) {
 
 
     ResponseBuilder responseBuilder;
 
     try {
-      if (uom.getOrganizationID() == null) {
+      if (uom.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
       //Services.getInstance().getOrganizationService().populateOrganization(user);
@@ -308,14 +313,14 @@ public class OrganizationUomsResource extends AbstractResource{
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
+      logger.error(ex.getMessage());      
     }
     return responseBuilder.build();
   }
 
-  private UOM getObjectFromContent(String message) {
+  private UnitOfMeasurement getObjectFromContent(String message) {
 
-    return new UOM();
+    return new UnitOfMeasurement();
   }
 
   @POST
@@ -357,7 +362,7 @@ public class OrganizationUomsResource extends AbstractResource{
     }
 
     if (isHtmlPost) {
-      UOM uom = getObjectFromContent(message);
+      UnitOfMeasurement uom = getObjectFromContent(message);
 
         Services.getInstance().getUomService().save(uom);
 

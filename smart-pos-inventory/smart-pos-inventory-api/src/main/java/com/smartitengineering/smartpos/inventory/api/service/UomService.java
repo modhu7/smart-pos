@@ -5,8 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.api.service;
 
-import com.smartitengineering.smartpos.admin.api.Organization;
-import com.smartitengineering.smartpos.inventory.api.UOM;
+import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
 import java.util.Collection;
 
 /**
@@ -15,23 +14,25 @@ import java.util.Collection;
  */
 public interface UomService {
 
-  public void save(UOM uom);
+  public UnitOfMeasurement getById(String uomId);
 
-  public void update(UOM uom);
+  public void save(UnitOfMeasurement uom);
 
-  public void delete(UOM uom);
+  public void update(UnitOfMeasurement uom);
+
+  public void delete(UnitOfMeasurement uom);
 
   public void getAllUoms();
 
   // non paginated version
-  public Collection<UOM> getByOrganization(String organizatinUniqueShortName);
+  public Collection<UnitOfMeasurement> getByOrganization(String organizatinUniqueShortName);
 
   // paginated version
-  public Collection<UOM> getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count);
+  public Collection<UnitOfMeasurement> getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count);
 
   // non paginated version
-  public UOM getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName);
+  public UnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName);
 
   // paginated version
-  public UOM getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name, boolean isSmallerThan, int count);
+  public UnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name, boolean isSmallerThan, int count);
 }

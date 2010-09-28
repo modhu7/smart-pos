@@ -28,5 +28,15 @@
       <artifactId>smart-pos-inventory-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+<!--    <dependency>
+      <groupId>com.smartitengineering</groupId>
+      <artifactId>smart-dao</artifactId>
+      <version>${smart.dao.version}</version>
+    </dependency>-->
+    <dependency>
+      <groupId>com.smartitengineering.smart-dao</groupId>
+      <artifactId>smart-hbase-dao</artifactId>
+      <version>${smart.dao.version}</version>
+    </dependency>
   </dependencies>
 </project>

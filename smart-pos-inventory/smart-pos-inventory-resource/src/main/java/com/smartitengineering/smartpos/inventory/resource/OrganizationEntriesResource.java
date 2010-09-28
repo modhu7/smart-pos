@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.smartpos.inventory.resource;
 
 import com.smartitengineering.smartpos.admin.resource.RootResource;
@@ -13,9 +12,12 @@ import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -36,14 +38,17 @@ import javax.ws.rs.core.UriBuilder;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author russel
  */
 @Path("/orgs/sn/{uniqueShortName}/inv/entries")
-public class OrganizationEntriesResource extends AbstractResource{
+public class OrganizationEntriesResource extends AbstractResource {
 
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
   static final UriBuilder ORGANIZATION_ENTRIES_URI_BUILDER;
   static final UriBuilder ORGANIZATION_ENTRIES_BEFORE_ENTRYDATE_URI_BUILDER;
   static final UriBuilder ORGANIZATION_ENTRIES_AFTER_ENTRYDATE_URI_BUILDER;
@@ -61,7 +66,7 @@ public class OrganizationEntriesResource extends AbstractResource{
     ORGANIZATION_ENTRIES_AFTER_ENTRYDATE_URI_BUILDER = UriBuilder.fromResource(OrganizationEntriesResource.class);
     try {
       ORGANIZATION_ENTRIES_AFTER_ENTRYDATE_URI_BUILDER.path(OrganizationEntriesResource.class.getMethod("getAfter",
-                                                                                                     String.class));
+                                                                                                        String.class));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -70,7 +75,7 @@ public class OrganizationEntriesResource extends AbstractResource{
     ORGANIZATION_ENTRIES_BEFORE_ENTRYDATE_URI_BUILDER = UriBuilder.fromResource(OrganizationEntriesResource.class);
     try {
       ORGANIZATION_ENTRIES_BEFORE_ENTRYDATE_URI_BUILDER.path(OrganizationEntriesResource.class.getMethod("getBefore",
-                                                                                                      String.class));
+                                                                                                         String.class));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -128,7 +133,7 @@ public class OrganizationEntriesResource extends AbstractResource{
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/before/{beforeEntryDate}")
   public Response getBefore(@PathParam("beforeEntryDate") String beforeEntryDate) {
-    return get(organizationUniqueShortName, beforeEntryDate, true);
+    return get(organizationUniqueShortName, null, beforeEntryDate, true);
   }
 
   @GET
@@ -139,10 +144,11 @@ public class OrganizationEntriesResource extends AbstractResource{
 
     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     Date entryDate = new Date();
-    try{
+    try {
       entryDate = df.parse(beforeEntryDate);
-    }catch(Exception ex)     {
-      ex.printStackTrace();
+    }
+    catch (Exception ex) {      
+      logger.error(ex.getMessage());
     }
 
     Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganization(
@@ -163,9 +169,10 @@ public class OrganizationEntriesResource extends AbstractResource{
 
     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     Date entryDate = new Date();
-    try{
+    try {
       entryDate = df.parse(beforeEntryDate);
-    }catch(Exception ex)     {
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
     }
 
@@ -181,7 +188,7 @@ public class OrganizationEntriesResource extends AbstractResource{
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/after/{afterEntryDate}")
   public Response getAfter(@PathParam("afterEntryDate") String afterEntryDate) {
-    return get(organizationUniqueShortName, afterEntryDate, false);
+    return get(organizationUniqueShortName, null, afterEntryDate, false);
   }
 
   @GET
@@ -193,9 +200,10 @@ public class OrganizationEntriesResource extends AbstractResource{
 
     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     Date entryDate = new Date();
-    try{
+    try {
       entryDate = df.parse(afterEntryDate);
-    }catch(Exception ex)     {
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
     }
 
@@ -217,9 +225,10 @@ public class OrganizationEntriesResource extends AbstractResource{
 
     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     Date entryDate = new Date();
-    try{
+    try {
       entryDate = df.parse(afterEntryDate);
-    }catch(Exception ex)     {
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
     }
 
@@ -234,10 +243,10 @@ public class OrganizationEntriesResource extends AbstractResource{
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-    return get(organizationUniqueShortName, null, true);
+    return get(organizationUniqueShortName, null, null, true);
   }
 
-  private Response get(String uniqueOrganizationName, String entryDate, boolean isBefore) {
+  private Response get(String uniqueOrganizationName, Entry.TransactionType type, String entryDate, boolean isBefore) {
     ResponseBuilder responseBuilder = Response.ok();
     Feed atomFeed = getFeed(entryDate, new Date());
 
@@ -248,14 +257,15 @@ public class OrganizationEntriesResource extends AbstractResource{
 
     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     Date date = new Date();
-    try{
+    try {
       date = df.parse(entryDate);
-    }catch(Exception ex)     {
+    }
+    catch (Exception ex) {
       ex.printStackTrace();
     }
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganization(
-        organizationUniqueShortName, date, isBefore, count);
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        uniqueOrganizationName, type, date, isBefore, count);
 
     if (entries != null && !entries.isEmpty()) {
 
@@ -299,13 +309,14 @@ public class OrganizationEntriesResource extends AbstractResource{
         org.apache.abdera.model.Entry entryEntry = abderaFactory.newEntry();
 
         entryEntry.setId(entry.getEntryDate().toString());
-        entryEntry.setTitle(entry.getProduct().getName());
-        entryEntry.setSummary(entry.getProduct().getName());
+//        entryEntry.setTitle(entry.getProduct().getName());
+//        entryEntry.setSummary(entry.getProduct().getName());
 
 
         // setting link to the each individual user
         Link entryLink = abderaFactory.newLink();
-        entryLink.setHref(OrganizationEntryResource.ENTRY_URI_BUILDER.clone().build(organizationUniqueShortName, entry.getEntryDate().toString()).toString());
+        entryLink.setHref(OrganizationEntryResource.ENTRY_URI_BUILDER.clone().build(organizationUniqueShortName, entry.
+            getEntryDate().toString()).toString());
         entryLink.setRel(Link.REL_ALTERNATE);
         entryLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -318,36 +329,121 @@ public class OrganizationEntriesResource extends AbstractResource{
     return responseBuilder.build();
   }
 
+  /*
+   * General json post in entries. It accepts all types of transaction
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Entry entry) {
+    return generalPost(entry);
+  }
 
+  /*
+   * General html post in entries. It accepts all types of transaction.
+   */
+  @POST
+  public Response postHtml(
+      @HeaderParam("Content-type") String contentType, String message) {
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
 
-    ResponseBuilder responseBuilder;
-
-    try {
-      if (entry.getOrganizationID() == null) {
-        throw new Exception("No organization found");
-      }
-      //Services.getInstance().getOrganizationService().populateOrganization(user);
-      Services.getInstance().getEntryService().save(entry);
-      responseBuilder = Response.status(Status.CREATED);
+    if (StringUtils.isBlank(message)) {
+      responseBuilder = Response.status(Status.BAD_REQUEST);
+      return responseBuilder.build();
     }
-    catch (Exception ex) {
-      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
+
+    final boolean isHtmlPost;
+
+    if (StringUtils.isBlank(contentType)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = false;
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = true;
+
+      try {
+        //Will search for the first '=' if not found will take the whole string
+        final int startIndex = 0;//message.indexOf("=") + 1;
+        //Consider the first '=' as the start of a value point and take rest as value
+        final String realMsg = message.substring(startIndex);
+        //Decode the message to ignore the form encodings and make them human readable
+        message = URLDecoder.decode(realMsg, "UTF-8");
+
+      }
+      catch (UnsupportedEncodingException ex) {
+        ex.printStackTrace();
+      }
+    }
+    else {
+      contentType = contentType;
+      isHtmlPost = false;
+    }
+
+    if (isHtmlPost) {
+      Entry entry = getObjectFromContent(message);
+
+
+      Services.getInstance().getEntryService().save(entry);
+
     }
     return responseBuilder.build();
   }
 
-  private Entry getObjectFromContent(String message) {
-
-    return new Entry();
+  /*
+   * Get method for atom xml for purchase type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/purchase")
+  public Response getPurchase(){
+    return get(organizationUniqueShortName, Entry.TransactionType.INBOUND_PURCHASE, null, false);
   }
 
+  /*
+   *  Get method for html views for purchase type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/purchase")
+  public Response getPurchaseHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.INBOUND_PURCHASE, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryPurchaseListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryPurchaseList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+  /*
+   * General json post for purchase type entry.
+   */
   @POST
-  public Response post(
-      @HeaderParam("Content-type") String contentType, String message) {
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/purchase")
+  public Response postForPurchase(Entry entry) {
+    entry.setType(Entry.TransactionType.INBOUND_PURCHASE);
+
+    return generalPost(entry);
+  }
+
+  /*
+   * General html post for purchase type entry.
+   */
+  @POST
+  @Path("/purchase")
+  public Response postHtmlForPurchase(@HeaderParam("Content-type") String contentType, String message) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
 
     if (StringUtils.isBlank(message)) {
@@ -391,5 +487,593 @@ public class OrganizationEntriesResource extends AbstractResource{
 
     }
     return responseBuilder.build();
+  }
+
+  /*
+   * Get method for atom xml for returnin type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/returnin")
+  public Response getReturnIn(){
+    return get(organizationUniqueShortName, Entry.TransactionType.INBOUND_RETURN, null, false);
+  }
+
+  /*
+   *  Get method for html views for returnin type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/returnin")
+  public Response getReturnInHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.INBOUND_RETURN, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryReturnInListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryReturnInList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+  /*
+   * General json post for inbound return type entry (i.e. goods return after sale..).
+   */
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/returnin")
+  public Response postForReturnIn(Entry entry) {
+    entry.setType(Entry.TransactionType.INBOUND_RETURN);
+
+    return generalPost(entry);
+  }
+
+  /*
+   * General json post for inbound return type entry (i.e. goods return after sale..).
+   */
+  @POST
+  @Path("/returnin")
+  public Response postHtmlForReturnIn(@HeaderParam("Content-type") String contentType, String message) {
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+    if (StringUtils.isBlank(message)) {
+      responseBuilder = Response.status(Status.BAD_REQUEST);
+      return responseBuilder.build();
+    }
+
+    final boolean isHtmlPost;
+
+    if (StringUtils.isBlank(contentType)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = false;
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = true;
+
+      try {
+        //Will search for the first '=' if not found will take the whole string
+        final int startIndex = 0;//message.indexOf("=") + 1;
+        //Consider the first '=' as the start of a value point and take rest as value
+        final String realMsg = message.substring(startIndex);
+        //Decode the message to ignore the form encodings and make them human readable
+        message = URLDecoder.decode(realMsg, "UTF-8");
+
+      }
+      catch (UnsupportedEncodingException ex) {
+        ex.printStackTrace();
+      }
+    }
+    else {
+      contentType = contentType;
+      isHtmlPost = false;
+    }
+
+    if (isHtmlPost) {
+      Entry entry = getObjectFromContent(message);
+
+
+      Services.getInstance().getEntryService().save(entry);
+
+    }
+    return responseBuilder.build();
+  }
+
+  /*
+   * Get method for atom xml for transferin type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/transferin")
+  public Response getTransferIn(){
+    return get(organizationUniqueShortName, Entry.TransactionType.INBOUND_WAREHOUSE_RECIEVE, null, false);
+  }
+
+  /*
+   *  Get method for html views for transferin type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/transferin")
+  public Response getTransferInHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.INBOUND_WAREHOUSE_RECIEVE, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryTransferInListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryTransferInList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+  /*
+   * General json post for inbound transfer type entry. i.e. accepts goods from other store
+   */
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/transferin")
+  public Response postForTransfer(Entry entry) {
+    entry.setType(Entry.TransactionType.INBOUND_WAREHOUSE_RECIEVE);
+
+    return generalPost(entry);
+  }
+
+  /*
+   * General html post for inbound transfer type entry. i.e. accepts goods from other store.
+   */
+  @POST
+  @Path("/transferin")
+  public Response postHtmlForTransfer(@HeaderParam("Content-type") String contentType, String message) {
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+    if (StringUtils.isBlank(message)) {
+      responseBuilder = Response.status(Status.BAD_REQUEST);
+      return responseBuilder.build();
+    }
+
+    final boolean isHtmlPost;
+
+    if (StringUtils.isBlank(contentType)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = false;
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = true;
+
+      try {
+        //Will search for the first '=' if not found will take the whole string
+        final int startIndex = 0;//message.indexOf("=") + 1;
+        //Consider the first '=' as the start of a value point and take rest as value
+        final String realMsg = message.substring(startIndex);
+        //Decode the message to ignore the form encodings and make them human readable
+        message = URLDecoder.decode(realMsg, "UTF-8");
+
+      }
+      catch (UnsupportedEncodingException ex) {
+        ex.printStackTrace();
+      }
+    }
+    else {
+      contentType = contentType;
+      isHtmlPost = false;
+    }
+
+    if (isHtmlPost) {
+      Entry entry = getObjectFromContent(message);
+
+
+      Services.getInstance().getEntryService().save(entry);
+
+    }
+    return responseBuilder.build();
+  }
+
+  /*
+   * Get method for atom xml for sale type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/sale")
+  public Response getSale(){
+    return get(organizationUniqueShortName, Entry.TransactionType.OUTBOUND_SALE, null, false);
+  }
+
+  /*
+   *  Get method for html views for sale type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/sale")
+  public Response getSaleHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.OUTBOUND_SALE, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entrySaleListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entrySaleList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+  /*
+   * General json post for sale type entry i.e. outbound entry.
+   */
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/sale")
+  public Response postForSale(Entry entry) {
+    entry.setType(Entry.TransactionType.OUTBOUND_SALE);
+
+    return generalPost(entry);
+  }
+
+  /*
+   * General html post for sale type entry i.e. outbound entry.
+   */
+  @POST
+  @Path("/sale")
+  public Response postHtmlForSale(@HeaderParam("Content-type") String contentType, String message) {
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+    if (StringUtils.isBlank(message)) {
+      responseBuilder = Response.status(Status.BAD_REQUEST);
+      return responseBuilder.build();
+    }
+
+    final boolean isHtmlPost;
+
+    if (StringUtils.isBlank(contentType)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = false;
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = true;
+
+      try {
+        //Will search for the first '=' if not found will take the whole string
+        final int startIndex = 0;//message.indexOf("=") + 1;
+        //Consider the first '=' as the start of a value point and take rest as value
+        final String realMsg = message.substring(startIndex);
+        //Decode the message to ignore the form encodings and make them human readable
+        message = URLDecoder.decode(realMsg, "UTF-8");
+
+      }
+      catch (UnsupportedEncodingException ex) {
+        ex.printStackTrace();
+      }
+    }
+    else {
+      contentType = contentType;
+      isHtmlPost = false;
+    }
+
+    if (isHtmlPost) {
+      Entry entry = getObjectFromContent(message);
+
+
+      Services.getInstance().getEntryService().save(entry);
+
+    }
+    return responseBuilder.build();
+  }
+
+  /*
+   * Get method for atom xml for returnout type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/returnout")
+  public Response getReturnOut(){
+    return get(organizationUniqueShortName, Entry.TransactionType.OUTBOUND_RETURN, null, false);
+  }
+
+  /*
+   *  Get method for html views for returnout type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/returnout")
+  public Response getReturnOutHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.OUTBOUND_RETURN, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryReturnOutListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryReturnOutList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+
+  /*
+   * General json post outbound return type entry, i.e. return goods from store due to damage or other causes.
+   */
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/returnout")
+  public Response postForReturnOut(Entry entry) {
+
+    entry.setType(Entry.TransactionType.OUTBOUND_RETURN);
+    return generalPost(entry);
+  }
+
+  /*
+   * General json post for outbound return type entry, i.e. return goods from store due to damage or other causes.
+   */
+  @POST
+  @Path("/returnout")
+  public Response postHtmlForReturnOut(@HeaderParam("Content-type") String contentType, String message) {
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+    if (StringUtils.isBlank(message)) {
+      responseBuilder = Response.status(Status.BAD_REQUEST);
+      return responseBuilder.build();
+    }
+
+    final boolean isHtmlPost;
+
+    if (StringUtils.isBlank(contentType)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = false;
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = true;
+
+      try {
+        //Will search for the first '=' if not found will take the whole string
+        final int startIndex = 0;//message.indexOf("=") + 1;
+        //Consider the first '=' as the start of a value point and take rest as value
+        final String realMsg = message.substring(startIndex);
+        //Decode the message to ignore the form encodings and make them human readable
+        message = URLDecoder.decode(realMsg, "UTF-8");
+
+      }
+      catch (UnsupportedEncodingException ex) {
+        logger.error(ex.getMessage());
+      }
+    }
+    else {
+      contentType = contentType;
+      isHtmlPost = false;
+    }
+
+    if (isHtmlPost) {
+      Entry entry = getObjectFromContent(message);
+
+
+      Services.getInstance().getEntryService().save(entry);
+
+    }
+    return responseBuilder.build();
+  }
+
+  /*
+   * Get method for atom xml for trasnferout type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/transferout")
+  public Response getTransferOut(){
+    return get(organizationUniqueShortName, Entry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER, null, false);
+  }
+
+  /*
+   *  Get method for html views for transferout type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/transferout")
+  public Response getTransferOutHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryTransferOutListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryTransferOutList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+  /*
+   * General json post for outbound transfer type entry. i.e. send goods to other store
+   */
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/transferout")
+  public Response postForTransferOut(Entry entry) {
+    entry.setType(Entry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER);
+
+    return generalPost(entry);
+  }
+
+  /*
+   * General html post for outbound transfer type entry. i.e. send goods to other store
+   */
+  @POST
+  @Path("/transferout")
+  public Response postHtmlForTransferOut(@HeaderParam("Content-type") String contentType, String message) {
+    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+
+    if (StringUtils.isBlank(message)) {
+      responseBuilder = Response.status(Status.BAD_REQUEST);
+      return responseBuilder.build();
+    }
+
+    final boolean isHtmlPost;
+
+    if (StringUtils.isBlank(contentType)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = false;
+    }
+    else if (contentType.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+      contentType = MediaType.APPLICATION_OCTET_STREAM;
+      isHtmlPost = true;
+
+      try {
+        //Will search for the first '=' if not found will take the whole string
+        final int startIndex = 0;//message.indexOf("=") + 1;
+        //Consider the first '=' as the start of a value point and take rest as value
+        final String realMsg = message.substring(startIndex);
+        //Decode the message to ignore the form encodings and make them human readable
+        message = URLDecoder.decode(realMsg, "UTF-8");
+
+      }
+      catch (UnsupportedEncodingException ex) {
+        ex.printStackTrace();
+      }
+    }
+    else {
+      contentType = contentType;
+      isHtmlPost = false;
+    }
+
+    if (isHtmlPost) {
+      Entry entry = getObjectFromContent(message);
+
+
+      Services.getInstance().getEntryService().save(entry);
+
+    }
+    return responseBuilder.build();
+  }
+
+  private Response generalPost(Entry entry) {
+    ResponseBuilder responseBuilder;
+
+    try {
+      Services.getInstance().getEntryService().save(entry);
+      responseBuilder = Response.status(Status.CREATED);
+    }
+    catch (Exception ex) {
+      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+      logger.error(ex.getMessage());
+    }
+    return responseBuilder.build();
+  }
+
+//  private Response generalHtmlPost(String contentType, String message){
+//
+//  }
+  private Entry getObjectFromContent(String message) {
+
+    Map<String, String> keyValueMap = new HashMap<String, String>();
+
+    String[] keyValuePairs = message.split("&");
+
+    for (int i = 0; i < keyValuePairs.length; i++) {
+
+      String[] keyValuePair = keyValuePairs[i].split("=");
+      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+    }
+
+    Entry entry = new Entry();
+
+    if(keyValueMap.get("entryDate") != null){
+      try{
+        entry.setEntryDate(new SimpleDateFormat("dd:MM:yyyy").parse(keyValueMap.get("entryDate")));
+      }catch(Exception ex){
+        logger.error(ex.getMessage());
+      }
+    }else{
+      entry.setEntryDate(new Date());
+    }
+
+    if(keyValueMap.get("expiryDate") != null){
+      try{
+        entry.setExpiryDate(new SimpleDateFormat("dd:MM:yyyy").parse(keyValueMap.get("expiryDate")));
+      }catch(Exception ex){
+        logger.error(ex.getMessage());
+      }
+    }else{
+      entry.setExpiryDate(new Date());
+    }
+
+    if(keyValueMap.get("productId") != null){
+      entry.setProductId(keyValueMap.get("productId"));
+    }
+
+    if(keyValueMap.get("storeId") != null){
+      entry.setStoreId(keyValueMap.get("storeId"));
+    }
+    if(keyValueMap.get("type") != null){
+      entry.setType(getTransactionType(keyValueMap.get("type")));
+    }
+    
+    return new Entry();
+  }
+
+  private Entry.TransactionType getTransactionType(String string){
+    if(string.toUpperCase().equals("INBOUND_PURCHASE")){
+      return Entry.TransactionType.INBOUND_PURCHASE;
+    }
+    if(string.toUpperCase().equals("INBOUND_RETURN")){
+      return Entry.TransactionType.INBOUND_RETURN;
+    }
+    if(string.toUpperCase().equals("INBOUND_WAREHOUSE_RECIEVE")){
+      return Entry.TransactionType.INBOUND_WAREHOUSE_RECIEVE;
+    }
+    if(string.toUpperCase().equals("OUTBOUND_SALE")){
+      return Entry.TransactionType.OUTBOUND_SALE;
+    }
+    if(string.toUpperCase().equals("OUTBOUND_RETURN")){
+      return Entry.TransactionType.OUTBOUND_RETURN;
+    }
+    if(string.toUpperCase().equals("OUTBOUND_WAREHOUSE_TRANSFER")){
+      return Entry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER;
+    }
+    return Entry.TransactionType.INBOUND_PURCHASE;
   }
 }

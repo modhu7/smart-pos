@@ -1,0 +1,143 @@
+/* 
+    Document   : default
+    Created on : Jul 20, 2010, 5:46:32 PM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+  display: block;
+}
+
+body{
+  /*    width: 100%;*/
+  font:normal;
+  font-family:Arial, Helvetica, sans-serif;
+  margin:0; border:0;
+  text-align:left;
+}
+
+.homepageMainDivision{
+  padding-top:6px;
+  clear:left;
+  width:890px;
+  margin:0 auto;
+  padding-bottom: 6px;
+  /*border: 1px solid;*/
+}
+
+.homepageContainer{
+  background-color: gray;
+  background: url(images/img07.jpg);
+  background-repeat:repeat;
+  background-position:bottom right;
+  float: right;
+  width: 700px;
+  height: 275px;
+  border: 1px solid;
+  /*border-color:#408080;*/
+  border-color: silver;
+}
+
+
+/*start of header*/
+
+.homepageHeader{
+  /*background-image:url(bgg.png);*/
+  background-image:url(images/footer2.jpg);
+  background-repeat: repeat;
+  background-position: top left;
+  width: auto;
+  height:120px;
+}
+
+.logoContainer{
+  position: absolute;
+  margin: 2px 0px 0px 180px;;
+  height:52px;
+  width: 205px;
+  /*border:1px solid;*/
+}
+
+#sitelLogo{
+  width: 180px;
+  height: 90px;
+}
+
+.sitel_slogan_container{
+  position: absolute;
+  margin: 92px 0px 0px 176px;;
+
+}
+.sitel_slogan_container label{
+  font-family: verdana, tahoma;
+  font-size: 11pt;
+  font-weight:  bolder;
+  font-style: oblique;
+  letter-spacing: 1px;
+  color: #75ECFD;
+}
+/*End of header*/
+
+/*Start of body/content*/
+
+.leftContent{
+  width: 65%;
+  height:240px;
+  float: left;
+  /*border: 1px solid;*/
+}
+
+.rightContent{
+  width: 35%;
+  height:275px;
+  float: left;
+  /*border: 1px solid;*/
+}
+
+/*End of body/content*/
+
+#signup{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 2px 2px 2px 2px;
+  width: 40%;
+  height: 50%;
+  border:1px solid;
+  border-color: #99C7FF;
+
+}
+/*End of right-side-bar*/
+
+/*Start of footer*/
+
+.homepageFooter{
+  padding-top: 25px;
+  background: url(images/hdr.jpg);
+  width: auto;
+  height:100px;
+  border: 1px solid;
+  border-color: white;
+  text-align: center;
+}
+
+.homepageFooter label{
+  font-family: serif;
+  font-weight: bold;
+  font-size:9pt;
+  letter-spacing: 1px;
+  color: teal;
+  /*color: #75ECFD;*/
+}
+
+/*end of footer*/
+
+.clear{
+  clear:both;
+}

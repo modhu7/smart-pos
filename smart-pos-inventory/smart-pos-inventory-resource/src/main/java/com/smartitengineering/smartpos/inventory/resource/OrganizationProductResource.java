@@ -32,6 +32,8 @@ import javax.ws.rs.core.UriBuilderException;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -39,6 +41,8 @@ import org.apache.commons.lang.StringUtils;
  */
 @Path("/orgs/sn/{uniqueShortName}/inv/prods/code/{productCode}")
 public class OrganizationProductResource extends AbstractResource{
+
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationProductResource.class);
 
   private Product product;
   static final UriBuilder PRODUCT_URI_BUILDER = UriBuilder.fromResource(OrganizationProductResource.class);
@@ -91,9 +95,9 @@ public class OrganizationProductResource extends AbstractResource{
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/userDetailsHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/user/ws/resources/OrganizationUserResource/OrganizationUserDetails.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productDetails.jsp");
     Viewable view = new Viewable("/template/template.jsp", product);
 
     responseBuilder.entity(view);
@@ -108,11 +112,10 @@ public class OrganizationProductResource extends AbstractResource{
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
 
-      if (product.getParentOrganizationID() == null) {
+      if (product.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
-
-      //Services.getInstance().getOrganizationService().populateOrganization(newUserPerson.getUser());
+      
       Services.getInstance().getProductService().update(product);
       responseBuilder = Response.ok(getProductFeed());
     }
@@ -124,7 +127,7 @@ public class OrganizationProductResource extends AbstractResource{
   }
 
   private Feed getProductFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed productFeed = getFeed(product.getProductCode(), new Date());
+    Feed productFeed = getFeed(product.getId(), new Date());
     productFeed.setTitle(product.getName());
 
     // add a self link
@@ -139,8 +142,8 @@ public class OrganizationProductResource extends AbstractResource{
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(PRODUCT_CONTENT_URI_BUILDER.clone().build(product.getOrganization().getUniqueShortName(),
-                                                           product.getProductCode()).toString());
+    altLink.setHref(PRODUCT_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
+                                                           product.getId()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     productFeed.addLink(altLink);
