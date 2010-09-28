@@ -57,4 +57,14 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
     }
     return true;
   }
+
+  public String toString(){
+    String str = "";
+    str += getId() + "\n";
+    str += getVersion()+ "\n";
+    str += symbol+ "\n";
+    str += uomType+ "\n";
+    str += uomSystem+ "\n";
+    return str;
+  }
 }

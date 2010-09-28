@@ -304,10 +304,12 @@ public class OrganizationUomsResource extends AbstractResource{
     ResponseBuilder responseBuilder;
 
     try {
-      if (uom.getOrganizationId() == null) {
-        throw new Exception("No organization found");
-      }
-      //Services.getInstance().getOrganizationService().populateOrganization(user);
+//      if (uom.getOrganizationId() == null) {
+//        throw new Exception("No organization found");
+//      }
+      // set id with organization name
+      uom.setId(organizationUniqueShortName + ":"+uom.getId());
+      //Services.getInstance().getOrganizationService().populateOrganization(user);      
       Services.getInstance().getUomService().save(uom);
       responseBuilder = Response.status(Status.CREATED);
     }
