@@ -6,7 +6,7 @@ package com.smartitengineering.smartpos.admin.resource;
 
 import com.smartitengineering.smartpos.admin.api.Address;
 import com.smartitengineering.smartpos.admin.api.Organization;
-import com.smartitengineering.smartuser.client.api.LoginResource;
+import com.smartitengineering.user.client.api.LoginResource;
 import com.smartitengineering.user.client.impl.RootResourceImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
@@ -201,20 +201,20 @@ public class OrganizationsResource extends AbstractResource {
 //    Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
 //        uniqueShortName, uniqueShortName, false, count);
 
-    com.smartitengineering.smartuser.client.api.RootResource rootResource = RootResourceImpl.getInstance();
+    com.smartitengineering.user.client.api.RootResource rootResource = RootResourceImpl.getInstance();
 
 
 
-    LoginResource loginResource = rootResource.performAuthentication("smartadmin@smart-user", "russel");
+    com.smartitengineering.user.client.api.LoginResource loginResource = rootResource.performAuthentication("smartadmin@smart-user", "russel");
 
     loginResource.getAclAuthorizationResource("smartadmin", "smart-user", "/orgs", 4);
 
-    com.smartitengineering.smartuser.client.api.OrganizationsResource organizationsResource = loginResource.getOrganizationsResource();
+    com.smartitengineering.user.client.api.OrganizationsResource organizationsResource = loginResource.getOrganizationsResource();
 
-    List<com.smartitengineering.smartuser.client.api.OrganizationResource> organizationResourceList = organizationsResource.getOrganizationResources();
+    List<com.smartitengineering.user.client.api.OrganizationResource> organizationResourceList = organizationsResource.getOrganizationResources();
 
     
-    for(com.smartitengineering.smartuser.client.api.OrganizationResource organizationResource : organizationResourceList){
+    for(com.smartitengineering.user.client.api.OrganizationResource organizationResource : organizationResourceList){
       organizationResource.getOrganization();
     }
 
