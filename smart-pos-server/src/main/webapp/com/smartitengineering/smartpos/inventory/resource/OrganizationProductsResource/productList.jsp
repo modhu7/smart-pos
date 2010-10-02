@@ -4,7 +4,7 @@
     Author     : uzzal
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -46,10 +46,10 @@
       <label><fmt:message key="inv.prdtitle"/></label>
     </div>
     <div id="form_ProductionEntry" class="entry_form_pos">
-      <form action="" accept="application/json" enctype="" id="productEntryForm" method="post">
+      <form action="http://russel:9090/orgs/sn/${orgInitial}/inv/prds" accept="application/json" enctype="" id="productEntryForm" method="post">
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdinput1"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="name" id="name" class="textFieldPos"></div>
+          <div class="form_textField_pos"><input type="text" name="name" id="name" class="textFieldPos" title="ffffff"/></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">

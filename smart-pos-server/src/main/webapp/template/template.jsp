@@ -5,7 +5,7 @@
     Author     : uzzal
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
@@ -21,9 +21,9 @@
     <link rel="Stylesheet" href="/css/smart-forms-style.css">
     <link rel="Stylesheet" href="/css/smart-pos-forms.css">
     <link rel="Stylesheet" href="/css/smart-menu.css">
-    <link rel="Stylesheet" href="/css/smothness/jquery_ui_datepicker.css">   
+    <link rel="Stylesheet" href="/css/smothness/jquery_ui_datepicker.css">
     <link rel="Stylesheet" href="/css/jqtp.css">
-    
+
 
     <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
     <script type="text/javascript" src="/script/jquery.validate.js"></script>
@@ -38,7 +38,8 @@
 
   </head>
   <body>
-    <c:set var="domain" value="russel"></c:set>
+
+    <%--<c:set var="domain" value="russel"></c:set>--%>
     <div id="menu_common" class="leftmenu">
       <div id="menu_common_header_1" class="leftmenu_header"><label>Common Navigator</label></div>
       <div id="menu_common_body_1" class="leftmenu_body">
