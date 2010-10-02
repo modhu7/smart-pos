@@ -6,8 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<style media="screen" type="text/css">
-  <%--.defaultText { width: 300px; }--%>
+<style media="screen" type="text/css">  
   .title { color: #a1a1a1; font-style: italic; }
   .active {color: black; font-style: normal;}
 </style>
@@ -21,7 +20,7 @@
     $("#productCode")[0].value = "      --Set product code--";
     $("#quantity")[0].value = "      --How much/How many--";
 
-    if($(".textFieldPos").val()== $(".textFieldPos")[0].value){
+    if($(".textFieldPos").val()== $(".textFieldPos")[0].value){      
       $(".textFieldPos").addClass("title");
     }
 
@@ -34,7 +33,7 @@
       }
     });
     $(".textFieldPos").blur(function(){
-      if ($(this).val()==""){
+      if ($(this).val() == ""){        
         $(this).addClass("title");
         $(this).val($(this)[0].value);
       }
@@ -72,12 +71,7 @@
 
       $(".textFieldPos").each(function(){
         if ($(this).hasClass("active") == false){
-          
-
-          $(this).val("");
-
-
-      
+          $(this).val("");     
         }
       });
     });
