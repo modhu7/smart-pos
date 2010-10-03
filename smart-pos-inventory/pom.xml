@@ -26,5 +26,6 @@
     <module>smart-pos-inventory-resource</module>
     <module>smart-pos-inventory-client-api</module>
     <module>smart-pos-inventory-client-impl</module>
+    <module>guicebinder</module>
   </modules>
 </project>
