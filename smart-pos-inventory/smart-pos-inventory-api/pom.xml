@@ -41,5 +41,9 @@
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-jaxrs</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-dao</groupId>
+      <artifactId>smart-hbase-dao</artifactId>      
+    </dependency>
   </dependencies>
 </project>
