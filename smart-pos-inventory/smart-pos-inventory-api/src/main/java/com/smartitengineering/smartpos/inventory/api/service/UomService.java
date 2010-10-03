@@ -6,6 +6,7 @@
 package com.smartitengineering.smartpos.inventory.api.service;
 
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import java.util.Collection;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Collection;
  */
 public interface UomService {
 
-  public UnitOfMeasurement getById(String uomId);
+  UnitOfMeasurement getById(UomId uomId);
 
   public void save(UnitOfMeasurement uom);
 
@@ -22,7 +23,7 @@ public interface UomService {
 
   public void delete(UnitOfMeasurement uom);
 
-  public void getAllUoms();
+  public Collection<UnitOfMeasurement> getAllUoms();
 
   // non paginated version
   public Collection<UnitOfMeasurement> getByOrganization(String organizatinUniqueShortName);
