@@ -49,7 +49,7 @@
       <form action="http://russel:9090/orgs/sn/${orgInitial}/inv/prds" accept="application/json" enctype="" id="productEntryForm" method="post">
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdinput1"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="name" id="name" class="textFieldPos" title="ffffff"/></div>
+          <div class="form_textField_pos"><input type="text" name="name" id="name" class="textFieldPos"></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
