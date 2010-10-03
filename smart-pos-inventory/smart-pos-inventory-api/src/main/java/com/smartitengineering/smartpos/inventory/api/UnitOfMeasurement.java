@@ -5,13 +5,14 @@
 package com.smartitengineering.smartpos.inventory.api;
 
 import com.smartitengineering.domain.AbstractGenericPersistentDTO;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import org.apache.commons.lang.StringUtils;
 
 /**
  *
  * @author russel
  */
-public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasurement, String, Long> {
+public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasurement, UomId, Long> {
 
   private String name;
   private String symbol;

@@ -1,0 +1,5 @@
+{
+  "schemaNamespace": "com.smartitengineering.pos.impl.supplier",
+  "mainTableName": "supplier",
+  "transactionalDomain": "false"
+}

@@ -20,45 +20,45 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-public class SupplierServiceImpl implements SupplierService{
+public class SupplierServiceImpl extends AbstractSupplierService implements SupplierService{
 
   protected final Logger logger = LoggerFactory.getLogger(SupplierServiceImpl.class);
 
-  private CommonDao<Supplier, String> supplierDao;
-  private SupplierRowConverter supplierRowConverter;
-  private static final MixedExecutorServiceImpl executorService = new MixedExecutorServiceImpl();
+//  private CommonDao<Supplier, String> supplierDao;
+//  private SupplierRowConverter supplierRowConverter;
+//  private static final MixedExecutorServiceImpl executorService = new MixedExecutorServiceImpl();
 
-  static {
-    executorService.setConfiguration(HBaseConfiguration.create());
-  }
+//  static {
+//    executorService.setConfiguration(HBaseConfiguration.create());
+//  }
 
-  public static AsyncExecutorService getAsyncExecutorService() {
-    return executorService;
-  }
+//  public static AsyncExecutorService getAsyncExecutorService() {
+//    return executorService;
+//  }
 
   public SupplierServiceImpl(){
-    supplierRowConverter = new SupplierRowConverter();
-    supplierDao = new CommonDao<Supplier, String>();
-    supplierDao.setExecutorService(getAsyncExecutorService());
-    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
-    providerImpl.setMainTableName("supplier");
-    supplierDao.setInfoProvider(providerImpl);
-    supplierDao.setConverter(supplierRowConverter);
+//    supplierRowConverter = new SupplierRowConverter();
+//    supplierDao = new CommonDao<Supplier, String>();
+//    supplierDao.setExecutorService(getAsyncExecutorService());
+//    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
+//    providerImpl.setMainTableName("supplier");
+//    supplierDao.setInfoProvider(providerImpl);
+//    supplierDao.setConverter(supplierRowConverter);
   }
 
   @Override
   public void save(Supplier supplier) {
-    supplierDao.save(supplier);
+    commonWriteDao.save(supplier);
   }
 
   @Override
   public void update(Supplier supplier) {
-    supplierDao.update(supplier);
+    commonWriteDao.update(supplier);
   }
 
   @Override
   public void delete(Supplier supplier) {
-    supplierDao.delete(supplier);
+    commonWriteDao.delete(supplier);
   }
 
   @Override

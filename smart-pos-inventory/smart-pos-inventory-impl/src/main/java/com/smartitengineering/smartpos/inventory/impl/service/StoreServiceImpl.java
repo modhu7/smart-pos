@@ -25,47 +25,47 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-public class StoreServiceImpl implements StoreService {
+public class StoreServiceImpl extends AbstractStoreService implements StoreService {
 
   protected final Logger logger = LoggerFactory.getLogger(StoreServiceImpl.class);
 
-  private CommonDao<Store, String> storeDao;
-  private StoreRowConverter storeRowConverter;
-
-  private static final MixedExecutorServiceImpl executorService = new MixedExecutorServiceImpl();
-
-  static {
-    executorService.setConfiguration(HBaseConfiguration.create());
-  }
-
-  public static AsyncExecutorService getAsyncExecutorService() {
-    return executorService;
-  }
+//  private CommonDao<Store, String> storeDao;
+//  private StoreRowConverter storeRowConverter;
+//
+//  private static final MixedExecutorServiceImpl executorService = new MixedExecutorServiceImpl();
+//
+//  static {
+//    executorService.setConfiguration(HBaseConfiguration.create());
+//  }
+//
+//  public static AsyncExecutorService getAsyncExecutorService() {
+//    return executorService;
+//  }
 
   
   public StoreServiceImpl(){
-    storeRowConverter = new StoreRowConverter();
-    storeDao = new CommonDao<Store, String>();
-    storeDao.setExecutorService(StoreServiceImpl.getAsyncExecutorService());
-    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
-    providerImpl.setMainTableName("store");
-    storeDao.setInfoProvider(providerImpl);
-    storeDao.setConverter(storeRowConverter);
+//    storeRowConverter = new StoreRowConverter();
+//    storeDao = new CommonDao<Store, String>();
+//    storeDao.setExecutorService(StoreServiceImpl.getAsyncExecutorService());
+//    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
+//    providerImpl.setMainTableName("store");
+//    storeDao.setInfoProvider(providerImpl);
+//    storeDao.setConverter(storeRowConverter);
   }
 
   @Override
   public void save(Store store) {
-    storeDao.save(store);
+    commonWriteDao.save(store);
   }
 
   @Override
   public void update(Store store) {
-    storeDao.update(store);
+    commonWriteDao.update(store);
   }
 
   @Override
   public void delete(Store store) {
-    storeDao.delete(store);
+    commonWriteDao.delete(store);
   }
 
   @Override
@@ -84,7 +84,7 @@ public class StoreServiceImpl implements StoreService {
 
     QueryParameter qp = QueryParameterFactory.getEqualPropertyParam("organization", organizationUniqueShortName);
 
-    Collection<Store> stores = storeDao.getList(qp);
+    Collection<Store> stores = commonReadDao.getList(qp);
 
 //    List<Store> storeList = new ArrayList<Store>();
 //    Store store1 = new Store();

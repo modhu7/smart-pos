@@ -42,30 +42,30 @@ public class StoreRowConverter implements ObjectRowConverter<Store>{
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
-  @Override
-  public LinkedHashMap<String, Put> objectToRows(Store instance) {
-    LinkedHashMap<String, Put> map = new LinkedHashMap<String, Put>();
-
-    Put put = new Put(Bytes.toBytes(instance.getId()));
-
-    put.add(NAME[0], NAME[1], Bytes.toBytes(instance.getName()));
-    put.add(CODE[0], CODE[1], Bytes.toBytes(instance.getCode()));
-    put.add(ORGANIZATION[0], ORGANIZATION[1], Bytes.toBytes(instance.getOrganization().getId()));
-    put.add(ADDRESS[0], ADDRESS[1], Bytes.toBytes(instance.getAddress().getStreetAddress()));
-    
-    for(String productId:instance.getProductIds()){
-      put.add(PRODUCTSID[0], Bytes.toBytes(Bytes.toString(PRODUCTSID[1]) + ":"+ productId), Bytes.toBytes(productId));
-    }
-
-
-    map.put(STORE_TBL_NAME, put);
-    return map;
-  }
-
-  @Override
-  public LinkedHashMap<String, Delete> objectToDeleteableRows(Store instance) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+//  @Override
+//  public LinkedHashMap<String, Put> objectToRows(Store instance) {
+//    LinkedHashMap<String, Put> map = new LinkedHashMap<String, Put>();
+//
+//    Put put = new Put(Bytes.toBytes(instance.getId()));
+//
+//    put.add(NAME[0], NAME[1], Bytes.toBytes(instance.getName()));
+//    put.add(CODE[0], CODE[1], Bytes.toBytes(instance.getCode()));
+//    put.add(ORGANIZATION[0], ORGANIZATION[1], Bytes.toBytes(instance.getOrganization().getId()));
+//    put.add(ADDRESS[0], ADDRESS[1], Bytes.toBytes(instance.getAddress().getStreetAddress()));
+//
+//    for(String productId:instance.getProductIds()){
+//      put.add(PRODUCTSID[0], Bytes.toBytes(Bytes.toString(PRODUCTSID[1]) + ":"+ productId), Bytes.toBytes(productId));
+//    }
+//
+//
+//    map.put(STORE_TBL_NAME, put);
+//    return map;
+//  }
+//
+//  @Override
+//  public LinkedHashMap<String, Delete> objectToDeleteableRows(Store instance) {
+//    throw new UnsupportedOperationException("Not supported yet.");
+//  }
 
   @Override
   public Store rowsToObject(Result startRow, ExecutorService executorService) {

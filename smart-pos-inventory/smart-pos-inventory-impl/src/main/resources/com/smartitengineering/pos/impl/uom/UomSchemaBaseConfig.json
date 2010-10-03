@@ -1,0 +1,5 @@
+{
+  "schemaNamespace": "com.smartitengineering.pos.impl.uom",
+  "mainTableName": "uom",
+  "transactionalDomain": "false"
+}

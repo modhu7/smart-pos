@@ -6,6 +6,7 @@
 package com.smartitengineering.smartpos.inventory.api.service;
 
 import com.smartitengineering.smartpos.inventory.api.Supplier;
+import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
 
 /**
  *
@@ -29,6 +30,8 @@ public interface SupplierService {
 
   // non paginated version
   public Supplier getByOrganizationAndSname(String organizatinUniqueShortName, String supplierName);
+
+  public Supplier getById(SupplierId supplierId);
   
 
 }

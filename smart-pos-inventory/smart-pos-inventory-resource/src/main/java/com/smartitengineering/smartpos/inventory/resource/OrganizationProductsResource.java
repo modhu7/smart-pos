@@ -114,8 +114,10 @@ public class OrganizationProductsResource extends AbstractResource {
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productList.jsp");
 
-    Viewable view = new Viewable("/template/template.jsp", products);
+    servletRequest.getAttribute("templateContent");
 
+    Viewable view = new Viewable("/template/template.jsp", products);
+    
 
     responseBuilder.entity(view);
     return responseBuilder.build();

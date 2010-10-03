@@ -14,6 +14,7 @@ import com.smartitengineering.smartpos.inventory.api.converter.UOMRowConverter;
 import com.smartitengineering.smartpos.inventory.api.service.UomService;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,26 +23,26 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-public class UomServiceImpl implements UomService {
+public class UomServiceImpl extends AbstractUomService implements UomService {
 
   protected final Logger logger = LoggerFactory.getLogger(UomServiceImpl.class);
 
-  private CommonDao<UnitOfMeasurement, String> commonDao;
+  //private CommonDao<UnitOfMeasurement, String> commonDao;
 
   public UomServiceImpl(){
-    commonDao = new CommonDao<UnitOfMeasurement, String>();
-    commonDao.setExecutorService(ProductServiceImpl.getAsyncExecutorService());
-    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
-    providerImpl.setMainTableName("uom");
-    commonDao.setInfoProvider(providerImpl);
-    commonDao.setConverter(new UOMRowConverter());    
+    //commonDao = new CommonDao<UnitOfMeasurement, String>();
+    //commonDao.setExecutorService(ProductServiceImpl.getAsyncExecutorService());
+    //SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
+    //providerImpl.setMainTableName("uom");
+    //commonDao.setInfoProvider(providerImpl);
+    //commonDao.setConverter(new UOMRowConverter());
   }
   
 
   @Override
   public void save(UnitOfMeasurement uom) {
     try{
-      commonDao.save(uom);
+      commonWriteDao.save(uom);
     }catch(Exception ex){
       logger.error(ex.getMessage());
     }
@@ -49,17 +50,20 @@ public class UomServiceImpl implements UomService {
 
   @Override
   public void update(UnitOfMeasurement uom) {
-    commonDao.update(uom);
+    commonWriteDao.update(uom);
   }
 
   @Override
   public void delete(UnitOfMeasurement uom) {
-    commonDao.delete(uom);
+    commonWriteDao.delete(uom);
   }
 
   @Override
-  public void getAllUoms() {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Collection<UnitOfMeasurement> getAllUoms() {
+    final List<UnitOfMeasurement> list = commonReadDao.getList();
+    if(list == null  || list.isEmpty())
+      return Collections.emptyList();
+    return list;
   }
 
   @Override
@@ -73,7 +77,7 @@ public class UomServiceImpl implements UomService {
                                                          int count) {
 
     QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("id", organizationUniqueShortName, MatchMode.START);
-    List<UnitOfMeasurement> uoms = commonDao.getList(qp);
+    List<UnitOfMeasurement> uoms = commonReadDao.getList();
 
     //throw new UnsupportedOperationException("Not supported yet.");
     return uoms;
@@ -88,11 +92,5 @@ public class UomServiceImpl implements UomService {
   public UnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name,
                                                    boolean isSmallerThan, int count) {
     throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public UnitOfMeasurement getById(String uomId) {
-    UnitOfMeasurement measurement = commonDao.getById(uomId);
-    return measurement;
-  }
+  }  
 }

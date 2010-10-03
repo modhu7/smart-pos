@@ -7,6 +7,8 @@ package com.smartitengineering.smartpos.inventory.api.converter;
 import com.smartitengineering.dao.impl.hbase.spi.ExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.ObjectRowConverter;
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
+import com.smartitengineering.smartpos.inventory.impl.domainid.UomIdImpl;
 import java.util.LinkedHashMap;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
@@ -29,10 +31,10 @@ public class UOMRowConverter implements ObjectRowConverter<UnitOfMeasurement> {
   public static final byte[][] ORG_ID = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("org_id")};
   public static final String UOM_TBL_NAME = "uom";
 
-  @Override
+  //@Override
   public LinkedHashMap<String, Put> objectToRows(UnitOfMeasurement instance) {       
     LinkedHashMap<String, Put> map = new LinkedHashMap<String, Put>();
-    Put put = new Put(Bytes.toBytes(instance.getId()));
+    Put put = new Put(Bytes.toBytes(instance.getId().getId()));
     put.add(SYMBOL[0], SYMBOL[1], Bytes.toBytes(instance.getSymbol()));
     put.add(TYPE[0], TYPE[1], Bytes.toBytes(instance.getUomType()));
     put.add(SYSTEM[0], SYSTEM[1], Bytes.toBytes(instance.getUomSystem()));
@@ -41,10 +43,10 @@ public class UOMRowConverter implements ObjectRowConverter<UnitOfMeasurement> {
     return map;
   }
 
-  @Override
+  //@Override
   public LinkedHashMap<String, Delete> objectToDeleteableRows(UnitOfMeasurement instance) {
     LinkedHashMap<String, Delete> map = new LinkedHashMap<String, Delete>();
-    Delete delete = new Delete(Bytes.toBytes(instance.getId()));
+    Delete delete = new Delete(Bytes.toBytes(instance.getId().getId()));
     map.put(UOM_TBL_NAME, delete);
     return map;
   }
@@ -55,7 +57,7 @@ public class UOMRowConverter implements ObjectRowConverter<UnitOfMeasurement> {
       return null;
     }
     final UnitOfMeasurement measurement = new UnitOfMeasurement();
-    measurement.setId(Bytes.toString(startRow.getRow()));
+    measurement.setId( new UomIdImpl(Bytes.toString(startRow.getRow())));
     measurement.setOrganizationId(Bytes.toInt(startRow.getValue(ORG_ID[0], ORG_ID[1])));
     measurement.setSymbol(Bytes.toString(startRow.getValue(SYMBOL[0], SYMBOL[1])));
     measurement.setUomType(Bytes.toString(startRow.getValue(TYPE[0], TYPE[1])));
