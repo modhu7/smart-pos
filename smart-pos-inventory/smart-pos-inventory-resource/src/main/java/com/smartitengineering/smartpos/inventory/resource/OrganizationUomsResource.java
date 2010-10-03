@@ -7,6 +7,7 @@ package com.smartitengineering.smartpos.inventory.resource;
 
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.impl.domainid.UomIdImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -275,9 +276,9 @@ public class OrganizationUomsResource extends AbstractResource{
 
         Entry uomEntry = abderaFactory.newEntry();
 
-        uomEntry.setId(uom.getId());
-        uomEntry.setTitle(uom.getId());
-        uomEntry.setSummary(uom.getId());
+        uomEntry.setId(uom.getId().getId());
+        uomEntry.setTitle(uom.getId().getId());
+        uomEntry.setSummary(uom.getId().getId());
         //userEntry.setUpdated(Store.g);
 
         // setting link to the each individual user
@@ -308,7 +309,7 @@ public class OrganizationUomsResource extends AbstractResource{
 //        throw new Exception("No organization found");
 //      }
       // set id with organization name
-      uom.setId(organizationUniqueShortName + ":"+uom.getId());
+      uom.setId( new UomIdImpl(organizationUniqueShortName + ":"+uom.getId().getId()));
       //Services.getInstance().getOrganizationService().populateOrganization(user);      
       Services.getInstance().getUomService().save(uom);
       responseBuilder = Response.status(Status.CREATED);

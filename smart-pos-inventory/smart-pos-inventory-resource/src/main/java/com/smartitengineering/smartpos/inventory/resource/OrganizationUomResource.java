@@ -5,6 +5,7 @@
 package com.smartitengineering.smartpos.inventory.resource;
 
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.impl.domainid.UomIdImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -67,7 +68,7 @@ public class OrganizationUomResource extends AbstractResource {
 
   public OrganizationUomResource(@PathParam("uniqueShortName") String organizationShortName,
                                  @PathParam("uomName") String uomName) {
-    uom = Services.getInstance().getUomService().getById(uomName);
+    uom = Services.getInstance().getUomService().getById(new UomIdImpl(uomName));
 
   }
 
@@ -129,8 +130,8 @@ public class OrganizationUomResource extends AbstractResource {
   }
 
   private Feed getUomFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed uomFeed = getFeed(uom.getId(), new Date());
-    uomFeed.setTitle(uom.getId());
+    Feed uomFeed = getFeed(uom.getId().getId(), new Date());
+    uomFeed.setTitle(uom.getId().getId());
 
     // add a self link
     uomFeed.addLink(getSelfLink());

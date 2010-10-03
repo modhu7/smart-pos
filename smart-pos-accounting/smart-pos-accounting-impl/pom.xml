@@ -5,11 +5,11 @@
   <parent>
     <artifactId>smart-pos-accounting</artifactId>
     <groupId>com.smartitengineering.smart-pos</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.smartitengineering.smart-pos.accounting</groupId>
   <artifactId>smart-pos-accounting-impl</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1-SNAPSHOT</version>
   <name>smart-pos-accounting-impl</name>
   <url>http://maven.apache.org</url>
   <dependencies>

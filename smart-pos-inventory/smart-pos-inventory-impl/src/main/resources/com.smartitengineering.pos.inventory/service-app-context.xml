@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "spring-beans.dtd"  >
+<beans>  
+<!--  <bean id="basicIdentityService" class="com.smartitengineering.user.service.impl.BasicIdentityServiceImpl" parent="abstractDao"/>
+  <bean id="personService" class="com.smartitengineering.user.service.impl.PersonServiceImpl" parent="abstractDao">
+    <property name="basicIdentityService">
+      <ref local="basicIdentityService" />
+    </property>
+  </bean>
+    
+  <bean id="userPersonService" class="com.smartitengineering.user.service.impl.UserPersonServiceImpl" parent="abstractDao">
+    <property name="observable">
+      <ref bean="observable"/>
+    </property>
+    <property name="personService">
+      <ref local="personService" />
+    </property>
+    <property name="userService">
+      <ref local="userService" />
+    </property>
+  </bean>
+  <bean id="userService" class="com.smartitengineering.user.service.impl.UserServiceImpl" parent="abstractDao"/>
+  <bean id="abstractDao" class="com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl" abstract="true">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="organizationService" class="com.smartitengineering.user.service.impl.OrganizationServiceImpl" parent="abstractDao">
+    <property name="observable">
+      <ref bean="observable"/>
+    </property>
+  </bean>
+  <bean id="securedObjectService" class="com.smartitengineering.user.service.impl.SecuredObjectServiceImpl" parent="abstractDao"/>
+  <bean id="privilegeService" class="com.smartitengineering.user.service.impl.PrivilegeServiceImpl" parent="abstractDao"/>
+  <bean id="roleService" class="com.smartitengineering.user.service.impl.RoleServiceImpl" parent="abstractDao"/>
+  <bean id="authorizationService" class="com.smartitengineering.user.service.impl.AuthorizationServiceImpl">
+    <property name="securedObjectService">
+      <ref bean="securedObjectService"/>
+    </property>
+    <property name="userService">
+      <ref bean="userService"/>
+    </property>
+  </bean>-->
+  <bean id="uomService" class="com.smartitengineering.smartpos.inventory.impl.service.UomServiceImpl">    
+  </bean>
+
+  <bean id="storeService" class="com.smartitengineering.smartpos.inventory.impl.service.StoreServiceImpl">
+  </bean>
+
+  <bean id="productService" class="com.smartitengineering.smartpos.inventory.impl.service.ProductServiceImpl">
+  </bean>
+
+  <bean id="supplierService" class="com.smartitengineering.smartpos.inventory.impl.service.SupplierServiceImpl">
+  </bean>
+
+  <bean id="entryService" class="com.smartitengineering.smartpos.inventory.impl.service.EntryServiceImpl">    
+  </bean>
+
+    
+    <!-- **************************************************************** -->
+    <!-- ********************* Smart Util Reg *************************** -->
+    <!-- **************************************************************** -->
+  <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.SpringBeanRegistrar">
+    <property name="beanFactoryContextName">
+      <value>com.smartitengineering.pos.inventory</value>
+    </property>
+  </bean>
+  
+
+    
+</beans>

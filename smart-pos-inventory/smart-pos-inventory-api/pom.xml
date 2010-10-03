@@ -5,11 +5,11 @@
   <parent>
     <artifactId>smart-pos-inventory</artifactId>
     <groupId>com.smartitengineering.smart-pos</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.smartitengineering.smart-pos.inventory</groupId>
   <artifactId>smart-pos-inventory-api</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1-SNAPSHOT</version>
   <name>smart-pos-inventory-api</name>
   <dependencies>
     <dependency>
@@ -40,6 +40,10 @@
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-jaxrs</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-dao</groupId>
+      <artifactId>smart-hbase-dao</artifactId>      
     </dependency>
   </dependencies>
 </project>

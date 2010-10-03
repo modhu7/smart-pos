@@ -24,33 +24,33 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-public class EntryServiceImpl implements EntryService{
+public class EntryServiceImpl extends AbstractEntryService implements EntryService{
 
   protected final Logger logger = LoggerFactory.getLogger(EntryServiceImpl.class);
-  private CommonDao<Entry, String> commonDao;
-
-  {
-    commonDao = new CommonDao<Entry, String>();
-    commonDao.setExecutorService(ProductServiceImpl.getAsyncExecutorService());
-    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
-    providerImpl.setMainTableName("uom");
-    commonDao.setInfoProvider(providerImpl);
-    //commonDao.setConverter(new UOMRowConverter());
-  }
+//  private CommonDao<Entry, String> commonDao;
+//
+//  {
+//    commonDao = new CommonDao<Entry, String>();
+//    commonDao.setExecutorService(ProductServiceImpl.getAsyncExecutorService());
+//    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
+//    providerImpl.setMainTableName("uom");
+//    commonDao.setInfoProvider(providerImpl);
+//    //commonDao.setConverter(new UOMRowConverter());
+//  }
   
   @Override
   public void save(Entry entry) {
-    commonDao.save(entry);
+    commonWriteDao.save(entry);
   }
 
   @Override
-  public void update(Entry product) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public void update(Entry entry) {
+    commonWriteDao.update(entry);
   }
 
   @Override
-  public void delete(Entry product) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public void delete(Entry entry) {
+    commonWriteDao.delete(entry);
   }
 
   @Override
@@ -63,13 +63,11 @@ public class EntryServiceImpl implements EntryService{
 
     List<Entry> entryList = new ArrayList<Entry>();
     Entry entry1 = new Entry();
-    entry1.setEntryDate(new Date());
-    //entry1.setProductCode("P1");
+    entry1.setEntryDate(new Date());    
     entryList.add(entry1);
 
     Entry entry2 = new Entry();
-    entry2.setEntryDate(new Date());
-    //entry1.setProductCode("P1");
+    entry2.setEntryDate(new Date());    
     entryList.add(entry2);
 
     Collection<Entry> entries = entryList;
@@ -82,13 +80,11 @@ public class EntryServiceImpl implements EntryService{
     //throw new UnsupportedOperationException("Not supported yet.");
     List<Entry> entryList = new ArrayList<Entry>();
     Entry entry1 = new Entry();
-    entry1.setEntryDate(new Date());
-    //entry1.setProductCode("P1");
+    entry1.setEntryDate(new Date());  
     entryList.add(entry1);
 
     Entry entry2 = new Entry();
-    entry2.setEntryDate(new Date());
-    //entry1.setProductCode("P1");
+    entry2.setEntryDate(new Date());    
     entryList.add(entry2);
 
     Collection<Entry> entries = entryList;
@@ -106,13 +102,13 @@ public class EntryServiceImpl implements EntryService{
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
-  @Override
-  public Collection<Entry> getByOrganizationAndProduct(String organizationUniqueShortName, String productCode) {
+  
+  public Collection<Entry> getByOrganizationAndEntry(String organizationUniqueShortName, String productCode) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
-  @Override
-  public Collection<Entry> getByOrganizationAndProduct(String organizationUniqueShortName, String productCode,
+  
+  public Collection<Entry> getByOrganizationAndEntry(String organizationUniqueShortName, String productCode,
                                                        Date entryDate, boolean isSmallerThan, int count) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
@@ -160,6 +156,17 @@ public class EntryServiceImpl implements EntryService{
     entryList.add(entry2);
     
     return entryList;
+  }
+
+  @Override
+  public Collection<Entry> getByOrganizationAndProduct(String organizationUniqueShortName, String productCode) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Collection<Entry> getByOrganizationAndProduct(String organizationUniqueShortName, String productCode,
+                                                       Date entryDate, boolean isSmallerThan, int count) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
 }
