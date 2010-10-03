@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-@Path("/orgs/sn/{uniqueShortName}/inv/prds")
+@Path("/orgs/sn/{uniqueShortName}/inv/prods")
 public class OrganizationProductsResource extends AbstractResource {
 
   protected final Logger logger = LoggerFactory.getLogger(OrganizationProductsResource.class);
