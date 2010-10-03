@@ -1,0 +1,90 @@
+/* 
+    Document   : smart-pos-dashboard-style
+    Created on : Oct 2, 2010, 1:12:44 PM
+    Author     : uzzal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+  display: block;
+}
+
+.dashboardContainer{
+  margin-top: 10px;
+  width: 460px;
+  float: right;
+  font-family: sans-serif;
+}
+
+.navigationParent li{
+  float:left;
+  display:block;
+  width:100px;
+  /*          background:#ccc;     */
+  position:relative;
+  z-index:500;
+  margin:0 1px; 
+}
+
+.navigationParent li a{
+  display:block;
+  padding:8px 5px 0 5px;
+  font-weight:500;
+  font-size: 13px;
+  height:23px;
+  text-decoration:none;
+  color:#fff;
+  text-align:center;
+  color: white;
+  color:#333;
+  /*background: url(images/a.gif) repeat-x left top;*/
+  background: green;
+  border-right-color: maroon;
+  border-right-style: solid;
+  border-right-width: thin;
+}
+
+.navigationParent ul{
+  position:absolute;
+  left:0;
+  display:none;
+  margin:0 0 0 -1px;
+  padding:0;
+  list-style:none; 
+}
+
+.navigationParent ul li{
+  width:160px;
+  float:left;
+  border-top:1px solid #fff;  
+}
+
+.navigationParent ul a{
+  display:block;
+  height:15px;
+  padding: 8px 5px;
+  color:#666;
+  background: url(images/submenu.jpg) repeat-x left top;
+  background-color:#33CCCC;
+}
+
+.submenu_2_Parent ul{
+  position:absolute;
+  left:160px;
+  display:block;
+  margin:0 0 0 -1px;
+  padding:0;
+  list-style:none;
+}
+
+.submenu_2_Parent ul li{
+  width:160px;
+  float:left;
+  border-top:1px solid #fff;  
+}
