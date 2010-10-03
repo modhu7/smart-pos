@@ -21,6 +21,7 @@
     <link rel="Stylesheet" href="/css/smart-forms-style.css">
     <link rel="Stylesheet" href="/css/smart-pos-forms.css">
     <link rel="Stylesheet" href="/css/smart-menu.css">
+    <link rel="Stylesheet" href="/css/smart-pos-dashboard-style.css">
 
     <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
     <script type="text/javascript" src="/script/jquery.validate.js"></script>
@@ -33,7 +34,6 @@
 
   </head>
   <body>
-
     <div id="menu_common" class="leftmenu">
       <div id="menu_common_header_1" class="leftmenu_header"><label>Common Navigator</label></div>
       <div id="menu_common_body_1" class="leftmenu_body">
@@ -49,7 +49,9 @@
         <div id="sitel_logo" class="sitel_logo_container"><img src="/images/site ultimate build 1.0.0.5.png" alt="Smart IT Engineering Limited" id="img_sitel_logo"></div>
         <div id="sitel_slogan" class="sitel_slogan_container"><label>IT for smarter living</label></div>
       </div>
-      <div id="options" class="main_template_options"></div>
+      <div id="options" class="main_template_options">
+        <jsp:include page="smart-pos-dashboard.jsp"></jsp:include>
+      </div>
       <div class="clear"></div>
       <div id="content" class="template_content">
         <jsp:include page="${templateContent}"></jsp:include>
