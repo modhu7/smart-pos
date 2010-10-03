@@ -77,7 +77,30 @@ $(document).ready(function () {
     }
     );
 
-}); 
+});
+
+$(document).ready(function () {
+  $('#submenu_2_1').hover(
+    function () {
+      //show its submenu
+      $('ul', this).slideDown(100);
+    },
+    function () {
+      //hide its submenu
+      $('ul', this).slideUp(100);
+    }
+    );
+  $('#submenu_2_2').hover(
+    function () {
+      //show its submenu
+      $('ul', this).slideDown(100);
+    },
+    function () {
+      //hide its submenu
+      $('ul', this).slideUp(100);
+    }
+    );
+});
 
 //uzzal(End)
 
