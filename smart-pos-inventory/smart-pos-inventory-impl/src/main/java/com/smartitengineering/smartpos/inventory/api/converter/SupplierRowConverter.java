@@ -33,15 +33,15 @@ public class SupplierRowConverter implements ObjectRowConverter<Supplier>{
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
-  @Override
-  public LinkedHashMap<String, Put> objectToRows(Supplier instance) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public LinkedHashMap<String, Delete> objectToDeleteableRows(Supplier instance) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+//  @Override
+//  public LinkedHashMap<String, Put> objectToRows(Supplier instance) {
+//    throw new UnsupportedOperationException("Not supported yet.");
+//  }
+//
+//  @Override
+//  public LinkedHashMap<String, Delete> objectToDeleteableRows(Supplier instance) {
+//    throw new UnsupportedOperationException("Not supported yet.");
+//  }
 
   @Override
   public Supplier rowsToObject(Result startRow, ExecutorService executorService) {

@@ -34,7 +34,7 @@ public class EntryRowConverter implements ObjectRowConverter<Entry> {
   public static final byte[][] ORG_ID = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("org_id")};
   public static final String ENTRY_TBL_NAME = "entry";
 
-  @Override
+  //@Override
   public LinkedHashMap<String, Put> objectToRows(Entry instance) {
     LinkedHashMap<String, Put> map = new LinkedHashMap<String, Put>();
     Put put = new Put(Bytes.toBytes(instance.getId()));
@@ -48,7 +48,7 @@ public class EntryRowConverter implements ObjectRowConverter<Entry> {
     return map;
   }
 
-  @Override
+  //@Override
   public LinkedHashMap<String, Delete> objectToDeleteableRows(Entry instance) {
     LinkedHashMap<String, Delete> map = new LinkedHashMap<String, Delete>();
     Delete delete = new Delete(Bytes.toBytes(instance.getId()));
