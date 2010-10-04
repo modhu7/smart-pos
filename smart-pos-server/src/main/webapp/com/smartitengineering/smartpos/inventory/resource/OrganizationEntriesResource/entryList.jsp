@@ -21,7 +21,6 @@
   </div>
 </div>
 
-
 <div class="show" id="showList">
   <div id="title_of_organization_users" class="header_of_list">
     <label><fmt:message key="inv.prdentrytitle"/></label>
@@ -45,7 +44,6 @@
   </div>
   <div class="tablecontentname" id="tablecontentid"></div>
 </div>
-
 
 <div class="hide"  id="create">
   <div class="toRoundBox">
