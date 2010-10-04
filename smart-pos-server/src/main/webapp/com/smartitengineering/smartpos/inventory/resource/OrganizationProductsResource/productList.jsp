@@ -63,6 +63,11 @@
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.prdinput4"/></label></div>
+          <div class="form_textField_pos"><input type="text" name="sku" id="sku" class="textFieldPos"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="individual_field_container">
           <div class="insertField"><input name="submitbtn" type="submit" class="insertBtn" value="INSERT"></div>
           <div class="clear"></div>
         </div>

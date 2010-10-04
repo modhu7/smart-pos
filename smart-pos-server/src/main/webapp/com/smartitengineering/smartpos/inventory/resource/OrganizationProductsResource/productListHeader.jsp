@@ -14,5 +14,12 @@
         productCode: "required"
       }
     });
+    $(".insertBtn").submit(function(){
+      $.ajax({
+        type: "POST",
+        url: "http://russel:9090/orgs/sn/${orgInitial}/users/un/"+usn,
+        dataType: "xml"
+      })
+    });
   });
 </script>

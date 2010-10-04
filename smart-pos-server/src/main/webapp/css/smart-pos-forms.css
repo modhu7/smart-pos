@@ -40,7 +40,7 @@ root {
   background-color:#E8FFD9;
   margin: 2px 5px 2px 2px;
   -moz-background-size: cover;
-  background-size: cover;
+  background-size: cover;  
 }
 
 .header_entry_form_pos label{
@@ -120,3 +120,8 @@ root {
 .clear{
   clear: both;
 }
+
+/*.Active {
+  color: #a1a1a1;
+  font-style: italic;
+}*/
