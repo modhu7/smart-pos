@@ -18,13 +18,21 @@ import org.apache.commons.lang.StringUtils;
 public class StoreIdImpl implements StoreId{
 
   private String id;
+  private String orgUniqueShortName;
 
   public StoreIdImpl(){
 
   }
 
-  public StoreIdImpl(String id){
+  public StoreIdImpl(String orgUniqueShortName, String id){
     this.id = id;
+    this.orgUniqueShortName = orgUniqueShortName;
+  }
+
+  public StoreIdImpl(String compositId){
+    String[] infos = compositId.split(":");
+    this.orgUniqueShortName = infos[0];
+    this.id = infos[1];
   }
 
   @Override
@@ -63,5 +71,16 @@ public class StoreIdImpl implements StoreId{
     }
     return toString().compareTo(o.toString());
   }
+
+  @Override
+  public String getCompositeId() {
+    return orgUniqueShortName + ":" + id;
+  }
+
+  @Override
+  public String toString(){
+    return orgUniqueShortName + ":" + id;
+  }
+
 
 }
