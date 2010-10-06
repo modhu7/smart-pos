@@ -46,24 +46,24 @@
       <form action="" accept="application/json" enctype="" id="productEntryForm" method="post">
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.uominput1"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="name" id="name" class="textFieldPos"></div>
+          <div class="form_textField_pos"><input type="text" name="uomType" id="uomType" class="textFieldPos"></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.uominput2"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="productCode" id="productCode" class="textFieldPos"></div>
-          <div class="clear"></div>
-        </div>
-        <%--<div class="individual_field_container">
-          <div class="form_label_pos"><label><fmt:message key="inv.prdinput3"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="description" id="description" class="textFieldPos"></div>
+          <div class="form_textField_pos"><input type="text" name="id" id="id" class="textFieldPos"></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
-          <div class="form_label_pos"><label><fmt:message key="inv.prdinput4"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="sku" id="sku" class="textFieldPos"></div>
+          <div class="form_label_pos"><label><fmt:message key="inv.uominput3"/></label></div>
+          <div class="form_textField_pos"><input type="text" name="symbol" id="symbol" class="textFieldPos"></div>
           <div class="clear"></div>
-        </div>--%>
+        </div>
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.uominput4"/></label></div>
+          <div class="form_textField_pos"><input type="text" name="uomSystem" id="uomSystem" class="textFieldPos"></div>
+          <div class="clear"></div>
+        </div>
         <div class="individual_field_container">
           <div class="insertField"><input name="submitbtn" type="submit" class="insertBtn" value="INSERT"></div>
           <div class="clear"></div>
