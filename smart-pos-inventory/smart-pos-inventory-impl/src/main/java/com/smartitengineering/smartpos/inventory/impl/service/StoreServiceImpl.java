@@ -5,6 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.impl.service;
 
+import com.smartitengineering.dao.common.queryparam.MatchMode;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.CommonDao;
@@ -82,7 +83,7 @@ public class StoreServiceImpl extends AbstractStoreService implements StoreServi
   public Collection<Store> getByOrganization(String organizationUniqueShortName, String storeCode, boolean isSmallerThan,
                                              int count) {
 
-    QueryParameter qp = QueryParameterFactory.getEqualPropertyParam("organization", organizationUniqueShortName);
+    QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("code", storeCode, MatchMode.START);
 
     Collection<Store> stores = commonReadDao.getList(qp);
 
