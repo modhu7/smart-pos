@@ -5,6 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.inventory.api.Product;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
@@ -127,7 +128,7 @@ public class OrganizationProductResource extends AbstractResource{
   }
 
   private Feed getProductFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed productFeed = getFeed(product.getId(), new Date());
+    Feed productFeed = getFeed(product.getId().getId(), new Date());
     productFeed.setTitle(product.getName());
 
     // add a self link

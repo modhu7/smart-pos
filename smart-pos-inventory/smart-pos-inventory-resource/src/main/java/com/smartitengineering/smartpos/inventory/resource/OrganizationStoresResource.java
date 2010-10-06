@@ -4,9 +4,12 @@
  */
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.api.Organization;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.Store;
+import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
+import com.smartitengineering.smartpos.inventory.impl.domainid.StoreIdImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -300,247 +303,21 @@ public class OrganizationStoresResource extends AbstractResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Store store) {
-
-
     ResponseBuilder responseBuilder;
     
     try {      
-      if (store.getOrganizationID() == null) {
-        throw new Exception("No organization found");
-      }
-      //Services.getInstance().getOrganizationService().populateOrganization(user);
-      Services.getInstance().getStoreService().save(store);
+      basicPost(store);
       responseBuilder = Response.status(Status.CREATED);
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
+      logger.error(ex.getMessage());
     }
     return responseBuilder.build();
   }
 
   private Store getObjectFromContent(String message) {
-//    Map<String, String> keyValueMap = new HashMap<String, String>();
-//
-//    String[] keyValuePairs = message.split("&");
-//
-//    for (int i = 0; i < keyValuePairs.length; i++) {
-//
-//      String[] keyValuePair = keyValuePairs[i].split("=");
-//      int l = keyValuePair.length;
-//      if (l == 1) {
-//        keyValueMap.put(keyValuePair[0], "");
-//        //keyValuePair[1] = new String("");
-//      }
-//      else {
-//        keyValueMap.put(keyValuePair[0], keyValuePair[1]);
-//      }
-//
-//    }
-//
-//    User newUser = new User();
-//
-//    if (keyValueMap.get("id") != null) {
-//      newUser.setId(Integer.valueOf(keyValueMap.get("id")));
-//    }
-//
-//    if (keyValueMap.get("userName") != null) {
-//      newUser.setUsername(keyValueMap.get("userName"));
-//    }
-//    if (keyValueMap.get("password") != null) {
-//      newUser.setPassword(keyValueMap.get("password"));
-//    }
-//
-//    Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
-//        organizationUniqueShortName);
-//
-//    if (parentOrg != null) {
-//      newUser.setOrganization(parentOrg);
-//      newUser.setParentOrganizationID(parentOrg.getId());
-//    }
-//
-//
-////    if (keyValueMap.get("uniqueShortName") != null) {
-////      Organization parentOrg = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(keyValueMap.
-////          get("uniqueShortName"));
-////
-////      if (parentOrg != null) {
-////        newUser.setOrganization(parentOrg);
-////
-////      }
-////    }
-//
-//    Person person = new Person();
-//    BasicIdentity self = new BasicIdentity();
-//    Name selfName = new Name();
-//    boolean isValid = false;
-//
-//    if (keyValueMap.get("firstName") != null) {
-//      isValid = true;
-//      selfName.setFirstName(keyValueMap.get("firstName"));
-//    }
-//    if (keyValueMap.get("lastName") != null) {
-//      isValid = true;
-//      selfName.setLastName(keyValueMap.get("lastName"));
-//    }
-//    if (keyValueMap.get("middleInitial") != null) {
-//      isValid = true;
-//      selfName.setMiddleInitial(keyValueMap.get("middleInitial"));
-//    }
-//    self.setName(selfName);
-//
-//    if (keyValueMap.get("nationalID") != null) {
-//      isValid = true;
-//      self.setNationalID(keyValueMap.get("nationalID"));
-//    }
-//    if (isValid == true) {
-//      person.setSelf(self);
-//    }
-//
-//
-//    BasicIdentity spouse = new BasicIdentity();
-//    Name spouseName = new Name();
-//    isValid = false;
-//
-//    if (keyValueMap.get("spouseFirstName") != null) {
-//      isValid = true;
-//      spouseName.setFirstName(keyValueMap.get("spouseFirstName"));
-//    }
-//    if (keyValueMap.get("spouseLastName") != null) {
-//      isValid = true;
-//      spouseName.setLastName(keyValueMap.get("spouseLastName"));
-//    }
-//    if (keyValueMap.get("spouseMiddleInitial") != null) {
-//      isValid = true;
-//      spouseName.setMiddleInitial(keyValueMap.get("spouseMiddleInitial"));
-//    }
-//    spouse.setName(spouseName);
-//
-//    if (keyValueMap.get("spouseNationalID") != null) {
-//      isValid = true;
-//      spouse.setNationalID(keyValueMap.get("spouseNationalID"));
-//    }
-//
-//    if (isValid == true) {
-//      person.setSpouse(spouse);
-//    }
-//
-//
-//    BasicIdentity mother = new BasicIdentity();
-//    Name motherName = new Name();
-//    isValid = false;
-//
-//    if (keyValueMap.get("motherFirstName") != null) {
-//      isValid = true;
-//      motherName.setFirstName(keyValueMap.get("motherFirstName"));
-//    }
-//    if (keyValueMap.get("motherLastName") != null) {
-//      isValid = true;
-//      motherName.setLastName(keyValueMap.get("motherLastName"));
-//    }
-//    if (keyValueMap.get("motherMiddleInitial") != null) {
-//      isValid = true;
-//      motherName.setMiddleInitial(keyValueMap.get("motherMiddleInitial"));
-//    }
-//    mother.setName(motherName);
-//
-//    if (keyValueMap.get("motherNationalID") != null) {
-//      isValid = true;
-//      mother.setNationalID(keyValueMap.get("motherNationalID"));
-//    }
-//    if (isValid == true) {
-//      person.setMother(mother);
-//    }
-//
-//    BasicIdentity father = new BasicIdentity();
-//    Name fatherName = new Name();
-//    isValid = false;
-//
-//    if (keyValueMap.get("fatherFirstName") != null) {
-//      isValid = true;
-//      fatherName.setFirstName(keyValueMap.get("fatherFirstName"));
-//    }
-//    if (keyValueMap.get("fatherLastName") != null) {
-//      isValid = true;
-//      fatherName.setLastName(keyValueMap.get("fatherLastName"));
-//    }
-//    if (keyValueMap.get("fatherMiddleInitial") != null) {
-//      isValid = true;
-//      fatherName.setMiddleInitial(keyValueMap.get("fatherMiddleInitial"));
-//    }
-//    father.setName(fatherName);
-//
-//    if (keyValueMap.get("fatherNationalID") != null) {
-//      isValid = true;
-//      father.setNationalID(keyValueMap.get("fatherNationalID"));
-//    }
-//    if (isValid == true) {
-//      person.setFather(father);
-//    }
-//
-//    Address address = new Address();
-//    GeoLocation geoLocation = new GeoLocation();
-//
-//
-//    if (keyValueMap.get("longitude") != null) {
-//      Double longitude = Double.parseDouble(keyValueMap.get("longitude"));
-//      geoLocation.setLongitude(longitude);
-//    }
-//
-//    if (keyValueMap.get("latitude") != null) {
-//      Double latitude = Double.parseDouble(keyValueMap.get("latitude"));
-//      geoLocation.setLatitude(latitude);
-//    }
-//
-//    address.setGeoLocation(geoLocation);
-//
-//    if (keyValueMap.get("city") != null) {
-//      address.setCity(keyValueMap.get("city"));
-//    }
-//
-//    if (keyValueMap.get("country") != null) {
-//      address.setCountry(keyValueMap.get("country"));
-//    }
-//
-//    if (keyValueMap.get("state") != null) {
-//      address.setState(keyValueMap.get("state"));
-//    }
-//    if (keyValueMap.get("zip") != null) {
-//      address.setZip(keyValueMap.get("zip"));
-//    }
-//    person.setAddress(address);
-//
-//    if (keyValueMap.get("birthDate") != null) {
-//      String dateString = keyValueMap.get("birthDate");
-//      SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD");
-//      try {
-//        Date birthDate = format.parse(dateString);
-//      }
-//      catch (Exception ex) {
-//      }
-//    }
-//    if (keyValueMap.get("primaryEmail") != null) {
-//      person.setPrimaryEmail(keyValueMap.get("primaryEmail"));
-//    }
-//
-//    if (keyValueMap.get("phoneNumber") != null) {
-//      person.setPhoneNumber(keyValueMap.get("phoneNumber"));
-//    }
-//    if (keyValueMap.get("secondaryEmail") != null) {
-//      person.setSecondaryEmail(keyValueMap.get("secondaryEmail"));
-//    }
-//    if (keyValueMap.get("faxNumber") != null) {
-//      person.setFaxNumber(keyValueMap.get("faxNumber"));
-//    }
-//    if (keyValueMap.get("cellPhoneNumber") != null) {
-//      person.setCellPhoneNumber(keyValueMap.get("cellPhoneNumber"));
-//    }
-//
-//    Store Store = new Store();
-//    Store.setUser(newUser);
-//    Store.setPerson(person);
-//
-//    return Store;
+
     return new Store();
   }
 
@@ -584,13 +361,16 @@ public class OrganizationStoresResource extends AbstractResource {
 
     if (isHtmlPost) {
       Store store = getObjectFromContent(message);
-
-      
-        Services.getInstance().getStoreService().save(store);
-      
-      
-
+      basicPost(store);
     }
     return responseBuilder.build();
+  }
+
+  private void basicPost(Store store){
+    StoreId storeId = new StoreIdImpl(organizationUniqueShortName, store.getId().getId());
+    store.setId(storeId);
+    logger.info(store.getId().getCompositeId());
+    logger.info(store.toString());
+    Services.getInstance().getStoreService().save(store);
   }
 }
