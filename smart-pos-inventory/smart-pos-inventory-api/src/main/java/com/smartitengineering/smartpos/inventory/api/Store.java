@@ -8,13 +8,14 @@ package com.smartitengineering.smartpos.inventory.api;
 import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import com.smartitengineering.smartpos.admin.api.Address;
 import com.smartitengineering.smartpos.admin.api.Organization;
+import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
  * @author russel
  */
-public class Store extends AbstractGenericPersistentDTO<Store, String, Long>{
+public class Store extends AbstractGenericPersistentDTO<Store, StoreId, Long>{
 
   private String name;
 

@@ -53,7 +53,7 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
   }
 
   public boolean isValid() {
-    if (StringUtils.isBlank(symbol)) {
+    if (StringUtils.isBlank(getId().getId()) || StringUtils.isBlank(symbol)) {
       return false;
     }
     return true;
