@@ -9,10 +9,10 @@ package com.smartitengineering.smartpos.inventory.client.api;
  *
  * @author saumitra
  */
-public interface OrganizationProductsResource {
+public interface EntryResource {
 
-  public OrganizationProductResource getOrganizationProductResource();
+  public void update();
 
-  public OrganizationProductResource create(Product product);
+  public Entry getEntry();
 
 }

@@ -11,14 +11,12 @@ import java.util.List;
  *
  * @author saumitra
  */
-public interface OrganizationStoreResource{
+public interface EntriesResource {
 
- public OrganizationProductsResource getOrganizationProductsResource();
+  public EntryResource create(Entry entry);
 
- public void update();
+  public List<EntryResource> getEntryResources();
 
- public Product getProduct();
-
- public Store getStore();
+  public EntryResource getEntryResource();
 
 }

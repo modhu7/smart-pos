@@ -11,4 +11,6 @@ package com.smartitengineering.smartpos.inventory.client.api;
  */
 public interface OrganizationProductResource {
 
+  public void update();
+  
 }

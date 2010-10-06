@@ -17,5 +17,5 @@ public interface OrganizationUomResource extends WritableResource<Feed>{
   public UnitOfMeasurement getUnitOfMeasurement();
 
    public void update();
-
+   
 }
