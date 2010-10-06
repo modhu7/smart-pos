@@ -35,7 +35,12 @@
     </dependency>-->
     <dependency>
       <groupId>com.smartitengineering.smart-dao</groupId>
-      <artifactId>smart-hbase-dao</artifactId>      
+      <artifactId>smart-hbase-dao</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-pos.inventory</groupId>
+      <artifactId>smart-pos-inventory-api</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 </project>
