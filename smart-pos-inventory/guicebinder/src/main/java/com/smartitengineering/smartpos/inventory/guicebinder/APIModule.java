@@ -6,7 +6,6 @@ package com.smartitengineering.smartpos.inventory.guicebinder;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
-
 import com.smartitengineering.smartpos.inventory.api.service.EntryService;
 import com.smartitengineering.smartpos.inventory.api.service.ProductService;
 import com.smartitengineering.smartpos.inventory.api.service.StoreService;
