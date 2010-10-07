@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.smartpos.inventory.client.api;
+package com.smartitengineering.smartpos.inventory.client.impl;
 
 /**
  *
  * @author saumitra
  */
-public interface OrganizationEntryResource {
+public class EntriesResourceImpl{
 
 }

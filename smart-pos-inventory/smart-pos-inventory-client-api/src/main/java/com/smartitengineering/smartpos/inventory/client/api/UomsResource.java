@@ -13,12 +13,11 @@ import org.apache.abdera.model.Feed;
  *
  * @author saumitra
  */
-public interface OrganizationStoresResource extends WritableResource<Feed>{
+public interface UomsResource extends WritableResource<Feed>{
 
-  public List<OrganizationStoreResource> getOrganizationStoreResources();
+  public UomResource create(UnitOfMeasurement uom);
 
-  public OrganizationStoreResource create(Store store);
+  public List<UomResource> getOrganizationUomResources();
 
-  public OrganizationStoreResource getOrganizationStoreResource();
-
+  
 }

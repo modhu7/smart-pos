@@ -12,13 +12,13 @@ import com.smartitengineering.util.rest.client.ResourceLink;
  */
 public interface RootResouce {
 
-  OrganizationUomsResource getOrganizationUomsResource();
+  UomsResource getOrganizationUomsResource();
 
-  OrganizationEntriesResource getOrganizationEntriesResource();
+  EntriesResource getEntriesResource();
 
-  OrganizationProductsResource getOrganizationProductsResource();
+  ProductsResource getOrganizationProductsResource();
 
-  OrganizationStoreResource getOrganizationStoreResource();
+  StoreResource getOrganizationStoreResource();
 
   ResourceLink getLoginLink();
 

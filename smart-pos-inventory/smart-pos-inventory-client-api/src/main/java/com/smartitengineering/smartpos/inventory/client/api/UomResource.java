@@ -12,7 +12,7 @@ import org.apache.abdera.model.Feed;
  *
  * @author saumitra
  */
-public interface OrganizationUomResource extends WritableResource<Feed>{
+public interface UomResource extends WritableResource<Feed>{
   
   public UnitOfMeasurement getUnitOfMeasurement();
 
