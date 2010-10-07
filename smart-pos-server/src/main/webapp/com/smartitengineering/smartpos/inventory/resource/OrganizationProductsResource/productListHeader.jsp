@@ -41,7 +41,13 @@
     $("#productEntryForm").validate({
       rules: {
         name: "required",
-        productCode: "required"
+        productCode: "required",
+        sku: "required"
+      },
+      messages:{
+        name: "please enter a product name",
+        productCode: "please set a code for this product",
+        sku: "please set a valid unit for this product "
       }
     });
     var name = $("#name").val();

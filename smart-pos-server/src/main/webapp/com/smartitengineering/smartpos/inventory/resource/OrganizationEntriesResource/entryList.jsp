@@ -54,12 +54,12 @@
       <form action="" accept="application/json" enctype="" id="entryList" method="post">
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdentryinput1" /></label></div>
-          <div class="form_textField_pos"><input type="text" name="entryDate" id="entryDate" class="textFieldPos"/></div>
+          <div class="form_textField_pos"><input type="text" name="entryDate" id="entryDate" class="textFieldPos" title="Entry Date"/></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label>Entry Time:</label></div>
-          <div class="form_textField_pos" style="float: left"><input type="text" name="appointment_start" id="appointment_start" size="8" class="textFieldPos" />
+          <div class="form_textField_pos" style="float: left"><input type="text" name="appointment_start" id="appointment_start" size="8" class="textFieldPos" title="Entry Time"/>
             <input type="hidden" id="jqtp_clock_hr" name="jqtp_clock_hr" size="2"/>
             <input type="hidden" id="jqtp_clock_min" name="jqtp_clock_min" size="2"/>
           </div>
@@ -67,22 +67,22 @@
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdentryinput2" /></label></div>
-          <div class="form_textField_pos"><input type="text" name="expiryDate" id="expiryDate" class="textFieldPos" /></div>
+          <div class="form_textField_pos"><input type="text" name="expiryDate" id="expiryDate" class="textFieldPos" title="Expire Date"/></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdentryinput3" /></label></div>
-          <div class="form_textField_pos"><input type="text" name="product" id="product" class="textFieldPos" /></div>
+          <div class="form_textField_pos"><input type="text" name="product" id="product" class="textFieldPos" title="Product Name"/></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdentryinput4" /></label></div>
-          <div class="form_textField_pos"><input type="text" name="productCode" id="productCode" class="textFieldPos"/></div>
+          <div class="form_textField_pos"><input type="text" name="productCode" id="productCode" class="textFieldPos" title="Product Code"/></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdentryinput5" /></label></div>
-          <div class="form_textField_pos"><input type="text" name="quantity" id="quantity" class="textFieldPos" /></div>
+          <div class="form_textField_pos"><input type="text" name="quantity" id="quantity" class="textFieldPos" title="Quantity"/></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">

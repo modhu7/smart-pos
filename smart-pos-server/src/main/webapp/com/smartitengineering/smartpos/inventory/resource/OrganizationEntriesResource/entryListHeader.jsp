@@ -64,6 +64,13 @@
         productCode: "required",
         quantity: "required",
         appointment_start: "required"
+      },
+      messages:{
+        entryDate: "please enter the date of entry",
+        expiryDate: "please mention the product expire date",
+        productCode: "please enter the code of this product",
+        quantity: "please mention the quantity of the entry product",
+        appointment_start: "please enter the time of this entry"
       }
     });
 
@@ -75,7 +82,6 @@
         }
       });
     });
-
   });
 </script>
 
