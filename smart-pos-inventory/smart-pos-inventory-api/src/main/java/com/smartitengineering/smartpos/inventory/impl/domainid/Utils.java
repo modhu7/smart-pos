@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.smartitengineering.smartpos.inventory.impl;
+package com.smartitengineering.smartpos.inventory.impl.domainid;
 
 import java.io.DataInput;
 import java.io.EOFException;

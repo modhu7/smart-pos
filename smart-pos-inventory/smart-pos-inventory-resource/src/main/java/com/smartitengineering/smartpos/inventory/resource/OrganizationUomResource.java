@@ -4,7 +4,9 @@
  */
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.smartitengineering.smartpos.inventory.impl.domainid.UomIdImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
@@ -68,7 +70,8 @@ public class OrganizationUomResource extends AbstractResource {
 
   public OrganizationUomResource(@PathParam("uniqueShortName") String organizationShortName,
                                  @PathParam("uomName") String uomName) {
-    uom = Services.getInstance().getUomService().getById(new UomIdImpl(uomName));
+    UomId uomId = new UomIdImpl(organizationShortName, uomName);
+    uom = Services.getInstance().getUomService().getById(uomId);
 
   }
 
@@ -233,8 +236,24 @@ public class OrganizationUomResource extends AbstractResource {
       }
     }
 
-    UnitOfMeasurement newUom = new UnitOfMeasurement();
+    UnitOfMeasurement uom = new UnitOfMeasurement();
 
-    return newUom;
+    if(keyValueMap.get("id") != null){
+      UomId uomId = new UomIdImpl();
+      uomId.setId(keyValueMap.get("id"));
+      uom.setId(uomId);
+    }
+    if(keyValueMap.get("symbol") != null){
+      uom.setSymbol(keyValueMap.get("symbol"));
+    }
+    if(keyValueMap.get("uomType") != null){
+      uom.setUomType(keyValueMap.get("uomType"));
+    }
+
+    if(keyValueMap.get("uomSystem") != null){
+      uom.setUomSystem(keyValueMap.get("uomSystem"));
+    }
+
+    return uom;
   }
 }

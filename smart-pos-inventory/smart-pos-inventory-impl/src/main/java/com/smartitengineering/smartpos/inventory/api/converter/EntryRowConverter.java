@@ -7,6 +7,7 @@ package com.smartitengineering.smartpos.inventory.api.converter;
 import com.smartitengineering.dao.impl.hbase.spi.ExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.ObjectRowConverter;
 import com.smartitengineering.smartpos.inventory.api.Entry;
+import com.smartitengineering.smartpos.inventory.impl.domainid.EntryIdImpl;
 import java.util.LinkedHashMap;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -37,7 +38,7 @@ public class EntryRowConverter implements ObjectRowConverter<Entry> {
   //@Override
   public LinkedHashMap<String, Put> objectToRows(Entry instance) {
     LinkedHashMap<String, Put> map = new LinkedHashMap<String, Put>();
-    Put put = new Put(Bytes.toBytes(instance.getId()));
+    Put put = new Put(Bytes.toBytes(instance.getId().getId()));
     put.add(QUANTITY[0], QUANTITY[1], Bytes.toBytes(instance.getQuantity()));
     put.add(ENTRY_DATE[0], ENTRY_DATE[1], Bytes.toBytes( DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(instance.getEntryDate())));
     put.add(EXPIRY_DATE[0], EXPIRY_DATE[1], Bytes.toBytes( DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(instance.getExpiryDate())));
@@ -51,7 +52,7 @@ public class EntryRowConverter implements ObjectRowConverter<Entry> {
   //@Override
   public LinkedHashMap<String, Delete> objectToDeleteableRows(Entry instance) {
     LinkedHashMap<String, Delete> map = new LinkedHashMap<String, Delete>();
-    Delete delete = new Delete(Bytes.toBytes(instance.getId()));
+    Delete delete = new Delete(Bytes.toBytes(instance.getId().getId()));
     map.put(ENTRY_TBL_NAME, delete);
     return map;
   }
@@ -62,7 +63,7 @@ public class EntryRowConverter implements ObjectRowConverter<Entry> {
       return null;
     }
     Entry entry = new Entry();
-    entry.setId(Bytes.toString(startRow.getRow()));
+    entry.setId(new EntryIdImpl(Bytes.toString(startRow.getRow())));
     entry.setQuantity(Bytes.toDouble(startRow.getValue(QUANTITY[0], QUANTITY[1])));
     try{
     entry.setEntryDate(DateUtils.parseDate( Bytes.toString(startRow.getValue(ENTRY_DATE[0], ENTRY_DATE[1])) , new String[]{DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.getPattern()}));

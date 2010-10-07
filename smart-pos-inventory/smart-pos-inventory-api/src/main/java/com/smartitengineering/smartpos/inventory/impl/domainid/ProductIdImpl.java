@@ -6,7 +6,6 @@
 package com.smartitengineering.smartpos.inventory.impl.domainid;
 
 import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
-import com.smartitengineering.smartpos.inventory.impl.Utils;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;

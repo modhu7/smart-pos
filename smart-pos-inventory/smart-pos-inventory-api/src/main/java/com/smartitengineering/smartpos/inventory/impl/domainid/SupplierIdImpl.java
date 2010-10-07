@@ -5,8 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.impl.domainid;
 
-import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
-import com.smartitengineering.smartpos.inventory.impl.Utils;
+import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -16,16 +15,16 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-public class StoreIdImpl implements StoreId{
+public class SupplierIdImpl implements SupplierId{
 
   private String id;
-
-  public StoreIdImpl(){
-
+  
+  public SupplierIdImpl(){
+    
   }
-
-  public StoreIdImpl(String id){
-    this.id = id;
+  
+  public SupplierIdImpl(String id){
+    this.id = id;         
   }
 
   @Override
@@ -55,7 +54,7 @@ public class StoreIdImpl implements StoreId{
   }
 
   @Override
-  public int compareTo(StoreId o) {
+  public int compareTo(SupplierId o) {
     if (o == null) {
       return 1;
     }

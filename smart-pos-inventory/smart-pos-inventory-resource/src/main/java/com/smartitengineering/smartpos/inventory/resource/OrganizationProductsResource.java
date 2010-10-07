@@ -4,8 +4,11 @@
  */
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.Product;
+import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
+import com.smartitengineering.smartpos.inventory.impl.domainid.ProductIdImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -277,7 +280,7 @@ public class OrganizationProductsResource extends AbstractResource {
 
         Entry productEntry = abderaFactory.newEntry();
 
-        productEntry.setId(product.getId());
+        productEntry.setId(product.getId().getId());
         productEntry.setTitle(product.getName());
         productEntry.setSummary(product.getName());
         
@@ -309,8 +312,9 @@ public class OrganizationProductsResource extends AbstractResource {
       if (product.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
-      //Services.getInstance().getOrganizationService().populateOrganization(user);
-      product.setId(organizationUniqueShortName+":"+ product.getId());
+      ProductId productId = new ProductIdImpl();
+      productId.setId(organizationUniqueShortName+":"+ product.getId().getId());
+      product.setId( productId);
       Services.getInstance().getProductService().save(product);
       responseBuilder = Response.status(Status.CREATED);
     }
