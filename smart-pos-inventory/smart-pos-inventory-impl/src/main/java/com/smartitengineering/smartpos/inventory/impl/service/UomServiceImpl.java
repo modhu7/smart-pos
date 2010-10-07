@@ -45,6 +45,7 @@ public class UomServiceImpl extends AbstractUomService implements UomService {
       commonWriteDao.save(uom);
     }catch(Exception ex){
       logger.error(ex.getMessage());
+      ex.printStackTrace();
     }
   }
 

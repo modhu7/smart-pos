@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.Entry;
 import com.sun.jersey.api.view.Viewable;
@@ -99,14 +100,14 @@ public class OrganizationEntriesResource extends AbstractResource {
 
 
 
-    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    
     servletRequest.setAttribute("templateHeadContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryListHeader.jsp");
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryList.jsp");
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
 
-    Viewable view = new Viewable("/template/template.jsp", entries);
-
+    Viewable view = new Viewable("/template/template.jsp", entries);        
 
     responseBuilder.entity(view);
     return responseBuilder.build();

@@ -8,6 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:choose>
 
+
   <c:when test="${empty param.count}">
     <c:set var="qParam" value="" />
   </c:when>
@@ -15,11 +16,78 @@
     <c:set var="qParam" value="?count=${param.count}" />
   </c:otherwise>
 </c:choose>
-<script type="text/javascript">
 
-  $(document).ready(function(){
+
+ <script type="text/javascript">
+
+    $(document).ready(function(){
     var url = "http://localhost:9090/orgs/frags${qParam}";
     $("#tablecontentid").pagination(url, "paginationLinks");
     $("#wrong").hide();
+
+  $(document).ready(function(){
+    $("#entryDate")[0].value = "       --choose a date--";
+    $("#appointment_start")[0].value = "      --hh:mm am/pm--";
+    $("#expiryDate")[0].value = "      --Choose a date--";
+    $("#product")[0].value = "     --Insert your Product name--";
+    $("#productCode")[0].value = "      --Set product code--";
+    $("#quantity")[0].value = "      --How much/How many--";
+
+    if($(".textFieldPos").val()== $(".textFieldPos")[0].value){      
+      $(".textFieldPos").addClass("title");
+    }
+
+
+    $(".textFieldPos").focus(function(){      
+      if ($(this).val() == $(this)[0].value){
+        $(this).removeClass("title");
+        $(this).addClass("active");
+        $(this).val("");
+      }
+    });
+    $(".textFieldPos").blur(function(){
+      if ($(this).val() == ""){        
+        $(this).addClass("title");
+        $(this).val($(this)[0].value);
+      }
+    });
+    $(".textFieldPos").blur();
+   
+    $('#entryDate').datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'DD, MM d, yy'
+    });
+    $("#expiryDate").datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'DD, MM d, yy'
+    });
+    
+    $("#jqtp_clock").jqtp_realtime();    
+    $("#appointment_start").click(function(){
+      $("#appointment_start").jqtp_object();
+      $("#jqtp_clock").jqtp_getTime();
+    });
+    
+    $("#entryList").validate({
+      rules: {
+        entryDate: {required: true, date: true},
+        expiryDate: {required: true, date: true},
+        productCode: "required",
+        quantity: "required",
+        appointment_start: "required"
+      }
+    });
+
+    $(".insertBtn").click(function(){
+
+      $(".textFieldPos").each(function(){
+        if ($(this).hasClass("active") == false){
+          $(this).val("");     
+        }
+      });
+    });
   });
 </script>
+

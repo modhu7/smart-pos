@@ -6,6 +6,7 @@ package com.smartitengineering.smartpos.inventory.api;
 
 import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import com.smartitengineering.smartpos.admin.api.Organization;
+import com.smartitengineering.smartpos.inventory.api.domainid.EntryId;
 import java.util.Date;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -13,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class Entry extends AbstractGenericPersistentDTO<Entry, String, Long>{
+public class Entry extends AbstractGenericPersistentDTO<Entry, EntryId, Long>{
 
   public static enum TransactionType{
     INBOUND_PURCHASE,

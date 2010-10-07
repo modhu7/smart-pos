@@ -5,8 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.impl.domainid;
 
-import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
-import com.smartitengineering.smartpos.inventory.impl.Utils;
+import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -16,16 +15,24 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-public class UomIdImpl implements UomId{
+public class StoreIdImpl implements StoreId{
 
   private String id;
+  private String orgUniqueShortName;
 
-  public UomIdImpl(){
-    
+  public StoreIdImpl(){
+
   }
 
-  public UomIdImpl(String id){
+  public StoreIdImpl(String orgUniqueShortName, String id){
     this.id = id;
+    this.orgUniqueShortName = orgUniqueShortName;
+  }
+
+  public StoreIdImpl(String compositId){
+    String[] infos = compositId.split(":");
+    this.orgUniqueShortName = infos[0];
+    this.id = infos[1];
   }
 
   @Override
@@ -52,12 +59,10 @@ public class UomIdImpl implements UomId{
     if (params == null || params.length != 2) {
       throw new IOException("Object should have been in the format globalNamespace:name!");
     }
-//    setGlobalNamespace(params[0]);
-//    setName(params[1]);
   }
 
   @Override
-  public int compareTo(UomId o) {
+  public int compareTo(StoreId o) {
     if (o == null) {
       return 1;
     }
@@ -66,4 +71,16 @@ public class UomIdImpl implements UomId{
     }
     return toString().compareTo(o.toString());
   }
+
+  @Override
+  public String getCompositeId() {
+    return orgUniqueShortName + ":" + id;
+  }
+
+  @Override
+  public String toString(){
+    return orgUniqueShortName + ":" + id;
+  }
+
+
 }

@@ -7,6 +7,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+
+
+
 <c:set var="first" value="0"></c:set>
 <c:set var="last" value="0"></c:set>
 
@@ -18,6 +21,7 @@
     <c:set var="qParam" value="?count=${param.count}" />
   </c:otherwise>
 </c:choose>
+
 
 <div id="orgFragRootDiv">
   <div id="mainOrgPaginatedList" class="tableList">

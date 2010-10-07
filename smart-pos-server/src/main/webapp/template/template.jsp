@@ -21,11 +21,16 @@
     <link rel="Stylesheet" href="/css/smart-forms-style.css">
     <link rel="Stylesheet" href="/css/smart-pos-forms.css">
     <link rel="Stylesheet" href="/css/smart-menu.css">
+    <link rel="Stylesheet" href="/css/smothness/jquery_ui_datepicker.css">
+    <link rel="Stylesheet" href="/css/jqtp.css">
+
 
     <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
     <script type="text/javascript" src="/script/jquery.validate.js"></script>
     <script type="text/javascript" src="/script/siteljquerylib.js"></script>
     <script type="text/javascript" src="/script/commonScripts.js"></script>
+    <script type="text/javascript" src="/script/jquery_ui_datepicker.js"></script>
+    <script type="text/javascript" src="/script/jquery.jqtp.min.js"></script>
 
     <c:if test="${not empty templateHeadContent}">
       <jsp:include page="${templateHeadContent}"></jsp:include>
@@ -34,6 +39,7 @@
   </head>
   <body>
 
+    <%--<c:set var="domain" value="russel"></c:set>--%>
     <div id="menu_common" class="leftmenu">
       <div id="menu_common_header_1" class="leftmenu_header"><label>Common Navigator</label></div>
       <div id="menu_common_body_1" class="leftmenu_body">

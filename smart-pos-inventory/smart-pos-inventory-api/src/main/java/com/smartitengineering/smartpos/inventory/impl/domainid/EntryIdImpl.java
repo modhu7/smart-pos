@@ -5,8 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.impl.domainid;
 
-import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
-import com.smartitengineering.smartpos.inventory.impl.Utils;
+import com.smartitengineering.smartpos.inventory.api.domainid.EntryId;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -16,16 +15,14 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-public class SupplierIdImpl implements SupplierId{
+public class EntryIdImpl implements EntryId{
 
   private String id;
-  
-  public SupplierIdImpl(){
-    
-  }
-  
-  public SupplierIdImpl(String id){
-    this.id = id;         
+
+  public EntryIdImpl(){}
+
+  public EntryIdImpl(String id){
+    this.id = id;
   }
 
   @Override
@@ -44,7 +41,7 @@ public class SupplierIdImpl implements SupplierId{
 
   @Override
   public void readExternal(DataInput input) throws IOException, ClassNotFoundException {
-    String idString = Utils.readStringInUTF8(input);
+        String idString = Utils.readStringInUTF8(input);
     if (StringUtils.isBlank(idString)) {
       throw new IOException("No content!");
     }
@@ -55,7 +52,7 @@ public class SupplierIdImpl implements SupplierId{
   }
 
   @Override
-  public int compareTo(SupplierId o) {
+  public int compareTo(EntryId o) {
     if (o == null) {
       return 1;
     }
@@ -63,6 +60,6 @@ public class SupplierIdImpl implements SupplierId{
       return 0;
     }
     return toString().compareTo(o.toString());
-  }
+  }  
 
 }
