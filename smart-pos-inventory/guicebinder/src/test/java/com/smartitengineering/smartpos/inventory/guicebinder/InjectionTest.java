@@ -5,7 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.guicebinder;
 
-import com.smartitengineering.smartpos.inventory.resource.Services;
+
 import com.smartitengineering.util.bean.BeanFactoryRegistrar;
 import com.smartitengineering.util.bean.guice.GoogleGuiceBeanFactory;
 import junit.framework.TestCase;
