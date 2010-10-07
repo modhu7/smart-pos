@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <style media="screen" type="text/css">  
   .title { color: #a1a1a1; font-style: italic; }
@@ -75,7 +76,6 @@
         }
       });
     });
-
   });
 </script>
 

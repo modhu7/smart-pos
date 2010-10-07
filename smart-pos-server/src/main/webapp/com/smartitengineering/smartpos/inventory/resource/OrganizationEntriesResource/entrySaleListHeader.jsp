@@ -5,15 +5,21 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:choose>
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+  <c:when test="${empty param.count}">
+    <c:set var="qParam" value="" />
+  </c:when>
+  <c:otherwise>
+    <c:set var="qParam" value="?count=${param.count}" />
+  </c:otherwise>
+</c:choose>
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    var url = "http://localhost:9090/orgs/frags${qParam}";
+    $("#tablecontentid").pagination(url, "paginationLinks");
+    $("#wrong").hide();
+  });
+</script>
