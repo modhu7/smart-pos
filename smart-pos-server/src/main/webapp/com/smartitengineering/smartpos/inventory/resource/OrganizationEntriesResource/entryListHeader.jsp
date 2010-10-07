@@ -7,6 +7,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<c:choose>
+  <c:when test="${empty param.count}">
+    <c:set var="qParam" value="" />
+  </c:when>
+  <c:otherwise>
+    <c:set var="qParam" value="?count=${param.count}" />
+  </c:otherwise>
+</c:choose>
+
 <style media="screen" type="text/css">  
   .title { color: #a1a1a1; font-style: italic; }
   .active {color: black; font-style: normal;}
