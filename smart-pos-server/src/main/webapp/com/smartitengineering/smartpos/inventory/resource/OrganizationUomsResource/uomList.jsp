@@ -43,27 +43,46 @@
       <label><fmt:message key="inv.uomcreatetitle"/></label>
     </div>
     <div id="form_ProductionEntry" class="entry_form_pos">
-      <form action="" accept="application/json" enctype="" id="productEntryForm" method="post">
+      <form action="" accept="application/json" enctype="" id="uomEntryForm" method="post">
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.uominput1"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="name" id="name" class="textFieldPos"></div>
+          <div class="form_textField_pos">
+            <select id="selectCriterion" name="selectCriterion" class="textFieldPos" title="Measurement Criterion">
+              <option value="">-----Select an option-----</option>
+              <option value="hight">Hight</option>
+              <option value="length">Length</option>
+              <option value="weight">Weight</option>
+              <option value="area">Area</option>
+              <option value="volume">volume</option>
+              <option value="other">Other</option>
+            </select>
+            <input type="hidden" name="uomType" id="uomType" class="textFieldPos" title="Measurement Criterion"/>
+          </div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.uominput2"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="productCode" id="productCode" class="textFieldPos"></div>
-          <div class="clear"></div>
-        </div>
-        <%--<div class="individual_field_container">
-          <div class="form_label_pos"><label><fmt:message key="inv.prdinput3"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="description" id="description" class="textFieldPos"></div>
+          <div class="form_textField_pos"><input type="text" name="id" id="id" class="textFieldPos" title="Unit"></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
-          <div class="form_label_pos"><label><fmt:message key="inv.prdinput4"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="sku" id="sku" class="textFieldPos"></div>
+          <div class="form_label_pos"><label><fmt:message key="inv.uominput3"/></label></div>
+          <div class="form_textField_pos"><input type="text" name="symbol" id="symbol" class="textFieldPos" title="Symbol"/></div>
           <div class="clear"></div>
-        </div>--%>
+        </div>
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.uominput4"/></label></div>
+          <div class="form_textField_pos">
+            <select id="system" name="system" title="Unit System" class="textFieldPos">
+              <option value="">-----Select an option-----</option>
+              <option value="SI">SI</option>
+              <option value="Metric">Metric</option>
+              <option value="Local">Local</option>
+            </select>
+            <input type="hidden" class="textFieldPos" name="uomSystem" id="uomSystem" />
+          </div>
+          <div class="clear"></div>
+        </div>
         <div class="individual_field_container">
           <div class="insertField"><input name="submitbtn" type="submit" class="insertBtn" value="INSERT"></div>
           <div class="clear"></div>
