@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.smartpos.inventory.client.impl;
+package com.smartitengineering.smartpos.inventory.client.impl.resource;
 
-import com.smartitengineering.smartpos.inventory.client.api.OrganizationUomResource;
-import com.smartitengineering.smartpos.inventory.client.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
+import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
@@ -18,10 +18,10 @@ import org.apache.abdera.model.Feed;
  *
  * @author saumitra
  */
-public class OrganizationUomResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements
-    OrganizationUomResource {
+public class UomResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements
+    UomResource {
 
-  public OrganizationUomResourceImpl(Resource referrer, ResourceLink pageLink) {
+  public UomResourceImpl(Resource referrer, ResourceLink pageLink) {
     super(referrer, pageLink);
   }
 
