@@ -1,5 +1,7 @@
 curl -v -X POST -H "Content-type:application/json" http://localhost:9090/orgs/sn/SITEL/inv/uoms -d '{"id":"KG", "symbol":"KG","uomType":"Length","uomSystem":"SP","organizationId":"1"}'
 
+curl -v -X POST -H "Content-type:application/json" http://localhost:10090/orgs/sn/SITEL/inv/stores -d '{"name":"store1","code":"S1","organizationID":"1","address":{"streetAddress":"PTI Road","country":"Bangladesh"}}'
+
 
 
 

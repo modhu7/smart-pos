@@ -6,8 +6,8 @@
 package com.smartitengineering.smartpos.inventory.guicebinder;
 
 
-import com.smartitengineering.util.bean.BeanFactoryRegistrar;
-import com.smartitengineering.util.bean.guice.GoogleGuiceBeanFactory;
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
+
 import junit.framework.TestCase;
 
 /**
@@ -27,8 +27,5 @@ public class InjectionTest extends TestCase{
     assertNotNull(Services.getInstance().getStoreService());
     assertNotNull(Services.getInstance().getSupplierService());
     assertNotNull(Services.getInstance().getUomService());
-    //GoogleGuiceBeanFactory ap;
-
-
   }
 }
