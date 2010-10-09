@@ -13,7 +13,7 @@ function fetchContent(mainDivId, url, fragsLinkDivId, divno) {
     type: "GET",
     url: url,
     dataType: "html",
-    success: function(html) {
+    success: function(html) {s ;
       //      putting html data in id div      
       $(mainDivId).html(html);
       cacheContent(mainDivId, fragsLinkDivId, divno);
@@ -25,13 +25,13 @@ function fetchContent(mainDivId, url, fragsLinkDivId, divno) {
 
 function cacheContent(mainDivId, fragsLinkDivId, divno) {
   //      making next and previos link inactive
-  $("div#"+fragsLinkDivId).find('a').each(function(){   
+  $("div#"+fragsLinkDivId).find('a').each(function(){  
     var thisLink = $(this);
     $.ajax({
       type: "GET",
       url: this.toString(),
       dataType: "html",     
-      success: function(html){        
+      success: function(html){
         var divCount = $(html).find('div').length;        
         if(divCount <= 4) {
           $(thisLink).hide();          

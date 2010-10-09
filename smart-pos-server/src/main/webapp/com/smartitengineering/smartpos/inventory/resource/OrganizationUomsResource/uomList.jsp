@@ -4,10 +4,10 @@
     Author     : russel
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@page import="com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement"%>
 
 <c:if test="${param['lang']!=null}">
   <fmt:setLocale scope="session" value="${param['lang']}"/>
@@ -35,6 +35,7 @@
     </div>
   </div>
   <div class="tablecontentname" id="tablecontentid"></div>
+  <%--<c:out value="potakkkk"/>--%>
 </div>
 
 <div class="hide"  id="create">
