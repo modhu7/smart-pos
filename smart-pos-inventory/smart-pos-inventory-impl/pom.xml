@@ -16,7 +16,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -29,12 +28,22 @@
       <version>${project.version}</version>
     </dependency>
 <!--    <dependency>
+      <groupId>com.smartitengineering.smart-pos.inventory</groupId>
+      <artifactId>guicebinder</artifactId>
+      <version>${project.version}</version>
+    </dependency>-->
+<!--    <dependency>
+      <groupId>com.smartitengineering.smart-pos.inventory</groupId>
+      <artifactId>smart-pos-inventory-resource</artifactId>
+      <version>${project.version}</version>
+    </dependency>-->
+<!--    <dependency>
       <groupId>com.smartitengineering</groupId>
       <artifactId>smart-dao</artifactId>
       <version>${smart.dao.version}</version>
     </dependency>-->
     <dependency>
-      <groupId>com.smartitengineering.smart-dao</groupId>
+      <groupId>com.smartitengineering.smart-dao</groupId> 
       <artifactId>smart-hbase-dao</artifactId>
     </dependency>
     <dependency>

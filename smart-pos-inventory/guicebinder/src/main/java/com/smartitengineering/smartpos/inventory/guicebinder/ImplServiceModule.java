@@ -15,6 +15,7 @@ import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
 import com.smartitengineering.dao.impl.hbase.spi.AsyncExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.DomainIdInstanceProvider;
+import com.smartitengineering.dao.impl.hbase.spi.FilterConfigs;
 import com.smartitengineering.dao.impl.hbase.spi.MergeService;
 import com.smartitengineering.dao.impl.hbase.spi.ObjectRowConverter;
 import com.smartitengineering.dao.impl.hbase.spi.SchemaInfoProvider;
@@ -42,6 +43,7 @@ import com.smartitengineering.smartpos.inventory.impl.guice.EntrySchemaBaseConfi
 import com.smartitengineering.smartpos.inventory.impl.guice.ProductSchemaBaseConfigProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.StoreSchemaBaseConfigProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.SupplierSchemaBaseConfigProvider;
+import com.smartitengineering.smartpos.inventory.impl.guice.UomFilterConfigsProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.UomSchemaBaseConfigProvider;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -75,6 +77,8 @@ public class ImplServiceModule extends AbstractModule{
     final TypeLiteral<SchemaInfoProviderImpl<UnitOfMeasurement, UomId>> wTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<UnitOfMeasurement, UomId>>() {};
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UnitOfMeasurement>>() {
     }).toProvider(UomSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<FilterConfigs<UnitOfMeasurement>>() {
+    }).toProvider(UomFilterConfigsProvider.class).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<UomId>>() {}).toInstance(UomId.class);
     bind(new TypeLiteral<SchemaInfoProvider<UnitOfMeasurement, UomId>>() {}).to(wTypeLiteral).in(Singleton.class);

@@ -13,8 +13,7 @@ import org.apache.commons.lang.StringUtils;
  * @author russel
  */
 public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasurement, UomId, Long> {
-
-  private String name;
+  
   private String symbol;
   private String uomType;         // length, weight.. etc etc
   private String uomSystem;       // metric system, SI system, etc

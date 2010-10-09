@@ -3,10 +3,11 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.smartpos.inventory.client.api;
+package com.smartitengineering.smartpos.inventory.client.api.resource;
+
 
 import com.smartitengineering.user.client.api.OrganizationResource;
-import java.util.List;
+import com.smartitengineering.smartpos.inventory.client.api.domain.Store;
 
 /**
  *

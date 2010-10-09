@@ -3,12 +3,13 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.smartpos.inventory.client.impl;
+package com.smartitengineering.smartpos.inventory.client.impl.resource;
 
-import com.smartitengineering.smartpos.inventory.client.api.ProductsResource;
-import com.smartitengineering.smartpos.inventory.client.api.Store;
-import com.smartitengineering.smartpos.inventory.client.api.StoreResource;
+
 import com.smartitengineering.user.client.api.OrganizationResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.ProductsResource;
+import com.smartitengineering.smartpos.inventory.client.api.domain.Store;
+import com.smartitengineering.smartpos.inventory.client.api.resource.StoreResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;

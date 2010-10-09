@@ -26,5 +26,17 @@
       <groupId>com.smartitengineering.smart-util.rest</groupId>
       <artifactId>generic-client</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-util.rest</groupId>
+      <artifactId>jersey-cache-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-util.rest</groupId>
+      <artifactId>atom-client</artifactId>
+    </dependency>
   </dependencies>
 </project>

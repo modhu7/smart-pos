@@ -3,11 +3,11 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.smartpos.inventory.client.impl;
+package com.smartitengineering.smartpos.inventory.client.impl.resource;
 
-import com.smartitengineering.smartpos.inventory.client.api.UomResource;
-import com.smartitengineering.smartpos.inventory.client.api.UomsResource;
-import com.smartitengineering.smartpos.inventory.client.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
+import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;
