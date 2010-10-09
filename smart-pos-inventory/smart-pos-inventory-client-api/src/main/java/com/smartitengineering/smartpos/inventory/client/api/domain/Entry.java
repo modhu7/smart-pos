@@ -5,6 +5,8 @@
 
 package com.smartitengineering.smartpos.inventory.client.api.domain;
 
+import java.util.Date;
+
 /**
  *
  * @author saumitra
@@ -13,9 +15,9 @@ public interface Entry {
 
   public String getQuantity();
 
-  public String gerEntryDate();
+  public Date gerEntryDate();
 
-  public String getExpireDate();
+  public Date getExpireDate();
 
   public String getType();
 
