@@ -5,6 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.inventory.api.Entry;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;

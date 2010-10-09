@@ -1,0 +1,4 @@
+contextName=com.smartitengineering.smartpos.inventory.api.service
+modules=com.smartitengineering.smartpos.inventory.guicebinder.APIModule, com.smartitengineering.smartpos.inventory.guicebinder.ImplServiceModule
+ignoreMissingDependency=false
+com.smartitengineering.cms.globalNamespace=com.smartitengineering

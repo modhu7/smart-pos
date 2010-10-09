@@ -5,7 +5,7 @@
   <parent>
     <artifactId>smart-pos-admin</artifactId>
     <groupId>com.smartitengineering.smart-pos</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.smartitengineering.smart-pos</groupId>
   <artifactId>smart-pos-admin-resource</artifactId>
@@ -53,11 +53,11 @@
     </dependency>
     <dependency>
       <groupId>com.smartitengineering.smart-user</groupId>
-      <artifactId>smart-user-client-impl</artifactId>      
+      <artifactId>smart-user-client-impl</artifactId>
     </dependency>
     <dependency>
       <groupId>com.smartitengineering.smart-user</groupId>
-      <artifactId>smart-user-client-api</artifactId>            
+      <artifactId>smart-user-client-api</artifactId>
     </dependency>
   </dependencies>
 </project>

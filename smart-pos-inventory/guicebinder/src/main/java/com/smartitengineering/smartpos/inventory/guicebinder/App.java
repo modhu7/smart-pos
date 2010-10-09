@@ -1,4 +1,4 @@
-package com.smartitengineering.smartpos.inventory.client.api;
+package com.smartitengineering.smartpos.inventory.guicebinder;
 
 /**
  * Hello world!

@@ -5,11 +5,11 @@
   <parent>
     <artifactId>smart-pos-inventory</artifactId>
     <groupId>com.smartitengineering.smart-pos</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.smartitengineering.smart-pos.inventory</groupId>
   <artifactId>smart-pos-inventory-resource</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1-SNAPSHOT</version>
   <name>smart-pos-inventory-resource</name>
   <url>http://maven.apache.org</url>
   <dependencies>
@@ -58,11 +58,6 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.smartitengineering.smart-pos.inventory</groupId>
-      <artifactId>smart-pos-inventory-impl</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
     </dependency>
@@ -76,15 +71,11 @@
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>      
-    </dependency>       
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-jdk14</artifactId>      
+      <artifactId>slf4j-jdk14</artifactId>
     </dependency>
-<!--    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j13</artifactId>      
-    </dependency>-->
   </dependencies>
 </project>

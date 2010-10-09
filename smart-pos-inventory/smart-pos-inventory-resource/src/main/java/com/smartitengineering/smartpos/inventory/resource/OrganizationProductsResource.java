@@ -4,8 +4,11 @@
  */
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.Product;
+import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
+import com.smartitengineering.smartpos.inventory.impl.domainid.ProductIdImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -41,7 +44,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-@Path("/orgs/sn/{uniqueShortName}/inv/prds")
+@Path("/orgs/sn/{uniqueShortName}/inv/prods")
 public class OrganizationProductsResource extends AbstractResource {
 
   protected final Logger logger = LoggerFactory.getLogger(OrganizationProductsResource.class);
@@ -114,8 +117,10 @@ public class OrganizationProductsResource extends AbstractResource {
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productList.jsp");
 
-    Viewable view = new Viewable("/template/template.jsp", products);
+    servletRequest.getAttribute("templateContent");
 
+    Viewable view = new Viewable("/template/template.jsp", products);
+    
 
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -275,7 +280,7 @@ public class OrganizationProductsResource extends AbstractResource {
 
         Entry productEntry = abderaFactory.newEntry();
 
-        productEntry.setId(product.getId());
+        productEntry.setId(product.getId().getId());
         productEntry.setTitle(product.getName());
         productEntry.setSummary(product.getName());
         
@@ -307,8 +312,9 @@ public class OrganizationProductsResource extends AbstractResource {
       if (product.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
-      //Services.getInstance().getOrganizationService().populateOrganization(user);
-      product.setId(organizationUniqueShortName+":"+ product.getId());
+      ProductId productId = new ProductIdImpl();
+      productId.setId(organizationUniqueShortName+":"+ product.getId().getId());
+      product.setId( productId);
       Services.getInstance().getProductService().save(product);
       responseBuilder = Response.status(Status.CREATED);
     }

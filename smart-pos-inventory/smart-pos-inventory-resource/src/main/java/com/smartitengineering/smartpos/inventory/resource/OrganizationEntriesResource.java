@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.Entry;
 import com.sun.jersey.api.view.Viewable;
@@ -99,14 +100,14 @@ public class OrganizationEntriesResource extends AbstractResource {
 
 
 
-    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    
     servletRequest.setAttribute("templateHeadContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryListHeader.jsp");
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryList.jsp");
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
 
-    Viewable view = new Viewable("/template/template.jsp", entries);
-
+    Viewable view = new Viewable("/template/template.jsp", entries);        
 
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -133,7 +134,7 @@ public class OrganizationEntriesResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/before/{beforeEntryDate}")
   public Response getBefore(@PathParam("beforeEntryDate") String beforeEntryDate) {
-    return get(organizationUniqueShortName, beforeEntryDate, true);
+    return get(organizationUniqueShortName, null, beforeEntryDate, true);
   }
 
   @GET
@@ -188,7 +189,7 @@ public class OrganizationEntriesResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/after/{afterEntryDate}")
   public Response getAfter(@PathParam("afterEntryDate") String afterEntryDate) {
-    return get(organizationUniqueShortName, afterEntryDate, false);
+    return get(organizationUniqueShortName, null, afterEntryDate, false);
   }
 
   @GET
@@ -243,10 +244,10 @@ public class OrganizationEntriesResource extends AbstractResource {
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-    return get(organizationUniqueShortName, null, true);
+    return get(organizationUniqueShortName, null, null, true);
   }
 
-  private Response get(String uniqueOrganizationName, String entryDate, boolean isBefore) {
+  private Response get(String uniqueOrganizationName, Entry.TransactionType type, String entryDate, boolean isBefore) {
     ResponseBuilder responseBuilder = Response.ok();
     Feed atomFeed = getFeed(entryDate, new Date());
 
@@ -264,8 +265,8 @@ public class OrganizationEntriesResource extends AbstractResource {
       ex.printStackTrace();
     }
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganization(
-        organizationUniqueShortName, date, isBefore, count);
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        uniqueOrganizationName, type, date, isBefore, count);
 
     if (entries != null && !entries.isEmpty()) {
 
@@ -390,6 +391,43 @@ public class OrganizationEntriesResource extends AbstractResource {
   }
 
   /*
+   * Get method for atom xml for purchase type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/purchase")
+  public Response getPurchase(){
+    return get(organizationUniqueShortName, Entry.TransactionType.INBOUND_PURCHASE, null, false);
+  }
+
+  /*
+   *  Get method for html views for purchase type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/purchase")
+  public Response getPurchaseHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.INBOUND_PURCHASE, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryPurchaseListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryPurchaseList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+  /*
    * General json post for purchase type entry.
    */
   @POST
@@ -452,6 +490,42 @@ public class OrganizationEntriesResource extends AbstractResource {
     return responseBuilder.build();
   }
 
+  /*
+   * Get method for atom xml for returnin type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/returnin")
+  public Response getReturnIn(){
+    return get(organizationUniqueShortName, Entry.TransactionType.INBOUND_RETURN, null, false);
+  }
+
+  /*
+   *  Get method for html views for returnin type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/returnin")
+  public Response getReturnInHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.INBOUND_RETURN, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryReturnInListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryReturnInList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
 
   /*
    * General json post for inbound return type entry (i.e. goods return after sale..).
@@ -513,6 +587,43 @@ public class OrganizationEntriesResource extends AbstractResource {
       Services.getInstance().getEntryService().save(entry);
 
     }
+    return responseBuilder.build();
+  }
+
+  /*
+   * Get method for atom xml for transferin type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/transferin")
+  public Response getTransferIn(){
+    return get(organizationUniqueShortName, Entry.TransactionType.INBOUND_WAREHOUSE_RECIEVE, null, false);
+  }
+
+  /*
+   *  Get method for html views for transferin type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/transferin")
+  public Response getTransferInHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.INBOUND_WAREHOUSE_RECIEVE, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryTransferInListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryTransferInList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
     return responseBuilder.build();
   }
 
@@ -580,6 +691,43 @@ public class OrganizationEntriesResource extends AbstractResource {
   }
 
   /*
+   * Get method for atom xml for sale type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/sale")
+  public Response getSale(){
+    return get(organizationUniqueShortName, Entry.TransactionType.OUTBOUND_SALE, null, false);
+  }
+
+  /*
+   *  Get method for html views for sale type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/sale")
+  public Response getSaleHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.OUTBOUND_SALE, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entrySaleListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entrySaleList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
+    return responseBuilder.build();
+  }
+
+  /*
    * General json post for sale type entry i.e. outbound entry.
    */
   @POST
@@ -639,6 +787,43 @@ public class OrganizationEntriesResource extends AbstractResource {
       Services.getInstance().getEntryService().save(entry);
 
     }
+    return responseBuilder.build();
+  }
+
+  /*
+   * Get method for atom xml for returnout type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/returnout")
+  public Response getReturnOut(){
+    return get(organizationUniqueShortName, Entry.TransactionType.OUTBOUND_RETURN, null, false);
+  }
+
+  /*
+   *  Get method for html views for returnout type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/returnout")
+  public Response getReturnOutHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.OUTBOUND_RETURN, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryReturnOutListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryReturnOutList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
     return responseBuilder.build();
   }
 
@@ -703,6 +888,43 @@ public class OrganizationEntriesResource extends AbstractResource {
       Services.getInstance().getEntryService().save(entry);
 
     }
+    return responseBuilder.build();
+  }
+
+  /*
+   * Get method for atom xml for trasnferout type entry
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Path("/transferout")
+  public Response getTransferOut(){
+    return get(organizationUniqueShortName, Entry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER, null, false);
+  }
+
+  /*
+   *  Get method for html views for transferout type entry.
+   */
+  @GET
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/transferout")
+  public Response getTransferOutHtml(){
+    ResponseBuilder responseBuilder = Response.ok();
+
+    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, Entry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER, null, false, count);
+
+
+
+    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    servletRequest.setAttribute("templateHeadContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryTransferOutListHeader.jsp");
+    servletRequest.setAttribute("templateContent",
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryTransferOutList.jsp");
+
+    Viewable view = new Viewable("/template/template.jsp", entries);
+
+
+    responseBuilder.entity(view);
     return responseBuilder.build();
   }
 

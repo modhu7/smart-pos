@@ -7,13 +7,14 @@ package com.smartitengineering.smartpos.inventory.api;
 
 import com.smartitengineering.domain.AbstractGenericPersistentDTO;
 import com.smartitengineering.smartpos.admin.api.Address;
+import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
 import org.apache.commons.lang.StringUtils;
 
 /**
  *
  * @author russel
  */
-public class Supplier extends AbstractGenericPersistentDTO<Supplier, String, Long>{
+public class Supplier extends AbstractGenericPersistentDTO<Supplier, SupplierId, Long>{
 
   private String name;
   private String email;

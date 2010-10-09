@@ -42,15 +42,16 @@
     <property name="userService">
       <ref bean="userService"/>
     </property>
-  </bean>-->
-    
+  </bean>-->    
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
     <!-- **************************************************************** -->
   <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.SpringBeanRegistrar">
     <property name="beanFactoryContextName">
-      <value>com.smartitengineering.user.service</value>
+      <value>com.smartitengineering.pos.admin</value>
     </property>
   </bean>
+  
+
     
 </beans>

@@ -5,15 +5,15 @@
 package com.smartitengineering.smartpos.inventory.api;
 
 import com.smartitengineering.domain.AbstractGenericPersistentDTO;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import org.apache.commons.lang.StringUtils;
 
 /**
  *
  * @author russel
  */
-public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasurement, String, Long> {
-
-  private String name;
+public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasurement, UomId, Long> {
+  
   private String symbol;
   private String uomType;         // length, weight.. etc etc
   private String uomSystem;       // metric system, SI system, etc
@@ -52,9 +52,19 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
   }
 
   public boolean isValid() {
-    if (StringUtils.isBlank(symbol)) {
+    if (StringUtils.isBlank(getId().getId()) || StringUtils.isBlank(symbol)) {
       return false;
     }
     return true;
+  }
+
+  public String toString(){
+    String str = "";
+    str += getId() + "\n";
+    str += getVersion()+ "\n";
+    str += symbol+ "\n";
+    str += uomType+ "\n";
+    str += uomSystem+ "\n";
+    return str;
   }
 }

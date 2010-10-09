@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.smartpos.inventory.impl.service;
 
+import com.smartitengineering.dao.common.CommonWriteDao;
 import com.smartitengineering.dao.impl.hbase.CommonDao;
 import com.smartitengineering.dao.impl.hbase.spi.AsyncExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.impl.MixedExecutorServiceImpl;
@@ -11,6 +12,7 @@ import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
 import com.smartitengineering.smartpos.inventory.api.Product;
 import com.smartitengineering.smartpos.inventory.api.converter.ProductRowConverter;
 import com.smartitengineering.smartpos.inventory.api.service.ProductService;
+import com.smartitengineering.smartpos.inventory.impl.domainid.ProductIdImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,46 +24,46 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl extends AbstractProductService implements ProductService {
 
   protected final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
-  private ProductRowConverter productContverter;
-  private CommonDao<Product, String> productDao;
-  private static final MixedExecutorServiceImpl executorService = new MixedExecutorServiceImpl();
-
-  static {
-    executorService.setConfiguration(HBaseConfiguration.create());
-  }
-
-  public static AsyncExecutorService getAsyncExecutorService() {
-    return executorService;
-  }
+//  private ProductRowConverter productContverter;
+//  private CommonDao<Product, String> productDao;
+//  private static final MixedExecutorServiceImpl executorService = new MixedExecutorServiceImpl();
+//
+//  static {
+//    executorService.setConfiguration(HBaseConfiguration.create());
+//  }
+//
+//  public static AsyncExecutorService getAsyncExecutorService() {
+//    return executorService;
+//  }
 
   public ProductServiceImpl() {
-    productContverter = new ProductRowConverter();
-    productDao = new CommonDao<Product, String>();
-    productDao.setConverter(productContverter);
-    productDao.setExecutorService(getAsyncExecutorService());
-    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
-    providerImpl.setMainTableName("product");
-    //Add FilterConfig 
-    productDao.setInfoProvider(providerImpl);
+//    productContverter = new ProductRowConverter();
+//    productDao = new CommonDao<Product, String>();
+//    productDao.setConverter(productContverter);
+//    productDao.setExecutorService(getAsyncExecutorService());
+//    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
+//    providerImpl.setMainTableName("product");
+//    //Add FilterConfig
+//    productDao.setInfoProvider(providerImpl);
   }
 
   @Override
   public void save(Product product) {
-    productDao.save(product);
+    commonWriteDao.save(product);
   }
 
   @Override
   public void update(Product product) {
-    productDao.update(product);
+    commonWriteDao.update(product);
   }
 
   @Override
   public void delete(Product product) {
-    productDao.delete(product);
+    commonWriteDao.delete(product);
   }
 
   @Override
@@ -81,12 +83,12 @@ public class ProductServiceImpl implements ProductService {
     List<Product> productList = new ArrayList<Product>();
     Product product1 = new Product();
     product1.setName("Product 1");
-    product1.setId("P1");
+    product1.setId(new ProductIdImpl("P1"));
     productList.add(product1);
 
     Product product2 = new Product();
     product2.setName("Product 2");
-    product2.setId("P2");
+    product2.setId(new ProductIdImpl("P2"));
     productList.add(product2);
 
     Collection<Product> products = productList;

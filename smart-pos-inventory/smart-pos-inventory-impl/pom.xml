@@ -5,17 +5,17 @@
   <parent>
     <artifactId>smart-pos-inventory</artifactId>
     <groupId>com.smartitengineering.smart-pos</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
   <groupId>com.smartitengineering.smart-pos.inventory</groupId>
   <artifactId>smart-pos-inventory-impl</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1-SNAPSHOT</version>
   <name>smart-pos-inventory-impl</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
-      <artifactId>junit</artifactId>      
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -28,14 +28,28 @@
       <version>${project.version}</version>
     </dependency>
 <!--    <dependency>
+      <groupId>com.smartitengineering.smart-pos.inventory</groupId>
+      <artifactId>guicebinder</artifactId>
+      <version>${project.version}</version>
+    </dependency>-->
+<!--    <dependency>
+      <groupId>com.smartitengineering.smart-pos.inventory</groupId>
+      <artifactId>smart-pos-inventory-resource</artifactId>
+      <version>${project.version}</version>
+    </dependency>-->
+<!--    <dependency>
       <groupId>com.smartitengineering</groupId>
       <artifactId>smart-dao</artifactId>
       <version>${smart.dao.version}</version>
     </dependency>-->
     <dependency>
-      <groupId>com.smartitengineering.smart-dao</groupId>
+      <groupId>com.smartitengineering.smart-dao</groupId> 
       <artifactId>smart-hbase-dao</artifactId>
-      <version>${smart.dao.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-pos.inventory</groupId>
+      <artifactId>smart-pos-inventory-api</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 </project>

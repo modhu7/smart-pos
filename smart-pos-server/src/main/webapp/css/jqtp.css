@@ -1,0 +1,55 @@
+.jqtp_marker{
+   z-index:5;
+   position:absolute;
+   cursor:pointer;
+   top:0;
+   left:0;
+   font-family:helvetica;
+   font-size:18px;
+}
+
+.jqtp_sec{
+   width:1px;
+   height:1px;
+   font-size:1px;   
+   background: green;
+   cursor:pointer;   
+   color: green;
+   z-index:3;
+   top:0;
+   left:0;
+   position:absolute;
+}
+
+.jqtp_min{
+   width:2px;
+   height:2px;
+   font-size:2px;
+   background:#ff0000;
+   cursor:pointer;
+   color:#ff0000;
+   z-index:1;
+   top:0;
+   left:0;
+   position:absolute;
+}
+
+.jqtp_hr{
+   width:3px;
+   height:3px;
+   font-size:3px;
+   background:#0000ff;
+   cursor:pointer;
+   color:#0000ff;
+   z-index:2;
+   top:0;
+   left:0;
+   position:absolute;  
+}
+
+#jqtp_clock{
+   position:relative;
+   width:450px;
+   height:150px;
+   float: right;
+}

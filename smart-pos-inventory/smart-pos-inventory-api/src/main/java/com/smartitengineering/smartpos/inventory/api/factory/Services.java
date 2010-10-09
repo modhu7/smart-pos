@@ -3,18 +3,15 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.smartpos.inventory.resource;
+package com.smartitengineering.smartpos.inventory.api.factory;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.smartitengineering.smartpos.inventory.api.service.EntryService;
 import com.smartitengineering.smartpos.inventory.api.service.ProductService;
 import com.smartitengineering.smartpos.inventory.api.service.StoreService;
 import com.smartitengineering.smartpos.inventory.api.service.SupplierService;
 import com.smartitengineering.smartpos.inventory.api.service.UomService;
-import com.smartitengineering.smartpos.inventory.impl.service.EntryServiceImpl;
-import com.smartitengineering.smartpos.inventory.impl.service.ProductServiceImpl;
-import com.smartitengineering.smartpos.inventory.impl.service.StoreServiceImpl;
-import com.smartitengineering.smartpos.inventory.impl.service.SupplierServiceImpl;
-import com.smartitengineering.smartpos.inventory.impl.service.UomServiceImpl;
 import com.smartitengineering.util.bean.BeanFactoryRegistrar;
 import com.smartitengineering.util.bean.annotations.Aggregator;
 import com.smartitengineering.util.bean.annotations.InjectableField;
@@ -23,18 +20,24 @@ import com.smartitengineering.util.bean.annotations.InjectableField;
  *
  * @author russel
  */
-@Aggregator(contextName = "com.smartitengineering.smartpos.inventory.api.service")
+@Aggregator(contextName = Services.CONTEXT_NAME)
 public class Services {
 
-  @InjectableField
+  public static final String CONTEXT_NAME = "com.smartitengineering.smartpos.inventory.api.service";
+
+  @InjectableField(beanName="apiStoreService")
   private StoreService storeService;
-  @InjectableField
+
+  @InjectableField(beanName="apiProductService")
   private ProductService productService;
-  @InjectableField
+
+  @InjectableField(beanName="apiUomService")
   private UomService uomService;
-  @InjectableField
+
+  @InjectableField(beanName="apiSupplierService")
   private SupplierService supplierService;
-  @InjectableField
+
+  @InjectableField(beanName="apiEntryService")
   private EntryService entryService;
   
 
@@ -42,8 +45,7 @@ public class Services {
   }
 
   public StoreService getStoreService() {
-    //return storeService;
-    return new StoreServiceImpl();
+    return storeService;    
   }
 
   public void setStoreService(StoreService storeService) {
@@ -51,8 +53,7 @@ public class Services {
   }
 
   public ProductService getProductService() {
-    //return productService;
-    return (ProductService) new ProductServiceImpl();
+    return productService;    
   }
 
   public void setProductService(ProductService productService) {
@@ -60,8 +61,7 @@ public class Services {
   }  
 
   public SupplierService getSupplierService() {
-    //return supplierService;
-    return new SupplierServiceImpl();
+    return supplierService;    
   }
 
   public void setSupplierService(SupplierService supplierService) {
@@ -69,8 +69,7 @@ public class Services {
   }
 
   public UomService getUomService() {
-    //return uomService;
-    return new UomServiceImpl();
+    return uomService;    
   }
 
   public void setUomService(UomService uomService) {
@@ -78,8 +77,7 @@ public class Services {
   }
 
   public EntryService getEntryService() {
-    //return entryService;
-    return (EntryService) new EntryServiceImpl();
+    return entryService;    
   }
 
   public void setEntryService(EntryService entryService) {
@@ -98,5 +96,6 @@ public class Services {
       BeanFactoryRegistrar.aggregate(services);
     }
     return services;
+    
   }
 }
