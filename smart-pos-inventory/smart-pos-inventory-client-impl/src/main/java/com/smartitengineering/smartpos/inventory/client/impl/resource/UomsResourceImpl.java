@@ -3,11 +3,11 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.smartpos.inventory.client.impl;
+package com.smartitengineering.smartpos.inventory.client.impl.resource;
 
-import com.smartitengineering.smartpos.inventory.client.api.OrganizationUomResource;
-import com.smartitengineering.smartpos.inventory.client.api.OrganizationUomsResource;
-import com.smartitengineering.smartpos.inventory.client.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
+import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;
@@ -25,12 +25,12 @@ import org.apache.abdera.model.Entry;
  *
  * @author saumitra
  */
-public class OrganizationUomsResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements OrganizationUomsResource{
+public class UomsResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements UomsResource{
 
   private static final String REL_ORG = "uom";
   private static final String REL_ALT = "alternate";
 
-  public OrganizationUomsResourceImpl(Resource referrer, ResourceLink pageLink) {
+  public UomsResourceImpl(Resource referrer, ResourceLink pageLink) {
     super(referrer, pageLink);
   }
 
@@ -47,20 +47,20 @@ public class OrganizationUomsResourceImpl extends AbstractFeedClientResource<Res
   }
 
   @Override
-  public OrganizationUomResource create(UnitOfMeasurement uom) {
+  public UomResource create(UnitOfMeasurement uom) {
     ClientResponse response = post(MediaType.APPLICATION_JSON, uom, ClientResponse.Status.CREATED);
     final ResourceLink orgLink = ClientUtil.createResourceLink(REL_ORG, response.getLocation(),
                                                                MediaType.APPLICATION_ATOM_XML);
-    return new OrganizationUomResourceImpl(this,orgLink);
+    return new UomResourceImpl(this,orgLink);
   }
 
   @Override
-  public List<OrganizationUomResource> getOrganizationUomResources() {
+  public List<UomResource> getOrganizationUomResources() {
 
-    List<OrganizationUomResource> OrganizationUomResources= new ArrayList<OrganizationUomResource>();
+    List<UomResource> OrganizationUomResources= new ArrayList<UomResource>();
    
     for (Entry entry : getLastReadStateOfEntity().getEntries()){
-      OrganizationUomResources.add(new OrganizationUomResourceImpl(this,AtomClientUtil.convertFromAtomLinkToResourceLink(entry.getLink(REL_ALT))) );
+      OrganizationUomResources.add(new UomResourceImpl(this,AtomClientUtil.convertFromAtomLinkToResourceLink(entry.getLink(REL_ALT))) );
     }
     return OrganizationUomResources;
   }

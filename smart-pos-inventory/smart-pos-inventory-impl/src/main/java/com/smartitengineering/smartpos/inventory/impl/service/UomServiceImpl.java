@@ -5,6 +5,7 @@
 package com.smartitengineering.smartpos.inventory.impl.service;
 
 import com.smartitengineering.dao.common.queryparam.MatchMode;
+import com.smartitengineering.dao.common.queryparam.Order;
 import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.CommonDao;
@@ -15,7 +16,10 @@ import com.smartitengineering.smartpos.inventory.api.service.UomService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeMap;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,11 +81,57 @@ public class UomServiceImpl extends AbstractUomService implements UomService {
                                                          boolean isSmallerThan,
                                                          int count) {
 
-    QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("id", organizationUniqueShortName, MatchMode.START);
-    List<UnitOfMeasurement> uoms = commonReadDao.getList();
+    logger.info("uomName:"+name);
+    logger.info("orgName:"+organizationUniqueShortName);
+    logger.info("Small?"+isSmallerThan);
+    logger.info("count: "+count);
 
-    //throw new UnsupportedOperationException("Not supported yet.");
-    return uoms;
+    List<QueryParameter> params = new ArrayList<QueryParameter>();
+
+    if(StringUtils.isNotBlank(organizationUniqueShortName)){
+      QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("id", organizationUniqueShortName, MatchMode.START);
+      params.add(qp);
+    }
+    if(StringUtils.isNotBlank(name)){
+      if(isSmallerThan){
+        params.add(QueryParameterFactory.getLesserThanPropertyParam("name", name));
+      }else{
+        params.add(QueryParameterFactory.getGreaterThanPropertyParam("name", name));
+      }
+    }
+    params.add(QueryParameterFactory.getMaxResultsParam(count));
+    params.add(QueryParameterFactory.getOrderByParam("name", isSmallerThan?Order.DESC: Order.ASC));
+
+    List<UnitOfMeasurement> uoms = commonReadDao.getList(params);// getOtherList(params);
+
+    if(uoms != null && !uoms.isEmpty()){
+      Collections.sort(uoms, new Comparator<UnitOfMeasurement>() {
+
+        @Override
+        public int compare(UnitOfMeasurement o1, UnitOfMeasurement o2) {
+          return o1.getId().getId().toUpperCase().compareTo(o2.getId().getId().toUpperCase());
+        }
+      });
+      return uoms;
+    }else{
+      return Collections.emptyList();
+    }        
+  }
+
+  public List<UnitOfMeasurement> getByUomNames(List<String> uomNames) {
+
+    QueryParameter<String> param = QueryParameterFactory.<String>getIsInPropertyParam("name", uomNames.toArray(new String[uomNames.size()]));
+
+    Collection<UnitOfMeasurement> result;
+    try {
+      result = commonReadDao.getList(param);
+    }
+    catch (Exception ex) {
+      ex.printStackTrace();
+      result = Collections.<UnitOfMeasurement>emptyList();
+    }
+    return new ArrayList<UnitOfMeasurement>(result);
+
   }
 
   @Override
