@@ -5,9 +5,10 @@
 
 package com.smartitengineering.smartpos.inventory.client.impl.resource;
 
-import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
-import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
-import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.client.api.domain.Product;
+import com.smartitengineering.smartpos.inventory.client.api.resource.ProductResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.ProductsResource;
+import com.smartitengineering.smartpos.inventory.client.impl.domain.ProductImpl;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;
@@ -17,24 +18,21 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.config.ClientConfig;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.abdera.model.Feed;
 import javax.ws.rs.core.MediaType;
 import org.apache.abdera.model.Entry;
-
+import org.apache.abdera.model.Feed;
 /**
  *
  * @author saumitra
  */
-public class UomsResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements UomsResource{
+public class ProductsResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements ProductsResource{
 
-  private static final String REL_ORG = "uom";
+  private static final String REL_ORG = "product";
   private static final String REL_ALT = "alternate";
 
-  public UomsResourceImpl(Resource referrer, ResourceLink pageLink) {
+  public ProductsResourceImpl(Resource referrer, ResourceLink pageLink) {
     super(referrer, pageLink);
   }
-
-  
 
   @Override
   protected void processClientConfig(ClientConfig cc) {
@@ -43,25 +41,25 @@ public class UomsResourceImpl extends AbstractFeedClientResource<Resource<? exte
 
   @Override
   protected Resource<? extends Feed> instantiatePageableResource(ResourceLink rl) {
-    return new UomsResourceImpl(this,rl);
+    return new ProductsResourceImpl(this, rl);
   }
-
+  
   @Override
-  public UomResource create(UnitOfMeasurement uom) {
-    ClientResponse response = post(MediaType.APPLICATION_JSON, uom, ClientResponse.Status.CREATED);
+  public ProductResource create(Product product) {
+   ClientResponse response = post(MediaType.APPLICATION_JSON, product, ClientResponse.Status.CREATED);
     final ResourceLink orgLink = ClientUtil.createResourceLink(REL_ORG, response.getLocation(),
                                                                MediaType.APPLICATION_ATOM_XML);
-    return new UomResourceImpl(this,orgLink);
+    return new ProductResourceImpl(this,orgLink);
   }
 
   @Override
-  public List<UomResource> getOrganizationUomResources() {
+  public List<ProductResource> getOrganizationProductResource() {
 
-    List<UomResource> OrganizationUomResources= new ArrayList<UomResource>();
-   
-    for (Entry entry : getLastReadStateOfEntity().getEntries()){
-      OrganizationUomResources.add(new UomResourceImpl(this,AtomClientUtil.convertFromAtomLinkToResourceLink(entry.getLink(REL_ALT))) );
+    List<ProductResource>   productResources = new ArrayList<ProductResource>();
+    for(Entry entry : getLastReadStateOfEntity().getEntries()){
+      productResources.add(new ProductResourceImpl(this, AtomClientUtil.convertFromAtomLinkToResourceLink(entry.getLink(REL_ALT))));
     }
-    return OrganizationUomResources;
+  return productResources;
   }
+
 }

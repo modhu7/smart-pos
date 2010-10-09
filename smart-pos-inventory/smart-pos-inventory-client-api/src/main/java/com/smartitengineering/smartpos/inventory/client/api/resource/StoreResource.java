@@ -15,9 +15,7 @@ import com.smartitengineering.smartpos.inventory.client.api.domain.Store;
  */
 public interface StoreResource{
 
- public ProductsResource getOrganizationProductsResource();
-
- public void update();
+  public void update();
 
  public ProductsResource getProductResources();
 

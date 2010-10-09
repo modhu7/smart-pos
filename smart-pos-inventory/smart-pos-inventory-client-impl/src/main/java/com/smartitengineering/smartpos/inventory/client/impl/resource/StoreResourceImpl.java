@@ -24,6 +24,8 @@ import org.apache.abdera.model.Feed;
  */
 public class StoreResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements StoreResource{
 
+  public static final String REL_STORES = "stores";
+
   public StoreResourceImpl(Resource referrer, ResourceLink pageLink) {
     super(referrer, pageLink);
   }
@@ -35,34 +37,36 @@ public class StoreResourceImpl extends AbstractFeedClientResource<Resource<? ext
 
   @Override
   protected Resource<? extends Feed> instantiatePageableResource(ResourceLink rl) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public ProductsResource getOrganizationProductsResource() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return null;
   }
 
   @Override
   public void update() {
     put(MediaType.APPLICATION_JSON,getStore(),ClientResponse.Status.OK,ClientResponse.Status.SEE_OTHER,ClientResponse.Status.FOUND);
   }
-
   
-
   @Override
   public Store getStore() {
-    return getStore();
+    return getStore(false);
+  }
+  protected Store getStore(boolean reload){
+    Resource<Store> store = super.<Store>getNestedResource(REL_STORES);
+    if(reload){
+      return store.get();
+    }
+    else
+    {
+      return store.getLastReadStateOfEntity();
+    }
   }
 
   @Override
   public ProductsResource getProductResources() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return new ProductsResourceImpl(this,getRelatedResourceUris().getFirst(REL_STORES));
   }
 
   @Override
   public OrganizationResource getOrganizationResource() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
-
 }

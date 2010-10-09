@@ -44,7 +44,7 @@ public class StoresResourceImpl extends AbstractFeedClientResource<Resource<? ex
 
   @Override
   protected Resource<? extends Feed> instantiatePageableResource(ResourceLink rl) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return new StoresResourceImpl(this,rl);
   }
 
   @Override
