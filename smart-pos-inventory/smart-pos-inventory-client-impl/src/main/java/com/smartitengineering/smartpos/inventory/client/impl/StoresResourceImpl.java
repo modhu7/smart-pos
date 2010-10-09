@@ -10,13 +10,16 @@ import com.smartitengineering.smartpos.inventory.client.api.Store;
 import com.smartitengineering.smartpos.inventory.client.api.StoreResource;
 import com.smartitengineering.smartpos.inventory.client.api.StoresResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.ClientUtil;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.config.ClientConfig;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
+import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 
 /**
@@ -46,7 +49,12 @@ public class StoresResourceImpl extends AbstractFeedClientResource<Resource<? ex
 
   @Override
   public List<StoreResource> getOrganizationStoreResources() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    List<StoreResource> StoreResource= new ArrayList<StoreResource>();
+    for (Entry entry : getLastReadStateOfEntity().getEntries()){
+      StoreResource.add(new StoreResourceImpl(this, AtomClientUtil.convertFromAtomLinkToResourceLink(entry.getLink(REL_ALT))));
+
+    }
+    return StoreResource;
   }
 
   @Override

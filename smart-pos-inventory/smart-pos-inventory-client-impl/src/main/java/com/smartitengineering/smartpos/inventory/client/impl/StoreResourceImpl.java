@@ -5,14 +5,16 @@
 
 package com.smartitengineering.smartpos.inventory.client.impl;
 
-import com.smartitengineering.smartpos.inventory.client.api.Product;
 import com.smartitengineering.smartpos.inventory.client.api.ProductsResource;
 import com.smartitengineering.smartpos.inventory.client.api.Store;
 import com.smartitengineering.smartpos.inventory.client.api.StoreResource;
+import com.smartitengineering.user.client.api.OrganizationResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.config.ClientConfig;
+import javax.ws.rs.core.MediaType;
 import org.apache.abdera.model.Feed;
 
 /**
@@ -42,16 +44,23 @@ public class StoreResourceImpl extends AbstractFeedClientResource<Resource<? ext
 
   @Override
   public void update() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    put(MediaType.APPLICATION_JSON,getStore(),ClientResponse.Status.OK,ClientResponse.Status.SEE_OTHER,ClientResponse.Status.FOUND);
   }
 
-  @Override
-  public Product getProduct() {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+  
 
   @Override
   public Store getStore() {
+    return getStore();
+  }
+
+  @Override
+  public ProductsResource getProductResources() {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public OrganizationResource getOrganizationResource() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

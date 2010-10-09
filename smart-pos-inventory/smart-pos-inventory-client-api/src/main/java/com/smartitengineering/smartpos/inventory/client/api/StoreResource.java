@@ -5,6 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.client.api;
 
+import com.smartitengineering.user.client.api.OrganizationResource;
 import java.util.List;
 
 /**
@@ -17,8 +18,10 @@ public interface StoreResource{
 
  public void update();
 
- public Product getProduct();
+ public ProductsResource getProductResources();
 
  public Store getStore();
+
+ public OrganizationResource getOrganizationResource();
 
 }
