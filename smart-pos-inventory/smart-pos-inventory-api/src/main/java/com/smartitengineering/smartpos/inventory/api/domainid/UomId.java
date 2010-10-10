@@ -6,11 +6,14 @@
 package com.smartitengineering.smartpos.inventory.api.domainid;
 
 import com.smartitengineering.dao.impl.hbase.spi.Externalizable;
+import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
  * @author russel
  */
+@JsonDeserialize(as = UnitOfMeasurement.UomIdImpl.class)
 public interface UomId extends Externalizable, Comparable<UomId>{
 
   public String getId();

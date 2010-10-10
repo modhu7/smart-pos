@@ -42,6 +42,7 @@ public class UomsResourceImpl extends AbstractFeedClientResource<Resource<? exte
     ClientResponse response = post(MediaType.APPLICATION_JSON, uom, ClientResponse.Status.CREATED);
     final ResourceLink orgLink = ClientUtil.createResourceLink(REL_ORG, response.getLocation(),
                                                                MediaType.APPLICATION_ATOM_XML);
+    logger.info(orgLink.getUri().toString());
     return new UomResourceImpl(this,orgLink);
   }
 

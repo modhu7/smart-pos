@@ -1,7 +1,10 @@
 package com.smartitengineering.smartpos.inventory.client.impl;
 
+import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.client.api.resource.RootResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
+import com.smartitengineering.smartpos.inventory.client.impl.domain.UnitOfMeasurementImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.resource.RootResourceImpl;
 import com.smartitengineering.smartpos.inventory.guicebinder.Initializer;
 import com.smartitengineering.util.bean.guice.GuiceUtil;
@@ -33,6 +36,14 @@ public class App {
       URI uri = new URI("http://localhost:10090/orgs/sn/SITEL/dashboard");
       RootResource rootResource = RootResourceImpl.getRoot(uri);
       UomsResource uomsResource = rootResource.getOrganizationUomsResource();
+      UnitOfMeasurement uom = new UnitOfMeasurementImpl();
+      uom.setId("KG");
+      //uom.setName("Kilogram");
+      uom.setSymbol("Kg");
+      uom.setUomSystem("SI");
+      uom.setUomType("Weight");
+
+      UomResource uomResource = uomsResource.create(uom);
     }
     catch (Exception ex) {
       ex.printStackTrace();

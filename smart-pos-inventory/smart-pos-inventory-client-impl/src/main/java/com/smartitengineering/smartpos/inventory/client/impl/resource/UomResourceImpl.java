@@ -32,7 +32,7 @@ public class UomResourceImpl extends AbstractFeedClientResource<Resource<? exten
 
   @Override
   protected Resource<? extends Feed> instantiatePageableResource(ResourceLink rl) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return null;
   }
   @Override
   public UnitOfMeasurement getUnitOfMeasurement() {
@@ -42,5 +42,5 @@ public class UomResourceImpl extends AbstractFeedClientResource<Resource<? exten
   @Override
   public void update() {
     put(MediaType.APPLICATION_JSON,getUnitOfMeasurement(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER, ClientResponse.Status.FOUND);
-  }
+  }  
 }
