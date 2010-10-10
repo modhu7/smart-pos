@@ -88,33 +88,5 @@
       <version>9.1.1.B60.25.p2</version>
       <scope>test</scope>
     </dependency>
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>unpack-smartuserserver-war</id>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <phase>process-test-resources</phase>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>com.smartitengineering.smart-pos</groupId>
-                  <artifactId>smart-pos-server</artifactId>
-                  <version>${project.version}</version>
-                  <type>war</type>
-                  <outputDirectory>${project.build.directory}/smartpos/</outputDirectory>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  </dependencies>  
 </project>
