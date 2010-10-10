@@ -108,6 +108,7 @@ public class OrganizationUomsResource extends AbstractResource {
 
     Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getByOrganization(
         organizationUniqueShortName, null, false, count);
+    System.out.println(uoms.getClass().getName());
 
 
 

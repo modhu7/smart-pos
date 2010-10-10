@@ -33,9 +33,21 @@
     <div class="tableheadname_user">
       <label class="tablehead_label"><fmt:message key="inv.uomtablehead2"/></label>
     </div>
+    <div class="tableheadname_user">
+      <label class="tablehead_label"><fmt:message key="inv.uomtablehead3"/></label>
+    </div>
   </div>
   <div class="tablecontentname" id="tablecontentid"></div>
-  <%--<c:out value="potakkkk"/>--%>
+  <div class="tableList" id="uomListContainer">
+    <c:set var="uom" scope="page" value="${it}"></c:set>
+    <c:forEach varStatus="status" items="${it}">
+      <div id="userRow${status.index}" class="row_of_list">
+        <div id="uomType${status.index}" class="uomType_column"><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].uomType}</a></div>
+        <div id="uomId${status.index}" class="id_column"><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].id.id}</a></div>
+        <div id="symbol${status.index}" class="symbol_column"><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].symbol}</a></div>
+      </div>
+    </c:forEach>
+  </div>
 </div>
 
 <div class="hide"  id="create">

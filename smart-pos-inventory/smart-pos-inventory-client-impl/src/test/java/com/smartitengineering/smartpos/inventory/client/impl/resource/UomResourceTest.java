@@ -5,48 +5,48 @@
 
 package com.smartitengineering.smartpos.inventory.client.impl.resource;
 
-import com.smartitengineering.smartpos.inventory.client.api.resource.RootResource;
-import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
-import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
-import com.smartitengineering.smartpos.inventory.client.impl.domain.UnitOfMeasurementImpl;
-import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
-import java.io.File;
-import junit.framework.TestCase;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.webapp.WebAppContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-/**
- *
- * @author russel
- */
-public class UomResourceTest extends TestCase{
-
-  private static Server jettyServer;
-  private static final int PORT = 10090;
-  private RootResource rootResource;
-
-  @Override
-  public void setUp() throws Exception{
-    System.out.println("::: Starting server :::");
-    jettyServer = new Server(PORT);
-    final String webapp = "./target/smartpos/";
-    if (!new File(webapp).exists()) {
-      throw new IllegalStateException("WebApp file/dir does not exist!");
-    }
-    Handler webAppHandler = new WebAppContext(webapp, "/");
-    jettyServer.setHandler(webAppHandler);
-    jettyServer.start();
-
-    // set up client
-    ClassPathXmlApplicationContext classPathXmlApplicationContext =
-                                   new ClassPathXmlApplicationContext("config-context.xml");
-    System.setProperty(ApplicationWideClientFactoryImpl.TRACE, Boolean.TRUE.toString());
-  }
-
-  public void testCreate(){
-
+//import com.smartitengineering.smartpos.inventory.client.api.resource.RootResource;
+//import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
+//import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
+//import com.smartitengineering.smartpos.inventory.client.impl.domain.UnitOfMeasurementImpl;
+//import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
+//import java.io.File;
+//import junit.framework.TestCase;
+//import org.eclipse.jetty.server.Handler;
+//import org.eclipse.jetty.server.Server;
+//import org.eclipse.jetty.webapp.WebAppContext;
+//import org.springframework.context.support.ClassPathXmlApplicationContext;
+//
+///**
+// *
+// * @author russel
+// */
+//public class UomResourceTest extends TestCase{
+//
+//  private static Server jettyServer;
+//  private static final int PORT = 10090;
+//  private RootResource rootResource;
+//
+//  @Override
+//  public void setUp() throws Exception{
+//    System.out.println("::: Starting server :::");
+//    jettyServer = new Server(PORT);
+//    final String webapp = "./target/smartpos/";
+//    if (!new File(webapp).exists()) {
+//      throw new IllegalStateException("WebApp file/dir does not exist!");
+//    }
+//    Handler webAppHandler = new WebAppContext(webapp, "/");
+//    jettyServer.setHandler(webAppHandler);
+//    jettyServer.start();
+//
+//    // set up client
+//    ClassPathXmlApplicationContext classPathXmlApplicationContext =
+//                                   new ClassPathXmlApplicationContext("config-context.xml");
+//    System.setProperty(ApplicationWideClientFactoryImpl.TRACE, Boolean.TRUE.toString());
+//  }
+//
+//  public void testCreate(){
+//
 //    rootResource = RootResourceImpl.getInstance();
 //    assertNotNull(rootResource);
 //
@@ -63,11 +63,11 @@ public class UomResourceTest extends TestCase{
 //    UomResource uomResource = uomsResource.create(uom);
 //
 //    assertNotNull(uomResource);
-  }
-
-  @Override
-  public void tearDown() throws Exception{
-    jettyServer.stop();
-  }
-
-}
+//  }
+//
+//  @Override
+//  public void tearDown() throws Exception{
+//    jettyServer.stop();
+//  }
+//
+//}
