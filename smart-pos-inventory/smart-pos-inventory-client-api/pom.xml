@@ -35,10 +35,6 @@
       <artifactId>jersey-cache-client</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.smartitengineering.smart-util.rest</groupId>
-      <artifactId>atom-client</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.smartitengineering.smart-util</groupId>
       <artifactId>smart-bean-guice-util</artifactId>
     </dependency>
