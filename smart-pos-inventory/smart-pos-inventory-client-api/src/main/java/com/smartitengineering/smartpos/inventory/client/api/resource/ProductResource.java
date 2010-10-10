@@ -5,6 +5,8 @@
 
 package com.smartitengineering.smartpos.inventory.client.api.resource;
 
+import com.smartitengineering.smartpos.inventory.client.api.domain.Product;
+
 /**
  *
  * @author saumitra
@@ -12,5 +14,7 @@ package com.smartitengineering.smartpos.inventory.client.api.resource;
 public interface ProductResource {
 
   public void update();
+
+  public Product getProduct();
   
 }
