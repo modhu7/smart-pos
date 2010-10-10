@@ -23,11 +23,23 @@
     <dependency>
       <groupId>com.smartitengineering.smart-pos.inventory</groupId>
       <artifactId>smart-pos-inventory-client-api</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.collections</groupId>
+          <artifactId>google-collections</artifactId>
+        </exclusion>
+      </exclusions>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.smartitengineering.smart-user</groupId>
       <artifactId>smart-user-client-impl</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.collections</groupId>
+          <artifactId>google-collections</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.smartitengineering.smart-pos.inventory</groupId>
