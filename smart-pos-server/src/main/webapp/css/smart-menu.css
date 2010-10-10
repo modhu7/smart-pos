@@ -21,7 +21,8 @@ root {
   /*background-image: url(/images/top.jpg);*/
   /*background-repeat:repeat;*/
   /*background-position: top left;*/
-  margin: 10px 5px 5px 5px;
+  /*margin: 10px 5px 5px 5px;*/
+  margin-top:10px;
   text-align: right;
   height:auto;
 }
@@ -29,19 +30,19 @@ root {
 .leftmenu_header{
   padding:4px 0px 0px 4px;
   text-align: center;
-  color: #23819C;
-  font-weight: bold;
   /*background-image: url(/images/top.jpg);*/
-  /*background-color:#BBBBFF;*/
-  background-color:#99CCFF;
+  background-color:#F7FBFA;
   height: 25px;
-  border: 1px solid;
-  border-color: #FFFFFF;
+  /*border-bottom:1px solid #CCCCCC;*/
+  border-top:1px solid #CCCCCC;
+  /*border-color: #FFFFFF;*/
 }
 
 .leftmenu_header label{
   font-family: sans-serif, tahoma, verdana;
   font-size: 10pt;
+  color:#0066CC;
+  font-weight: bold;
 }
 
 .leftmenu_body{
@@ -51,29 +52,30 @@ root {
   background-repeat: repeat;
   /*background-position:bottom left;*/
   background-position: top left;
-  border: 1px solid;
-  border-color: #FFFFFF;
-
+  /*border: 1px solid;*/
+  border-bottom: 1px solid #CCCCCC;
+  border-top: 1px solid #CCCCCC;
+  border-left:1px solid #FFF;
+  /*border-color: #FFFFFF;*/
 }
 
 .leftmenu ul{
-  padding:0px 6px 15px 40px;
+  padding:0px 6px 15px 25px;
   text-align: left;
 }
 
 .leftmenu ul li{
-  list-style:  url(../images/arrow.gif) inside;
+  list-style:  url(/images/arrow.gif) inside;
   color:#E8C6FF;
   border-bottom: #D698FE 1px solid;
   line-height:20px;
-  width:190px;
+  width:170px;
 
 }
 .leftmenu ul li a{
   font-family: sans-serif, tahoma, verdana;
-  font-weight: 600;
   font-weight: bold;
-  color:#23819C;
-  font-size: 10pt;
+  color:#0066CC;
+  font-size: 9pt;
   text-decoration: none;
 }
