@@ -16,12 +16,31 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
       <version>4.8.1</version>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>com.smartitengineering.smart-pos.inventory</groupId>
       <artifactId>smart-pos-inventory-client-api</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-user</groupId>
+      <artifactId>smart-user-client-impl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-pos.inventory</groupId>
+      <artifactId>smart-pos-inventory-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-util.rest</groupId>
+      <artifactId>jersey-cache-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-util.rest</groupId>
+      <artifactId>atom-client</artifactId>
       <exclusions>
         <exclusion>
           <groupId>com.google.collections</groupId>
@@ -55,10 +74,13 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.smartitengineering.smart-pos.inventory</groupId>
       <artifactId>guicebinder</artifactId>
       <version>${project.version}</version>
-<!--      <scope>test</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.hbase</groupId>
