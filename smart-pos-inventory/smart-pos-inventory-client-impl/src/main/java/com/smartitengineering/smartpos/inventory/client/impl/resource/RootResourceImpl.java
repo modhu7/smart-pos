@@ -11,12 +11,18 @@ import com.smartitengineering.smartpos.inventory.client.api.resource.RootResourc
 import com.smartitengineering.smartpos.inventory.client.api.resource.StoreResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
+import com.smartitengineering.util.rest.atom.AtomClientUtil;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
 import com.smartitengineering.util.rest.client.jersey.cache.CacheableClientConfigProps;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.atom.abdera.impl.provider.entity.FeedProvider;
+import java.net.URI;
 import org.apache.abdera.model.Feed;
+import org.apache.abdera.model.Link;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -24,14 +30,25 @@ import org.apache.abdera.model.Feed;
  */
 public class RootResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements RootResource{
 
-  public static final String REL_UOMS = "uoms";
-  
-  public static RootResource getInstance() {
-    return new RootResourceImpl();
-  }
+  public static Logger logger = LoggerFactory.getLogger(RootResourceImpl.class);
 
-  public RootResourceImpl(){
-    super(null, BASE_URI);    
+  public static final String REL_UOMS = "uoms";
+  private Link UOMS_LINK;
+  
+  public static RootResource getRoot(URI uri) {
+    try {
+      RootResource resource = new RootResourceImpl(uri);
+      return resource;
+    }
+    catch (RuntimeException ex) {
+      logger.error(ex.getMessage(), ex);
+      throw ex;
+    }
+  }    
+
+  private RootResourceImpl(URI uri) throws IllegalArgumentException, UniformInterfaceException{
+    super(null, uri, false, null);
+    
   }
 
   @Override
@@ -49,7 +66,8 @@ public class RootResourceImpl extends AbstractFeedClientResource<Resource<? exte
 
   @Override
   public UomsResource getOrganizationUomsResource() {
-    return new UomsResourceImpl(this, getRelatedResourceUris().getFirst(REL_UOMS));
+    System.out.println(get().getLink(REL_UOMS).getHref().toString());
+    return new UomsResourceImpl(this, AtomClientUtil.convertFromAtomLinkToResourceLink(get().getLink(REL_UOMS)));
   }
 
   @Override

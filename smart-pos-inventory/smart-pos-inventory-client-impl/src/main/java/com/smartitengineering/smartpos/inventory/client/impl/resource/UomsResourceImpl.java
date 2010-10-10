@@ -10,11 +10,14 @@ import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResourc
 import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
+import com.smartitengineering.util.rest.client.ClientFactory;
 import com.smartitengineering.util.rest.client.ClientUtil;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.config.ClientConfig;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.abdera.model.Feed;
@@ -64,4 +67,5 @@ public class UomsResourceImpl extends AbstractFeedClientResource<Resource<? exte
     }
     return OrganizationUomResources;
   }
+ 
 }
