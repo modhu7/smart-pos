@@ -15,25 +15,45 @@ root {
   display: block;
 }
 body{
-  background-color:#EEEEFF;
+  /*background-color:#EEEEFF;*/
+  background-color:#F3F8F4;
   width:auto;
   text-align: center;
 }
 
 .main_template{
   text-align: left;
-  padding: 5px;
   margin: 0 auto;
+  width:100%;
+}
+
+.maintemplateHeaderContainer{
+  margin: 0 auto;
+    background: url(/images/hdr.jpg) repeat;
+  /*background: url(../images/hdrftr.jpg);*/
+  background-repeat:repeat;
+  background-color: #FFFFFF;
   width:950px;
+  height: 90px;
+  /*border-bottom: 2px solid;*/
+  border-top:2px solid;
+  /*border-bottom-color:#0099CC;*/
+  /*border-bottom-color:#CCCCCC;*/
+  border-top-color:#CCCCCC;
 }
 
 .main_template_header{
-  /*background: url(/images/hdr.jpg) repeat;*/
-  background: url(../images/hdrftr.jpg);
-  background-repeat:repeat;
+  margin: 0 auto;
+  background: inherit;
   background-color: #FFFFFF;
-  width: 100%;
+  width: 950px;
   height: 90px;
+}
+
+.main_template_content{
+  margin: 0 auto;
+  width:950px;
+  background:#FFFFFF;
 }
 
 .sitel_logo_container{
@@ -51,8 +71,8 @@ body{
   font-weight:  bolder;
   font-style: oblique;
   letter-spacing: 1px;
-  /*color: #99BB99;*/
-  color:#75ECFD;
+  color:#0066CC;
+  /*color:#75ECFD;*/
 }
 
 #img_sitel_logo{
@@ -63,21 +83,22 @@ body{
 }
 
 .main_template_options{
-  background: url(../images/bgg.png);
-  /*background: url(../images/footer2.jpg);*/
-  /*background: url(/images/hdr.jpg) repeat;*/
-  background-repeat:repeat;
+  /*background: url(/images/menuline.png);*/
+  /*background-repeat:repeat;*/
+  background-color:#FFFFFF;
   width: auto;
-  height:60px;
+  height:32.5px;
+  border-top:2px solid #3366CC;
+  border-bottom:2px solid #3366CC;
+  border-left:2px solid #3366CC;
+  border-right:2px solid #3366CC;
 }
 
 .optionsSignout{
   float: right;
   margin-top: 20px;
   margin-right: 10px;
-  /*border-left:1px solid;*/
   padding-left: 3px;
-  /*border-left-color:black;*/
 }
 
 .optionsSignout a{
@@ -95,18 +116,24 @@ body{
 }
 
 .template_content{
-  background: url(../images/bg_shadow_bot.gif) repeat;
+  background: url(/images/bg_shadow_bot.gif) repeat;
+  /*background-color:#FFFFFF;*/
   height:587px;
   float: right;
-  width: 73.6%;
+  width: 75.6%;
+  border-top:1px solid #CCCCCC;
+  border-right:1px solid #CCCCCC;
+  border-bottom:1px solid #CCCCCC;
+  border-left:1px solid #CCCCCC;
 }
 
 .left_menu{
   height:587px;;
   float: left;
-  width: 26%;
-  border-color: #24E0FB;
-  background-color:#B4CFEC;
+  width: 23.7%;
+  border:1px solid;
+  border-color: #CCCCCC;
+  background-color:#FFFFFF;
 }
 
 .main_template_footer{
@@ -126,7 +153,6 @@ body{
   font-variant: normal;
   font-style: oblique;
   font-weight: bold;
-  /*color:teal;*/
   color:#75ECFD;
   letter-spacing: 1px;
 }
