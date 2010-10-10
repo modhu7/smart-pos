@@ -1,73 +1,124 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+
+import com.google.inject.AbstractModule;
+import com.smartitengineering.smartpos.inventory.client.api.resource.RootResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
+import com.smartitengineering.smartpos.inventory.client.impl.domain.UnitOfMeasurementImpl;
+import com.smartitengineering.smartpos.inventory.guicebinder.Initializer;
+import com.smartitengineering.util.rest.client.ConnectionConfig;
+import com.smartitengineering.util.bean.guice.GuiceUtil;
+import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
+import java.io.File;
+import java.net.URI;
+import java.util.Properties;
+import junit.framework.Assert;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseTestingUtility;
+import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.HTableDescriptor;
+import org.apache.hadoop.hbase.client.HBaseAdmin;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+/**
+ *
+ * @author russel
  */
+public class UomResourceTest {
 
-package com.smartitengineering.smartpos.inventory.client.impl.resource;
+  private static Server jettyServer;
+  private static final int PORT = 10090;
+  private RootResource rootResource;
+  private static final HBaseTestingUtility TEST_UTIL = new HBaseTestingUtility();
+  public static final String ROOT_URI_STRING = "http://localhost:" + PORT + "/orgs/sn/SITEL/dashboard";
+  
 
-//import com.smartitengineering.smartpos.inventory.client.api.resource.RootResource;
-//import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
-//import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
-//import com.smartitengineering.smartpos.inventory.client.impl.domain.UnitOfMeasurementImpl;
-//import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
-//import java.io.File;
-//import junit.framework.TestCase;
-//import org.eclipse.jetty.server.Handler;
-//import org.eclipse.jetty.server.Server;
-//import org.eclipse.jetty.webapp.WebAppContext;
-//import org.springframework.context.support.ClassPathXmlApplicationContext;
+  @BeforeClass
+  public static void setUp() throws Exception{
+
+    /*
+     * Start HBase and initialize tables
+     */
+
+    TEST_UTIL.startMiniCluster();
+
+    HBaseAdmin admin = new HBaseAdmin(TEST_UTIL.getConfiguration());
+    HTableDescriptor uomTable = new HTableDescriptor("uom");
+    uomTable.addFamily(new HColumnDescriptor("self"));
+    admin.createTable(uomTable);
+
+    
+
+    // DI
+    Properties properties = new Properties();
+    properties.setProperty(GuiceUtil.CONTEXT_NAME_PROP,
+                           "com.smartitengineering.dao.impl.hbase,com.smartitengineering.user.client");
+    properties.setProperty(GuiceUtil.IGNORE_MISSING_DEP_PROP, Boolean.TRUE.toString());
+    properties.setProperty(GuiceUtil.MODULES_LIST_PROP, ConfigurationModule.class.getName());
+    GuiceUtil.getInstance(properties).register();
+    Initializer.init();
+
+    // start web application container
+
+    System.out.println("::: Starting server :::");
+    jettyServer = new Server(PORT);
+    //final String webapp = "./target/smartpos/";
+    final String webapp = "./src/test/webapp/";
+    if (!new File(webapp).exists()) {
+      throw new IllegalStateException("WebApp file/dir does not exist!");
+    }
+    Handler webAppHandler = new WebAppContext(webapp, "/");
+    jettyServer.setHandler(webAppHandler);
+    jettyServer.start();
+
+    // set up client properties
+
+    System.setProperty(ApplicationWideClientFactoryImpl.TRACE, Boolean.TRUE.toString());
+  }
+
+  @AfterClass
+  public static void tearDown() throws Exception{
+    TEST_UTIL.shutdownMiniCluster();
+    jettyServer.stop();
+  }
+
+  @Test
+  public void testCreate() throws Exception{
+
+    rootResource = RootResourceImpl.getRoot(new URI(ROOT_URI_STRING));
+    Assert.assertNotNull(rootResource);
+
+    UomsResource uomsResource = rootResource.getOrganizationUomsResource();
+    Assert.assertNotNull(uomsResource);
 //
-///**
-// *
-// * @author russel
-// */
-//public class UomResourceTest extends TestCase{
-//
-//  private static Server jettyServer;
-//  private static final int PORT = 10090;
-//  private RootResource rootResource;
-//
-//  @Override
-//  public void setUp() throws Exception{
-//    System.out.println("::: Starting server :::");
-//    jettyServer = new Server(PORT);
-//    final String webapp = "./target/smartpos/";
-//    if (!new File(webapp).exists()) {
-//      throw new IllegalStateException("WebApp file/dir does not exist!");
-//    }
-//    Handler webAppHandler = new WebAppContext(webapp, "/");
-//    jettyServer.setHandler(webAppHandler);
-//    jettyServer.start();
-//
-//    // set up client
-//    ClassPathXmlApplicationContext classPathXmlApplicationContext =
-//                                   new ClassPathXmlApplicationContext("config-context.xml");
-//    System.setProperty(ApplicationWideClientFactoryImpl.TRACE, Boolean.TRUE.toString());
-//  }
-//
-//  public void testCreate(){
-//
-//    rootResource = RootResourceImpl.getInstance();
-//    assertNotNull(rootResource);
-//
-//    UomsResource uomsResource = rootResource.getOrganizationUomsResource();
-//    assertNotNull(uomsResource);
-//
-//    UnitOfMeasurementImpl uom = new UnitOfMeasurementImpl();
-//    uom.setId("KG");
-//    uom.setName("Kilogram");
-//    uom.setSymbol("Kg");
-//    uom.setUomSystem("SI");
-//    uom.setUomType("Weight");
-//
-//    UomResource uomResource = uomsResource.create(uom);
-//
-//    assertNotNull(uomResource);
-//  }
-//
-//  @Override
-//  public void tearDown() throws Exception{
-//    jettyServer.stop();
-//  }
-//
-//}
+    UnitOfMeasurementImpl uom = new UnitOfMeasurementImpl();
+    uom.setId("KG");
+    //uom.setName("Kilogram");
+    uom.setSymbol("Kg");
+    uom.setUomSystem("SI");
+    uom.setUomType("Weight");
+
+    UomResource uomResource = uomsResource.create(uom);
+
+    Assert.assertNotNull(uomResource);
+  }
+
+  public static class ConfigurationModule extends AbstractModule {
+
+    @Override
+    protected void configure() {
+      bind(Configuration.class).toInstance(TEST_UTIL.getConfiguration());
+      ConnectionConfig config = new ConnectionConfig();
+      config.setBasicUri("orgs/sn/SITEL/dashboard");
+      config.setContextPath("/");
+      config.setHost("localhost");
+      config.setPort(PORT);
+      bind(ConnectionConfig.class).toInstance(config);
+    }
+  }
+
+}

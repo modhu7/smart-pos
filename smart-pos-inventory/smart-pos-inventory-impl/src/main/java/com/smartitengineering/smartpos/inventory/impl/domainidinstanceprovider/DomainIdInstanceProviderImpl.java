@@ -6,7 +6,7 @@
 package com.smartitengineering.smartpos.inventory.impl.domainidinstanceprovider;
 
 import com.smartitengineering.dao.impl.hbase.spi.DomainIdInstanceProvider;
-import com.smartitengineering.smartpos.inventory.impl.domainid.UomIdImpl;
+import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
 
 /**
  *
@@ -17,7 +17,7 @@ public class DomainIdInstanceProviderImpl implements DomainIdInstanceProvider{
   @Override
   public <IdType> IdType getInstance(Class<? extends IdType> clazz) {
     Object object;
-    object = new UomIdImpl();
+    object = new UnitOfMeasurement.UomIdImpl();
     return (IdType)object;
   }
 

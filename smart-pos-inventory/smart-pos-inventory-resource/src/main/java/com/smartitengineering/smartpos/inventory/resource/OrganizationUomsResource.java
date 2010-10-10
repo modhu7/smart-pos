@@ -8,7 +8,6 @@ import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
-import com.smartitengineering.smartpos.inventory.impl.domainid.UomIdImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -311,6 +310,8 @@ public class OrganizationUomsResource extends AbstractResource {
       // set id with organization name
       basicPost(uom);
       responseBuilder = Response.status(Status.CREATED);
+      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationUomResource.UOM_URI_BUILDER.clone().build(
+          organizationUniqueShortName, uom.getId().getId()).toString()).build());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -333,7 +334,7 @@ public class OrganizationUomsResource extends AbstractResource {
     UnitOfMeasurement uom = new UnitOfMeasurement();
 
     if (keyValueMap.get("id") != null) {
-      UomId uomId = new UomIdImpl();
+      UomId uomId = new UnitOfMeasurement.UomIdImpl();
       uomId.setId(keyValueMap.get("id"));
       uom.setId(uomId);
     }
@@ -400,7 +401,7 @@ public class OrganizationUomsResource extends AbstractResource {
   }
 
   private void basicPost(UnitOfMeasurement uom){
-    UomId uomId = new UomIdImpl(organizationUniqueShortName, uom.getId().getId());
+    UomId uomId = new UnitOfMeasurement.UomIdImpl(organizationUniqueShortName, uom.getId().getId());
     uom.setId(uomId);
     logger.info(uom.getId().getCompositeId());
     Services.getInstance().getUomService().save(uom);

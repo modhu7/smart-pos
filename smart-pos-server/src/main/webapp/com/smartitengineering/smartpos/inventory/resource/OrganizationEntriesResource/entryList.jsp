@@ -44,8 +44,10 @@
   </div>
   <div class="tablecontentname" id="tablecontentid"></div>
 </div>
-<<<<<<< Temporary merge branch 1
+<<<<<<< HEAD
+
 =======
+>>>>>>> saumitra/master
 
 <div class="hide"  id="create">
   <div class="toRoundBox">
@@ -96,4 +98,7 @@
     </div>
   </div>
 </div>
->>>>>>> Temporary merge branch 2
+<<<<<<< HEAD
+
+=======
+>>>>>>> saumitra/master

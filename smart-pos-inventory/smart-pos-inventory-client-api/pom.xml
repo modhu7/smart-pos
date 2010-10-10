@@ -15,7 +15,7 @@
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
-      <artifactId>junit</artifactId>      
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -37,6 +37,16 @@
     <dependency>
       <groupId>com.smartitengineering.smart-util.rest</groupId>
       <artifactId>atom-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-util</groupId>
+      <artifactId>smart-bean-guice-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-pos.inventory</groupId>
+      <artifactId>guicebinder</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

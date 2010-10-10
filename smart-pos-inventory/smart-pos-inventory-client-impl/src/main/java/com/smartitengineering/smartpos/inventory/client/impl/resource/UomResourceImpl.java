@@ -20,6 +20,7 @@ import org.apache.abdera.model.Feed;
  */
 public class UomResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements
     UomResource {
+  public static final String REL_UOM ="UnitOfMeasurement" ;
 
   public UomResourceImpl(Resource referrer, ResourceLink pageLink) {
     super(referrer, pageLink);
@@ -32,15 +33,24 @@ public class UomResourceImpl extends AbstractFeedClientResource<Resource<? exten
 
   @Override
   protected Resource<? extends Feed> instantiatePageableResource(ResourceLink rl) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return null;
   }
   @Override
   public UnitOfMeasurement getUnitOfMeasurement() {
-    return getUnitOfMeasurement();
+    return getUnitOfMeasurement(false);
+  }
+   protected UnitOfMeasurement getUnitOfMeasurement(boolean reload) {
+    Resource<UnitOfMeasurement> uom = super.<UnitOfMeasurement>getNestedResource(REL_UOM);
+    if (reload) {
+      return uom.get();
+    }
+    else {
+      return uom.getLastReadStateOfEntity();
+    }
   }
 
   @Override
   public void update() {
     put(MediaType.APPLICATION_JSON,getUnitOfMeasurement(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER, ClientResponse.Status.FOUND);
-  }
+  }  
 }
