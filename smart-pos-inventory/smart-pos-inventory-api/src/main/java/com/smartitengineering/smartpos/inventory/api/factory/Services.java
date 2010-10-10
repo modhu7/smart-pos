@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.smartpos.inventory.resource;
+package com.smartitengineering.smartpos.inventory.api.factory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

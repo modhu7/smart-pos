@@ -2,19 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
-import com.smartitengineering.smartpos.inventory.impl.domainid.UomIdImpl;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -44,17 +46,16 @@ import org.slf4j.LoggerFactory;
  * @author russel
  */
 @Path("/orgs/sn/{uniqueShortName}/inv/uoms")
-public class OrganizationUomsResource extends AbstractResource{
+public class OrganizationUomsResource extends AbstractResource {
 
   protected final Logger logger = LoggerFactory.getLogger(OrganizationUomsResource.class);
-
   static final UriBuilder ORGANIZATION_UOMS_URI_BUILDER;
   static final UriBuilder ORGANIZATION_UOMS_BEFORE_UOMNAME_URI_BUILDER;
   static final UriBuilder ORGANIZATION_UOMS_AFTER_UOMNAME_URI_BUILDER;
 
   public OrganizationUomsResource(@PathParam("uniqueShortName") String organizationUniqueShortName) {
 
-    logger.info("Organization Short Name:"+organizationUniqueShortName);
+    logger.info("Organization Short Name:" + organizationUniqueShortName);
     this.organizationUniqueShortName = organizationUniqueShortName;
   }
 
@@ -64,7 +65,7 @@ public class OrganizationUomsResource extends AbstractResource{
     ORGANIZATION_UOMS_AFTER_UOMNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationUomsResource.class);
     try {
       ORGANIZATION_UOMS_AFTER_UOMNAME_URI_BUILDER.path(OrganizationUomsResource.class.getMethod("getAfter",
-                                                                                                     String.class));
+                                                                                                String.class));
     }
     catch (Exception ex) {
       System.out.println(ex.getMessage());
@@ -73,7 +74,7 @@ public class OrganizationUomsResource extends AbstractResource{
     ORGANIZATION_UOMS_BEFORE_UOMNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationUomsResource.class);
     try {
       ORGANIZATION_UOMS_BEFORE_UOMNAME_URI_BUILDER.path(OrganizationUomsResource.class.getMethod("getBefore",
-                                                                                                      String.class));
+                                                                                                 String.class));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -256,7 +257,7 @@ public class OrganizationUomsResource extends AbstractResource{
         nextUri.queryParam(key, values);
         previousUri.queryParam(key, values);
       }
-      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastUom.getId()).toString());
+      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastUom.getId().getId()).toString());
 
 
       atomFeed.addLink(nextLink);
@@ -268,7 +269,7 @@ public class OrganizationUomsResource extends AbstractResource{
       UnitOfMeasurement firstUom = uomList.get(0);
 
       prevLink.setHref(
-          previousUri.build(organizationUniqueShortName, firstUom.getId()).toString());
+          previousUri.build(organizationUniqueShortName, firstUom.getId().getId()).toString());
       atomFeed.addLink(prevLink);
 
       //for (User user : users) {
@@ -283,8 +284,8 @@ public class OrganizationUomsResource extends AbstractResource{
 
         // setting link to the each individual user
         Link uomLink = abderaFactory.newLink();
-        uomLink.setHref(OrganizationUomResource.UOM_URI_BUILDER.clone().build(organizationUniqueShortName, uom.
-            getId()).toString());
+        uomLink.setHref(OrganizationUomResource.UOM_URI_BUILDER.clone().build(organizationUniqueShortName, uom.getId().getId()).
+            toString());
         uomLink.setRel(Link.REL_ALTERNATE);
         uomLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -305,25 +306,49 @@ public class OrganizationUomsResource extends AbstractResource{
     ResponseBuilder responseBuilder;
 
     try {
-//      if (uom.getOrganizationId() == null) {
-//        throw new Exception("No organization found");
-//      }
       // set id with organization name
-      uom.setId( new UomIdImpl(organizationUniqueShortName + ":"+uom.getId().getId()));
-      //Services.getInstance().getOrganizationService().populateOrganization(user);      
-      Services.getInstance().getUomService().save(uom);
+      basicPost(uom);
       responseBuilder = Response.status(Status.CREATED);
+      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationUomResource.UOM_URI_BUILDER.clone().build(
+          organizationUniqueShortName, uom.getId().getId()).toString()).build());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      logger.error(ex.getMessage());      
+      logger.error(ex.getMessage());
     }
     return responseBuilder.build();
   }
 
   private UnitOfMeasurement getObjectFromContent(String message) {
+    Map<String, String> keyValueMap = new HashMap<String, String>();
 
-    return new UnitOfMeasurement();
+    String[] keyValuePairs = message.split("&");
+
+    for (int i = 0; i < keyValuePairs.length; i++) {
+
+      String[] keyValuePair = keyValuePairs[i].split("=");
+      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+    }
+
+    UnitOfMeasurement uom = new UnitOfMeasurement();
+
+    if (keyValueMap.get("id") != null) {
+      UomId uomId = new UnitOfMeasurement.UomIdImpl();
+      uomId.setId(keyValueMap.get("id"));
+      uom.setId(uomId);
+    }
+    if (keyValueMap.get("symbol") != null) {
+      uom.setSymbol(keyValueMap.get("symbol"));
+    }
+    if (keyValueMap.get("uomType") != null) {
+      uom.setUomType(keyValueMap.get("uomType"));
+    }
+
+    if (keyValueMap.get("uomSystem") != null) {
+      uom.setUomSystem(keyValueMap.get("uomSystem"));
+    }
+
+    return uom;
   }
 
   @POST
@@ -364,12 +389,20 @@ public class OrganizationUomsResource extends AbstractResource{
       isHtmlPost = false;
     }
 
+    logger.info(message);
     if (isHtmlPost) {
       UnitOfMeasurement uom = getObjectFromContent(message);
 
-        Services.getInstance().getUomService().save(uom);
+      basicPost(uom);
 
     }
     return responseBuilder.build();
+  }
+
+  private void basicPost(UnitOfMeasurement uom){
+    UomId uomId = new UnitOfMeasurement.UomIdImpl(organizationUniqueShortName, uom.getId().getId());
+    uom.setId(uomId);
+    logger.info(uom.getId().getCompositeId());
+    Services.getInstance().getUomService().save(uom);
   }
 }

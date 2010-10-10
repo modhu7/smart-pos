@@ -6,14 +6,21 @@
 package com.smartitengineering.smartpos.inventory.api.domainid;
 
 import com.smartitengineering.dao.impl.hbase.spi.Externalizable;
+import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
  * @author russel
  */
+@JsonDeserialize(as = UnitOfMeasurement.UomIdImpl.class)
 public interface UomId extends Externalizable, Comparable<UomId>{
 
   public String getId();
+
+  public void setId(String id);
+
+  public String getCompositeId();
 
   /**
    * Override the toString so that it could be used to compare to ids of this instance. It should represent the state

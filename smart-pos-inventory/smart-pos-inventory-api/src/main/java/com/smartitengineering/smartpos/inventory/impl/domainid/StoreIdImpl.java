@@ -5,8 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.impl.domainid;
 
-import com.smartitengineering.smartpos.inventory.api.domainid.EntryId;
-import com.smartitengineering.smartpos.inventory.impl.Utils;
+import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -16,14 +15,24 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-public class EntryIdImpl implements EntryId{
+public class StoreIdImpl implements StoreId{
 
   private String id;
+  private String orgUniqueShortName;
 
-  public EntryIdImpl(){}
+  public StoreIdImpl(){
 
-  public EntryIdImpl(String id){
+  }
+
+  public StoreIdImpl(String orgUniqueShortName, String id){
     this.id = id;
+    this.orgUniqueShortName = orgUniqueShortName;
+  }
+
+  public StoreIdImpl(String compositId){
+    String[] infos = compositId.split(":");
+    this.orgUniqueShortName = infos[0];
+    this.id = infos[1];
   }
 
   @Override
@@ -42,7 +51,7 @@ public class EntryIdImpl implements EntryId{
 
   @Override
   public void readExternal(DataInput input) throws IOException, ClassNotFoundException {
-        String idString = Utils.readStringInUTF8(input);
+    String idString = Utils.readStringInUTF8(input);
     if (StringUtils.isBlank(idString)) {
       throw new IOException("No content!");
     }
@@ -53,7 +62,7 @@ public class EntryIdImpl implements EntryId{
   }
 
   @Override
-  public int compareTo(EntryId o) {
+  public int compareTo(StoreId o) {
     if (o == null) {
       return 1;
     }
@@ -61,6 +70,17 @@ public class EntryIdImpl implements EntryId{
       return 0;
     }
     return toString().compareTo(o.toString());
-  }  
+  }
+
+  @Override
+  public String getCompositeId() {
+    return orgUniqueShortName + ":" + id;
+  }
+
+  @Override
+  public String toString(){
+    return orgUniqueShortName + ":" + id;
+  }
+
 
 }

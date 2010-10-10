@@ -5,8 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.impl.domainid;
 
-import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
-import com.smartitengineering.smartpos.inventory.impl.Utils;
+import com.smartitengineering.smartpos.inventory.api.domainid.EntryId;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -16,15 +15,13 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-public class UomIdImpl implements UomId{
+public class EntryIdImpl implements EntryId{
 
   private String id;
 
-  public UomIdImpl(){
-    
-  }
+  public EntryIdImpl(){}
 
-  public UomIdImpl(String id){
+  public EntryIdImpl(String id){
     this.id = id;
   }
 
@@ -44,7 +41,7 @@ public class UomIdImpl implements UomId{
 
   @Override
   public void readExternal(DataInput input) throws IOException, ClassNotFoundException {
-    String idString = Utils.readStringInUTF8(input);
+        String idString = Utils.readStringInUTF8(input);
     if (StringUtils.isBlank(idString)) {
       throw new IOException("No content!");
     }
@@ -52,12 +49,10 @@ public class UomIdImpl implements UomId{
     if (params == null || params.length != 2) {
       throw new IOException("Object should have been in the format globalNamespace:name!");
     }
-//    setGlobalNamespace(params[0]);
-//    setName(params[1]);
   }
 
   @Override
-  public int compareTo(UomId o) {
+  public int compareTo(EntryId o) {
     if (o == null) {
       return 1;
     }
@@ -65,5 +60,6 @@ public class UomIdImpl implements UomId{
       return 0;
     }
     return toString().compareTo(o.toString());
-  }
+  }  
+
 }

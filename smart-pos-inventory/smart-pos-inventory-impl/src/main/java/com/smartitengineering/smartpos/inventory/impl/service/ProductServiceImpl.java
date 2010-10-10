@@ -12,6 +12,7 @@ import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
 import com.smartitengineering.smartpos.inventory.api.Product;
 import com.smartitengineering.smartpos.inventory.api.converter.ProductRowConverter;
 import com.smartitengineering.smartpos.inventory.api.service.ProductService;
+import com.smartitengineering.smartpos.inventory.impl.domainid.ProductIdImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -82,12 +83,12 @@ public class ProductServiceImpl extends AbstractProductService implements Produc
     List<Product> productList = new ArrayList<Product>();
     Product product1 = new Product();
     product1.setName("Product 1");
-    product1.setId("P1");
+    product1.setId(new ProductIdImpl("P1"));
     productList.add(product1);
 
     Product product2 = new Product();
     product2.setName("Product 2");
-    product2.setId("P2");
+    product2.setId(new ProductIdImpl("P2"));
     productList.add(product2);
 
     Collection<Product> products = productList;

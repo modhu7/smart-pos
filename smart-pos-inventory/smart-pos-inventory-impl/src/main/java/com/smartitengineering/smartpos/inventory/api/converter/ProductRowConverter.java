@@ -7,6 +7,7 @@ package com.smartitengineering.smartpos.inventory.api.converter;
 import com.smartitengineering.dao.impl.hbase.spi.ExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.ObjectRowConverter;
 import com.smartitengineering.smartpos.inventory.api.Product;
+import com.smartitengineering.smartpos.inventory.impl.domainid.ProductIdImpl;
 import java.util.LinkedHashMap;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
@@ -55,7 +56,7 @@ public class ProductRowConverter implements ObjectRowConverter<Product> {
       return null;
     }
     final Product product = new Product();
-    product.setId(Bytes.toString(startRow.getRow()));
+    product.setId(new ProductIdImpl(Bytes.toString(startRow.getRow())));
     product.setOrganizationId(Bytes.toInt(startRow.getValue(ORG_ID[0], ORG_ID[1])));
     product.setName(Bytes.toString(startRow.getValue(NAME[0], NAME[1])));
     product.setDescription(Bytes.toString(startRow.getValue(DESCRIPTION[0], DESCRIPTION[1])));

@@ -14,6 +14,10 @@ import com.smartitengineering.dao.impl.hbase.spi.Externalizable;
 public interface StoreId extends Externalizable, Comparable<StoreId>{
   public String getId();
 
+  public void setId(String id);
+
+  public String getCompositeId();
+
   /**
    * Override the toString so that it could be used to compare to ids of this instance. It should represent the state
    * of the Id.

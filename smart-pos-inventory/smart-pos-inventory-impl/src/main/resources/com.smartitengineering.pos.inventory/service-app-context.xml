@@ -62,11 +62,11 @@
     <!-- **************************************************************** -->
     <!-- ********************* Smart Util Reg *************************** -->
     <!-- **************************************************************** -->
-  <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.SpringBeanRegistrar">
+<!--  <bean id="beanRegistrar" class="com.smartitengineering.util.bean.spring.SpringBeanRegistrar">
     <property name="beanFactoryContextName">
       <value>com.smartitengineering.pos.inventory</value>
     </property>
-  </bean>
+  </bean>-->
   
 
     

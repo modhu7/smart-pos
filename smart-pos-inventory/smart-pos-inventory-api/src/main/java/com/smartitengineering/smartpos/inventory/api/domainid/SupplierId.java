@@ -14,6 +14,8 @@ import com.smartitengineering.dao.impl.hbase.spi.Externalizable;
 public interface SupplierId extends Externalizable, Comparable<SupplierId>{
   public String getId();
 
+  public void setId(String id);
+
   /**
    * Override the toString so that it could be used to compare to ids of this instance. It should represent the state
    * of the Id.
