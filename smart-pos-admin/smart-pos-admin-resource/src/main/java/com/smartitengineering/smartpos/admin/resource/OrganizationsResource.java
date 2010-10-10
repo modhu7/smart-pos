@@ -201,11 +201,11 @@ public class OrganizationsResource extends AbstractResource {
 //    Collection<Organization> organizations = Services.getInstance().getOrganizationService().getOrganizations(
 //        uniqueShortName, uniqueShortName, false, count);
 
-    com.smartitengineering.user.client.api.RootResource rootResource = RootResourceImpl.getInstance();
+    com.smartitengineering.user.client.api.RootResource rootResource = RootResourceImpl.getInstance("smartadmin@smart-user", "russel");
 
 
 
-    com.smartitengineering.user.client.api.LoginResource loginResource = rootResource.performAuthentication("smartadmin@smart-user", "russel");
+    com.smartitengineering.user.client.api.LoginResource loginResource = rootResource.getLoginResource();
 
     loginResource.getAclAuthorizationResource("smartadmin", "smart-user", "/orgs", 4);
 
