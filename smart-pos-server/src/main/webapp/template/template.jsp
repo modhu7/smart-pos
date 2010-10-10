@@ -5,7 +5,7 @@
     Author     : uzzal
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
@@ -13,9 +13,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
     <title>aponn for you</title>
-
     <link rel="Stylesheet" href="/css/style.css">
     <link rel="Stylesheet" href="/css/smart-list.css">
     <link rel="Stylesheet" href="/css/smart-forms-style.css">
@@ -31,6 +29,7 @@
     <c:if test="${not empty templateHeadContent}">
       <jsp:include page="${templateHeadContent}"></jsp:include>
     </c:if>
+    <jsp:include page="smart-pos-dashboard-header.jsp"></jsp:include>
 
   </head>
   <body>
@@ -45,20 +44,26 @@
     </div>
 
     <div id="main" class="main_template">
-      <div id="header" class="main_template_header">
-        <div id="sitel_logo" class="sitel_logo_container"><img src="/images/site ultimate build 1.0.0.5.png" alt="Smart IT Engineering Limited" id="img_sitel_logo"></div>
-        <div id="sitel_slogan" class="sitel_slogan_container"><label>IT for smarter living</label></div>
+      <div class="maintemplateHeaderContainer">
+        <div id="header" class="main_template_header">
+          <div id="sitel_logo" class="sitel_logo_container"><img src="/images/site ultimate build 1.0.0.5.png" alt="Smart IT Engineering Limited" id="img_sitel_logo"></div>
+          <div id="sitel_slogan" class="sitel_slogan_container"><label>IT for smarter livinG</label></div>
+        </div>
       </div>
-      <div id="options" class="main_template_options">
-        <jsp:include page="smart-pos-dashboard.jsp"></jsp:include>
+      <div class="main_template_content">
+        <div id="options" class="main_template_options">
+          <%--<jsp:include page="smart-pos-dashboard.jsp"></jsp:include>--%>
+        </div>
+        <div class="clear"></div>
+        <div id="left" class="left_menu"></div>
+        <div id="content" class="template_content">
+          <jsp:include page="${templateContent}"></jsp:include>
+          <jsp:include page="smart-pos-dashboard.jsp"></jsp:include>
+        </div>
+        <div class="clear"></div>
+        <div id="footer" class="main_template_footer"><div class="footer_label_container"><label>copyright@smart it engineering limited 2010</label></div></div>
       </div>
-      <div class="clear"></div>
-      <div id="content" class="template_content">
-        <jsp:include page="${templateContent}"></jsp:include>
-      </div>
-      <div id="left" class="left_menu"></div>
-      <div class="clear"></div>
-      <div id="footer" class="main_template_footer"><div class="footer_label_container"><label>copyright@smart it engineering limited 2010</label></div></div>
+      <%--<div class="clear"></div>--%>
     </div>
   </body>
 </html>
