@@ -5,14 +5,11 @@
 package com.smartitengineering.smartpos.inventory.api.converter;
 
 import com.smartitengineering.dao.impl.hbase.spi.ExecutorService;
-import com.smartitengineering.dao.impl.hbase.spi.ObjectRowConverter;
 import com.smartitengineering.dao.impl.hbase.spi.impl.AbstactObjectRowConverter;
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
-import com.smartitengineering.smartpos.inventory.impl.domainid.UomIdImpl;
 import java.util.LinkedHashMap;
 import java.util.NavigableMap;
-import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -53,7 +50,7 @@ public class UOMRowConverter extends AbstactObjectRowConverter<UnitOfMeasurement
     final NavigableMap<byte[], byte[]> self = allFamilies.get(FAMILY_SELF);
 
     if(self != null && !self.isEmpty()){
-      measurement.setId(new UomIdImpl( Bytes.toString(self.get(CELL_ID))));
+      measurement.setId(new UnitOfMeasurement.UomIdImpl( Bytes.toString(self.get(CELL_ID))));
       measurement.setSymbol(Bytes.toString(self.get(CELL_SYMBOL)));
       measurement.setUomSystem(Bytes.toString(self.get(CELL_SYSTEM)));
       measurement.setUomType(Bytes.toString(self.get(CELL_TYPE)));

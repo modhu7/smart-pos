@@ -13,13 +13,23 @@ public interface UnitOfMeasurement {
 
   public String getId();
 
-  public String getName();
+  public void setId(String id);
+
+  //public String getName();
 
   public String getSymbol();
 
+  public void setSymbol(String symbol);
+
   public String getUomType();         // length, weight.. etc etc
 
-  public String getUomSystem();       // metric system, SI system, etc  
+  public void setUomType(String type);
+
+  public String getUomSystem();       // metric system, SI system, etc
+
+  public void setUomSystem(String system);
 
 
 }
+
+

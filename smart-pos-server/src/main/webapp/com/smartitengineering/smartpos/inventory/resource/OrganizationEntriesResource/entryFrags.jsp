@@ -3,17 +3,22 @@
     Created on : Aug 21, 2010, 2:05:22 PM
     Author     : russel
 --%>
-<%@page import="com.smartitengineering.smartpos.inventory.api.Entry"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<<<<<<< Temporary merge branch 1
+<<<<<<< HEAD
 
-=======
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="com.smartitengineering.smartpos.inventory.api.Entry"%>
 
 
->>>>>>> Temporary merge branch 2
+=======
+<%@page import="com.smartitengineering.smartpos.inventory.api.Entry"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
+
+
+>>>>>>> saumitra/master
 <c:set var="first" value="0"></c:set>
 <c:set var="last" value="0"></c:set>
 
@@ -26,7 +31,32 @@
   </c:otherwise>
 </c:choose>
 
-<<<<<<< Temporary merge branch 1
+
+<<<<<<< HEAD
+<div id="userListRootDiv">
+  <div class="tableList" id="userListContainer">
+    <c:forEach var="userPerson" items="${it}" varStatus="status">
+        <c:if test="${status.first}">
+          <c:set var="first" value="${entry.entryDate}"></c:set>
+        </c:if>
+        <c:if test="${status.last}">
+          <c:set var="last" value="${entry.entryDate}"></c:set>
+        </c:if>
+      <div id="userRow${status.index}" class="row_of_list">
+        
+        <div id="entryDate${status.index}" class="entryDate_column"><a href="inv/entries/entrydate/${entry.entryDate}">${entry.entryDate}</a></div>
+        <div id="productName${status.index}" class="productName_column"><a href="inv/entries/entrydate/${entry.entryDate}">${entry.productName}</a></div>
+        <div id="productCode${status.index}" class="productCode_column"><a href="inv/entries/entrydate/${entry.entryDate}">${entry.productId}</a></div>
+        <div id="quantity${status.index}" class="quantity_column"><a href="inv/entries/entrydate/${entry.entryDate}">${entry.quantity}</a></div>
+        <div id="expireDate${status.index}" class="expireDate_column"><a href="inv/entries/entrydate/${entry.entryDate}">${entry.expiryDate}</a></div>
+      </div>
+    </c:forEach>
+  </div>
+
+  <div class="navigation_container" id="linkcontainer">
+    <div id="nextUsersLinkCont" class="list_navigation_links"><a id="next" href="entries/after/afterEntryDate/${last}/frags${qParam}">next >></a> </div>
+    <div id="previousUsersLinkCont" class="list_navigation_links"><a id="previous" href="entries/before/beforeEntryDate/${first}/frags${qParam}"><< previous</a></div>
+=======
 <div id="orgFragRootDiv">
   <div id="mainOrgPaginatedList" class="tableList">
     <c:forEach var="entry" items="${it}" varStatus="status">
@@ -51,30 +81,6 @@
     <div id="previousLinkContainer"  class="list_navigation_links">
       <a id="previous" href="/orgs/before/${first}/frags${qParam}" class="prev"><< previous<%--<img src="/images/30_64x64.png" alt="previous" class="list_nav">--%></a>
     </div>
-=======
-<div id="userListRootDiv">
-  <div class="tableList" id="userListContainer">
-    <c:forEach var="userPerson" items="${it}" varStatus="status">
-        <c:if test="${status.first}">
-          <c:set var="first" value="${entry.entryDate}"></c:set>
-        </c:if>
-        <c:if test="${status.last}">
-          <c:set var="last" value="${entry.entryDate}"></c:set>
-        </c:if>
-      <div id="userRow${status.index}" class="row_of_list">
-        
-        <div id="entryDate${status.index}" class="entryDate_column"><a href="inv/entries/entrydate/${entry.entryDate}">${entry.entryDate}</a></div>
-        <div id="productName${status.index}" class="productName_column"><a href="inv/entries/entrydate/${entry.entryDate}">${entry.productName}</a></div>
-        <div id="productCode${status.index}" class="productCode_column"><a href="inv/entries/entrydate/${entry.entryDate}">${entry.productId}</a></div>
-        <div id="quantity${status.index}" class="quantity_column"><a href="inv/entries/entrydate/${entry.entryDate}">${entry.quantity}</a></div>
-        <div id="expireDate${status.index}" class="expireDate_column"><a href="inv/entries/entrydate/${entry.entryDate}">${entry.expiryDate}</a></div>
-      </div>
-    </c:forEach>
-  </div>
-
-  <div class="navigation_container" id="linkcontainer">
-    <div id="nextUsersLinkCont" class="list_navigation_links"><a id="next" href="entries/after/afterEntryDate/${last}/frags${qParam}">next >></a> </div>
-    <div id="previousUsersLinkCont" class="list_navigation_links"><a id="previous" href="entries/before/beforeEntryDate/${first}/frags${qParam}"><< previous</a></div>
->>>>>>> Temporary merge branch 2
+>>>>>>> saumitra/master
   </div>
 </div>

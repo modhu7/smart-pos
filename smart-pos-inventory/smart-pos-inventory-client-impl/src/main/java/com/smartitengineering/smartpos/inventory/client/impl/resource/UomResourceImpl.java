@@ -52,5 +52,5 @@ public class UomResourceImpl extends AbstractFeedClientResource<Resource<? exten
   @Override
   public void update() {
     put(MediaType.APPLICATION_JSON,getUnitOfMeasurement(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER, ClientResponse.Status.FOUND);
-  }
+  }  
 }

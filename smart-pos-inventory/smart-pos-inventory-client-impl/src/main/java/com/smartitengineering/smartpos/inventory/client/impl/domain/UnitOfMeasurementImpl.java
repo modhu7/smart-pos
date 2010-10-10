@@ -6,6 +6,7 @@
 package com.smartitengineering.smartpos.inventory.client.impl.domain;
 
 import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -14,7 +15,7 @@ import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasure
 public class UnitOfMeasurementImpl implements UnitOfMeasurement{
 
   private String id;
-  private String name;
+  //private String name;
   private String uomType;
   private String uomSystem;
   private String symbol;
@@ -23,9 +24,10 @@ public class UnitOfMeasurementImpl implements UnitOfMeasurement{
     this.id = id;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+//  @JsonIgnore
+//  public void setName(String name) {
+//    this.name = name;
+//  }
 
   public void setSymbol(String symbol) {
     this.symbol = symbol;
@@ -44,10 +46,10 @@ public class UnitOfMeasurementImpl implements UnitOfMeasurement{
     return id;
   }
 
-  @Override
-  public String getName() {
-    return name;
-  }
+//  @Override
+//  public String getName() {
+//    return name;
+//  }
 
   @Override
   public String getSymbol() {
