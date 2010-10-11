@@ -12,87 +12,6 @@
   <version>0.1-SNAPSHOT</version>
   <name>smart-pos-server Java EE 6 Webapp</name>
   <url>http://maven.apache.org</url>
-<!--    <repositories>
-        <repository>
-            <id>java.net2</id>
-            <name>Repository hosting the jee6 artifacts</name>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
-    </repositories>-->
-<!--    <dependencies>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>6.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.2</version>
-            <scope>test</scope>
-        </dependency>
-
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.1-beta-1</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-        </plugins>
-        <finalName>smart-pos-server</finalName>
-    </build>
-    <profiles>
-        <profile>
-            <id>endorsed</id>
-            <activation>
-                <property>
-                    <name>sun.boot.class.path</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <version>2.0.2</version>
-                        <configuration>
-                             javaee6 contains upgrades of APIs contained within the JDK itself.
-                                 As such these need to be placed on the bootclasspath, rather than classpath of the
-                                 compiler.
-                                 If you don't make use of these new updated API, you can delete the profile.
-                                 On non-SUN jdk, you will need to create a similar profile for your jdk, with the similar property as sun.boot.class.path in Sun's JDK.
-                            <compilerArguments>
-                                <bootclasspath>${settings.localRepository}/javax/javaee-endorsed-api/6.0/javaee-endorsed-api-6.0.jar${path.separator}${sun.boot.class.path}</bootclasspath>
-                            </compilerArguments>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>javax</groupId>
-                                <artifactId>javaee-endorsed-api</artifactId>
-                                <version>6.0</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>-->
   <build>
     <finalName>smartpos</finalName>
     <plugins>
@@ -105,7 +24,7 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-war-plugin</artifactId>        
+        <artifactId>maven-war-plugin</artifactId>
         <inherited>true</inherited>
       </plugin>
       <plugin>
@@ -197,23 +116,27 @@
     </dependency>
     <dependency>
       <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>      
+      <artifactId>commons-collections</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>    
+      <artifactId>commons-lang</artifactId>
     </dependency>
     <dependency>
       <groupId>com.smartitengineering.smart-util</groupId>
-      <artifactId>smart-bean-spring-util</artifactId>      
+      <artifactId>smart-bean-spring-util</artifactId>
     </dependency>
     <dependency>
       <groupId>javax.servlet.jsp</groupId>
-      <artifactId>jsp-api</artifactId>      
+      <artifactId>jsp-api</artifactId>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>      
+      <artifactId>jstl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.smartitengineering.smart-dao</groupId>
+      <artifactId>hbase-ddl-util</artifactId> 
     </dependency>
   </dependencies>
 </project>
