@@ -7,6 +7,7 @@ package com.smartitengineering.smartpos.inventory.client.impl.resource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
 import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
+import com.smartitengineering.util.rest.client.ClientUtil;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
 import com.sun.jersey.api.client.ClientResponse;
@@ -21,6 +22,7 @@ import org.apache.abdera.model.Feed;
 public class UomResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements
     UomResource {
   public static final String REL_UOM ="UnitOfMeasurement" ;
+
 
   public UomResourceImpl(Resource referrer, ResourceLink pageLink) {
     super(referrer, pageLink);
@@ -49,8 +51,28 @@ public class UomResourceImpl extends AbstractFeedClientResource<Resource<? exten
     }
   }
 
+   public UnitOfMeasurement getUom(){
+     return getUom(false);
+   }
+
+   protected UnitOfMeasurement getUom(boolean reload) {
+    Resource<UnitOfMeasurement> uom = super.<UnitOfMeasurement>getNestedResource(REL_UOM);
+    if (reload) {
+      return uom.get();
+    }
+    else {
+      return uom.getLastReadStateOfEntity();
+    }
+  }
+
   @Override
   public void update() {
-    put(MediaType.APPLICATION_JSON,getUnitOfMeasurement(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER, ClientResponse.Status.FOUND);
-  }  
+    put(MediaType.APPLICATION_JSON, getUom(), ClientResponse.Status.OK, ClientResponse.Status.SEE_OTHER,
+        ClientResponse.Status.FOUND);
+  }
+
+  @Override
+  public void delete() {
+    delete(ClientResponse.Status.OK);
+  }
 }
