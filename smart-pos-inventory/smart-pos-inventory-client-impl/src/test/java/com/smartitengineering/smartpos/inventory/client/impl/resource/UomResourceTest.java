@@ -4,6 +4,7 @@ import com.smartitengineering.smartpos.inventory.client.api.resource.RootResourc
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
 import com.smartitengineering.smartpos.inventory.client.impl.domain.UnitOfMeasurementImpl;
+import com.smartitengineering.smartpos.inventory.client.impl.resource.RootResourceImpl;
 import com.smartitengineering.smartpos.inventory.guicebinder.Initializer;
 import com.smartitengineering.util.rest.client.ConnectionConfig;
 import com.smartitengineering.util.bean.guice.GuiceUtil;

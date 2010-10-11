@@ -44,10 +44,6 @@
   </div>
   <div class="tablecontentname" id="tablecontentid"></div>
 </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> saumitra/master
 
 <div class="hide"  id="create">
   <div class="toRoundBox">
@@ -98,7 +94,3 @@
     </div>
   </div>
 </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> saumitra/master
