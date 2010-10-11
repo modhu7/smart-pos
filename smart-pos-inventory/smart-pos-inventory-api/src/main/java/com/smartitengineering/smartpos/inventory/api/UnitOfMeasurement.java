@@ -18,10 +18,19 @@ import org.apache.commons.lang.StringUtils;
  */
 public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasurement, UomId, Long> {
 
+  private String longName;
   private String symbol;
   private String uomType;         // length, weight.. etc etc
   private String uomSystem;       // metric system, SI system, etc
   private Integer organizationId;
+
+  public String getLongName() {
+    return longName;
+  }
+
+  public void setLongName(String longName) {
+    this.longName = longName;
+  }
 
   public String getSymbol() {
     return symbol;
@@ -74,27 +83,13 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
 
   public static class UomIdImpl implements UomId {
 
-    private String id;
-    private String orgUniqueShortName;
+    private String id;    
 
     public UomIdImpl() {
     }
 
-    public UomIdImpl(String orgUniqueShortName, String id) {
+    public UomIdImpl(String id){
       this.id = id;
-      this.orgUniqueShortName = orgUniqueShortName;
-    }
-
-    public UomIdImpl(String compositId) {
-      if (compositId != null || !compositId.equals("")) {
-        String[] infos = compositId.split(":");
-        if (infos.length > 1) {
-          this.orgUniqueShortName = infos[0];
-          this.id = infos[1];
-        }else if(infos.length == 1){
-          this.id = infos[0];
-        }
-      }
     }
 
     @Override
@@ -106,22 +101,9 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
       this.id = id;
     }
 
-    public String getOrgUniqueShortName() {
-      return orgUniqueShortName;
-    }
-
-    public void setOrgUniqueShortName(String orgUniqueShortName) {
-      this.orgUniqueShortName = orgUniqueShortName;
-    }
-
     @Override
-    public String getCompositeId() {
-      return orgUniqueShortName + ":" + id;
-    }
-
-    @Override
-    public String toString() {
-      return orgUniqueShortName + ":" + id;
+    public String getCustomId(){
+      return id;
     }
 
     @Override
@@ -136,9 +118,15 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
         throw new IOException("No content!");
       }
       String[] params = idString.split(":");
-      if (params == null || params.length != 2) {
+      if (params == null || params.length != 1) {
         throw new IOException("Object should have been in the format globalNamespace:name!");
       }
+      id = params[0];
+    }
+
+    @Override
+    public String toString() {
+      return id;
     }
 
     @Override

@@ -23,6 +23,7 @@ public abstract class AbstractUomService implements UomService{
   @Inject
   protected CommonWriteDao<UnitOfMeasurement> commonWriteDao;
 
+  @Override
   public UnitOfMeasurement getById(UomId id){
     if(id == null)
       return null;
