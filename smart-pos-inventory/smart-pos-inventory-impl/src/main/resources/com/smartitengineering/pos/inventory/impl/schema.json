@@ -11,7 +11,7 @@
     "tableName": "store",
     "columnFamilyConfigurations": [
       {
-        "familyName": "simple"
+        "familyName": "self"
       }      
     ]
   }

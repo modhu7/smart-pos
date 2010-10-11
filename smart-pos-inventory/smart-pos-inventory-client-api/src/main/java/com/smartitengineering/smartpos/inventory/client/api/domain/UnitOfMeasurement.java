@@ -13,9 +13,7 @@ public interface UnitOfMeasurement {
 
   public String getId();
 
-  public void setId(String id);
-
-  //public String getName();
+  public void setId(String id);  
 
   public String getSymbol();
 
@@ -28,6 +26,10 @@ public interface UnitOfMeasurement {
   public String getUomSystem();       // metric system, SI system, etc
 
   public void setUomSystem(String system);
+
+  public void setLongName(String longName);
+
+  public String getLongName();
 
 
 }

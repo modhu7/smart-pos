@@ -20,7 +20,7 @@ public interface UomId extends Externalizable, Comparable<UomId>{
 
   public void setId(String id);
 
-  public String getCompositeId();
+  public String getCustomId();
 
   /**
    * Override the toString so that it could be used to compare to ids of this instance. It should represent the state

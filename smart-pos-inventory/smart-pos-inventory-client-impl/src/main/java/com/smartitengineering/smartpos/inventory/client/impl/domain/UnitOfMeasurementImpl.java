@@ -6,6 +6,7 @@
 package com.smartitengineering.smartpos.inventory.client.impl.domain;
 
 import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
@@ -15,7 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 public class UnitOfMeasurementImpl implements UnitOfMeasurement{
 
   private String id;
-  //private String name;
+  private String longName;
   private String uomType;
   private String uomSystem;
   private String symbol;
@@ -23,11 +24,6 @@ public class UnitOfMeasurementImpl implements UnitOfMeasurement{
   public void setId(String id) {
     this.id = id;
   }
-
-//  @JsonIgnore
-//  public void setName(String name) {
-//    this.name = name;
-//  }
 
   public void setSymbol(String symbol) {
     this.symbol = symbol;
@@ -46,11 +42,6 @@ public class UnitOfMeasurementImpl implements UnitOfMeasurement{
     return id;
   }
 
-//  @Override
-//  public String getName() {
-//    return name;
-//  }
-
   @Override
   public String getSymbol() {
     return symbol;
@@ -58,11 +49,37 @@ public class UnitOfMeasurementImpl implements UnitOfMeasurement{
 
   @Override
   public String getUomType() {
+    if(uomType == null){
+      uomType = "";
+    }
     return uomType;
   }
 
   @Override
   public String getUomSystem() {
+    if(uomSystem == null){
+      uomSystem = "";
+    }
     return uomSystem;
   }
+
+  @Override
+  public void setLongName(String longName) {
+    this.longName = longName;
+  }
+
+  @Override
+  public String getLongName() {
+    if(longName == null){
+      longName = "";
+    }
+    return longName;
+  }
+
+//  public boolean isValid() {
+//    if (StringUtils.isBlank(getId()) || StringUtils.isBlank(symbol)) {
+//      return false;
+//    }
+//    return true;
+//  }
 }

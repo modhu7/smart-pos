@@ -78,6 +78,11 @@
           <div class="form_textField_pos"><input type="text" name="id" id="id" class="textFieldPos" title="Unit"></div>
           <div class="clear"></div>
         </div>
+          <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.uominput5"/></label></div>
+          <div class="form_textField_pos"><input type="text" name="longName" id="longName" class="textFieldPos" title="Long Name"></div>
+          <div class="clear"></div>
+        </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.uominput3"/></label></div>
           <div class="form_textField_pos"><input type="text" name="symbol" id="symbol" class="textFieldPos" title="Symbol"/></div>
