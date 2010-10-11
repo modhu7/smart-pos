@@ -16,7 +16,7 @@
   <div id="leftmenu_header_userlist_1" class="leftmenu_header"><label><fmt:message key="inv.prdentrytitle"/></label></div>
   <div id="leftmenu_body_userlist_1" class="leftmenu_body">
     <ul>
-      <li><a href="javascript: Orgpageselect()"><fmt:message key="inv.prdentrylink"/></a></li>
+      <li><a href="javascript:showonlyone('newboxes4')"><fmt:message key="inv.prdentrylink"/></a></li>
     </ul>
   </div>
 </div>
@@ -44,12 +44,8 @@
   </div>
   <div class="tablecontentname" id="tablecontentid"></div>
 </div>
-<<<<<<< HEAD
 
-=======
->>>>>>> saumitra/master
-
-<div class="hide"  id="create">
+<div name="newboxes" class="hide"  id="newboxes4">
   <div class="toRoundBox">
     <div id="title_of_entries" class="header_entry_form_pos">
       <label><fmt:message key="inv.prdentryhead"/></label>
@@ -98,7 +94,3 @@
     </div>
   </div>
 </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> saumitra/master
