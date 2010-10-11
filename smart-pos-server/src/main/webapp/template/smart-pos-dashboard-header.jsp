@@ -7,7 +7,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:set var="permission" value="31"></c:set>
-<c:set var="" value=""></c:set>
 <script type="text/javascript">
   $(document).ready(function () {
     var p = ${permission};
