@@ -1,0 +1,19 @@
+[
+  {
+    "tableName": "uom",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      }
+    ]
+  },
+  {
+    "tableName": "store",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self",
+        "familyName": "address"
+      }      
+    ]
+  }
+]

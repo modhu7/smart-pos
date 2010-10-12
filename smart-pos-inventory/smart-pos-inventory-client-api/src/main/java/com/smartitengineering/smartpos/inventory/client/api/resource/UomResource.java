@@ -17,6 +17,8 @@ public interface UomResource extends WritableResource<Feed>{
   
   public UnitOfMeasurement getUnitOfMeasurement();
 
-   public void update();
+  public void update();
+
+  public void delete();
    
 }

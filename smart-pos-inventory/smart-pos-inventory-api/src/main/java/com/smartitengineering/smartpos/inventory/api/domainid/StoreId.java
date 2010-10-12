@@ -6,11 +6,14 @@
 package com.smartitengineering.smartpos.inventory.api.domainid;
 
 import com.smartitengineering.dao.impl.hbase.spi.Externalizable;
+import com.smartitengineering.smartpos.inventory.api.Store;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
  * @author russel
  */
+@JsonDeserialize(as = Store.StoreIdImpl.class)
 public interface StoreId extends Externalizable, Comparable<StoreId>{
   public String getId();
 

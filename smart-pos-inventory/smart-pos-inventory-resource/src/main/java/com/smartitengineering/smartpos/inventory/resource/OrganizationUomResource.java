@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-@Path("/orgs/sn/{uniqueShortName}/inv/uoms/name/{uomName}")
+@Path("/inv/uoms/name/{uomName}")
 public class OrganizationUomResource extends AbstractResource {
 
   protected final Logger logger = LoggerFactory.getLogger(OrganizationUomResource.class);
@@ -61,16 +61,15 @@ public class OrganizationUomResource extends AbstractResource {
       throw new InstantiationError();
 
     }
-  }
-  @PathParam("uniqueShortName")
-  private String organizationUniqueShortName;
+  }  
   @PathParam("uomName")
   private String uomName;
 
-  public OrganizationUomResource(@PathParam("uniqueShortName") String organizationShortName,
-                                 @PathParam("uomName") String uomName) {
-    UomId uomId = new UnitOfMeasurement.UomIdImpl(organizationShortName, uomName);
+  public OrganizationUomResource(@PathParam("uomName") String uomName) {
+    UomId uomId = new UnitOfMeasurement.UomIdImpl(uomName);
+    logger.info(uomId.toString());
     uom = Services.getInstance().getUomService().getById(uomId);
+    //uom = Services.getInstance().getUomService().getByUomId(uomId);
 
   }
 
@@ -97,8 +96,7 @@ public class OrganizationUomResource extends AbstractResource {
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
-
-    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    
     servletRequest.setAttribute("templateHeadContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationUomResource/uomDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
@@ -115,12 +113,7 @@ public class OrganizationUomResource extends AbstractResource {
   public Response update(UnitOfMeasurement uom) {
 
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    try {
-
-      if (uom.getOrganizationId() == null) {
-        throw new Exception("No organization found");
-      }
-
+    try {      
       Services.getInstance().getUomService().update(uom);
       responseBuilder = Response.ok(getUomFeed());
     }
@@ -147,8 +140,7 @@ public class OrganizationUomResource extends AbstractResource {
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(UOM_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
-                                                          uom.getId()).toString());
+    altLink.setHref(UOM_CONTENT_URI_BUILDER.clone().build(uom.getId()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     uomFeed.addLink(altLink);
@@ -166,8 +158,14 @@ public class OrganizationUomResource extends AbstractResource {
   @POST
   @Path("/delete")
   public Response deletePost() {
-    Services.getInstance().getUomService().delete(uom);
     ResponseBuilder responseBuilder = Response.ok();
+    try{
+      Services.getInstance().getUomService().delete(uom);
+
+    }catch(Exception ex){
+      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+    }
+
     return responseBuilder.build();
   }
 
@@ -207,6 +205,7 @@ public class OrganizationUomResource extends AbstractResource {
       contentType = contentType;
       isHtmlPost = false;
     }
+    logger.info(message);
 
     if (isHtmlPost) {
       UnitOfMeasurement newUom = getUomFromContent(message);
@@ -216,6 +215,7 @@ public class OrganizationUomResource extends AbstractResource {
       }
       catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+        logger.error(ex.getMessage());
       }
     }
     return responseBuilder.build();
@@ -238,10 +238,14 @@ public class OrganizationUomResource extends AbstractResource {
     UnitOfMeasurement uom = new UnitOfMeasurement();
 
     if(keyValueMap.get("id") != null){
-      UomId uomId = new UnitOfMeasurement.UomIdImpl();
-      uomId.setId(keyValueMap.get("id"));
+      UomId uomId = new UnitOfMeasurement.UomIdImpl(keyValueMap.get("id"));
       uom.setId(uomId);
     }
+
+    if(keyValueMap.get("longName") != null){
+      uom.setLongName(keyValueMap.get("longName"));
+    }
+
     if(keyValueMap.get("symbol") != null){
       uom.setSymbol(keyValueMap.get("symbol"));
     }

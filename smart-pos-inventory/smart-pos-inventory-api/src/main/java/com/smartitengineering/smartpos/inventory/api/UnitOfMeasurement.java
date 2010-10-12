@@ -11,6 +11,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
@@ -18,10 +20,18 @@ import org.apache.commons.lang.StringUtils;
  */
 public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasurement, UomId, Long> {
 
+  private String longName;
   private String symbol;
   private String uomType;         // length, weight.. etc etc
-  private String uomSystem;       // metric system, SI system, etc
-  private Integer organizationId;
+  private String uomSystem;       // metric system, SI system, etc 
+
+  public String getLongName() {
+    return longName;
+  }
+
+  public void setLongName(String longName) {
+    this.longName = longName;
+  }
 
   public String getSymbol() {
     return symbol;
@@ -47,14 +57,8 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
     this.uomType = uomType;
   }
 
-  public Integer getOrganizationId() {
-    return organizationId;
-  }
-
-  public void setOrganizationId(Integer organizationID) {
-    this.organizationId = organizationID;
-  }
-
+  @JsonIgnore
+  @Override
   public boolean isValid() {
     if (StringUtils.isBlank(getId().getId()) || StringUtils.isBlank(symbol)) {
       return false;
@@ -62,6 +66,7 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
     return true;
   }
 
+  @Override
   public String toString() {
     String str = "";
     str += getId() + "\n";
@@ -72,29 +77,16 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
     return str;
   }
 
+  @JsonDeserialize(as = String.class)
   public static class UomIdImpl implements UomId {
 
-    private String id;
-    private String orgUniqueShortName;
+    private String id;    
 
     public UomIdImpl() {
     }
 
-    public UomIdImpl(String orgUniqueShortName, String id) {
+    public UomIdImpl(String id){
       this.id = id;
-      this.orgUniqueShortName = orgUniqueShortName;
-    }
-
-    public UomIdImpl(String compositId) {
-      if (compositId != null || !compositId.equals("")) {
-        String[] infos = compositId.split(":");
-        if (infos.length > 1) {
-          this.orgUniqueShortName = infos[0];
-          this.id = infos[1];
-        }else if(infos.length == 1){
-          this.id = infos[0];
-        }
-      }
     }
 
     @Override
@@ -102,26 +94,15 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
       return id;
     }
 
+    @Override
     public void setId(String id) {
       this.id = id;
     }
 
-    public String getOrgUniqueShortName() {
-      return orgUniqueShortName;
-    }
-
-    public void setOrgUniqueShortName(String orgUniqueShortName) {
-      this.orgUniqueShortName = orgUniqueShortName;
-    }
-
     @Override
-    public String getCompositeId() {
-      return orgUniqueShortName + ":" + id;
-    }
-
-    @Override
-    public String toString() {
-      return orgUniqueShortName + ":" + id;
+    @JsonIgnore
+    public String getCustomId(){
+      return id;
     }
 
     @Override
@@ -136,9 +117,15 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
         throw new IOException("No content!");
       }
       String[] params = idString.split(":");
-      if (params == null || params.length != 2) {
+      if (params == null || params.length != 1) {
         throw new IOException("Object should have been in the format globalNamespace:name!");
       }
+      id = params[0];
+    }
+
+    @Override
+    public String toString() {
+      return id;
     }
 
     @Override

@@ -17,6 +17,8 @@ public interface UomService {
 
   UnitOfMeasurement getById(UomId uomId);
 
+  public UnitOfMeasurement getByUomId(UomId uomId);
+
   public void save(UnitOfMeasurement uom);
 
   public void update(UnitOfMeasurement uom);

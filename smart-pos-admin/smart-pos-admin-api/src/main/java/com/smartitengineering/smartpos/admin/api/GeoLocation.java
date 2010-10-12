@@ -17,6 +17,9 @@ public class GeoLocation extends AbstractPersistentDTO<GeoLocation>{
     private Double latitude;
 
     public Double getLatitude() {
+      if(latitude == null){
+        latitude = new Double(0);
+      }
         return latitude;
     }
 
@@ -25,6 +28,9 @@ public class GeoLocation extends AbstractPersistentDTO<GeoLocation>{
     }
 
     public Double getLongitude() {
+      if(longitude == null){
+        longitude = new Double(0);
+      }
         return longitude;
     }
 

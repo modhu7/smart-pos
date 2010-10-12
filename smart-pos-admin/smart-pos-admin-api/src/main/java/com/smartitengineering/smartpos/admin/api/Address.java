@@ -21,6 +21,9 @@ public class Address extends AbstractPersistentDTO<Address> {
     private GeoLocation geoLocation;
 
     public GeoLocation getGeoLocation() {
+      if(geoLocation == null){
+        geoLocation = new GeoLocation();
+      }
         return geoLocation;
     }
 

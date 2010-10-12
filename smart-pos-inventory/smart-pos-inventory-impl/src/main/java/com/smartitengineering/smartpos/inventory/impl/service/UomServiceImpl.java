@@ -12,6 +12,7 @@ import com.smartitengineering.dao.impl.hbase.CommonDao;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.converter.UOMRowConverter;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.smartitengineering.smartpos.inventory.api.service.UomService;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
+import javax.ws.rs.QueryParam;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,17 +31,9 @@ import org.slf4j.LoggerFactory;
  */
 public class UomServiceImpl extends AbstractUomService implements UomService {
 
-  protected final Logger logger = LoggerFactory.getLogger(UomServiceImpl.class);
+  protected final Logger logger = LoggerFactory.getLogger(UomServiceImpl.class);  
 
-  //private CommonDao<UnitOfMeasurement, String> commonDao;
-
-  public UomServiceImpl(){
-    //commonDao = new CommonDao<UnitOfMeasurement, String>();
-    //commonDao.setExecutorService(ProductServiceImpl.getAsyncExecutorService());
-    //SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
-    //providerImpl.setMainTableName("uom");
-    //commonDao.setInfoProvider(providerImpl);
-    //commonDao.setConverter(new UOMRowConverter());
+  public UomServiceImpl(){       
   }
   
 
@@ -132,6 +126,16 @@ public class UomServiceImpl extends AbstractUomService implements UomService {
     }
     return new ArrayList<UnitOfMeasurement>(result);
 
+  }
+
+  @Override
+  public UnitOfMeasurement getByUomId(UomId uomId){
+    List<QueryParameter> params = new ArrayList<QueryParameter>();
+    QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("id", uomId.getId(), MatchMode.EXACT);
+    params.add(qp);
+    List<UnitOfMeasurement> uoms = commonReadDao.getList(params);
+    logger.info("Size:" +uoms.size());
+    return uoms.get(0);
   }
 
   @Override

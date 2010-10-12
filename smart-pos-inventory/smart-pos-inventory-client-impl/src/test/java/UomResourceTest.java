@@ -1,15 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package com.smartitengineering.smartpos.inventory.client.impl.resource;
 
 import com.google.inject.AbstractModule;
+import com.smartitengineering.dao.hbase.ddl.HBaseTableGenerator;
+import com.smartitengineering.dao.hbase.ddl.config.json.ConfigurationJsonParser;
+import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.client.api.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
 import com.smartitengineering.smartpos.inventory.client.impl.domain.UnitOfMeasurementImpl;
+import com.smartitengineering.smartpos.inventory.client.impl.resource.RootResourceImpl;
 import com.smartitengineering.smartpos.inventory.guicebinder.Initializer;
 import com.smartitengineering.util.rest.client.ConnectionConfig;
 import com.smartitengineering.util.bean.guice.GuiceUtil;
@@ -50,14 +48,18 @@ public class UomResourceTest {
      * Start HBase and initialize tables
      */
 
+    System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
+                       "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl");
+
     TEST_UTIL.startMiniCluster();
 
-    HBaseAdmin admin = new HBaseAdmin(TEST_UTIL.getConfiguration());
-    HTableDescriptor uomTable = new HTableDescriptor("uom");
-    uomTable.addFamily(new HColumnDescriptor("self"));
-    admin.createTable(uomTable);
+//    HBaseAdmin admin = new HBaseAdmin(TEST_UTIL.getConfiguration());
+//    HTableDescriptor uomTable = new HTableDescriptor("uom");
+//    uomTable.addFamily(new HColumnDescriptor("self"));
+//    admin.createTable(uomTable);
 
-    
+    new HBaseTableGenerator(ConfigurationJsonParser.getConfigurations(UomResourceTest.class.getClassLoader().getResourceAsStream(
+        "com/smartitengineering/pos/inventory/impl/schema.json")), TEST_UTIL.getConfiguration(), true).generateTables();
 
     // DI
     Properties properties = new Properties();
@@ -103,14 +105,26 @@ public class UomResourceTest {
 //
     UnitOfMeasurementImpl uom = new UnitOfMeasurementImpl();
     uom.setId("KG");
-    //uom.setName("Kilogram");
+    uom.setLongName("Kilogram");
     uom.setSymbol("Kg");
     uom.setUomSystem("SI");
     uom.setUomType("Weight");
 
     UomResource uomResource = uomsResource.create(uom);
-
     Assert.assertNotNull(uomResource);
+
+    UnitOfMeasurement fetchedUom = uomResource.getUnitOfMeasurement();
+    Assert.assertNotNull(fetchedUom);
+    fetchedUom.setSymbol("Kg");
+    fetchedUom.setUomSystem("Metric");
+    fetchedUom.setUomType("Weight");
+
+    uomResource.update();
+//
+//    UnitOfMeasurement changedUom = uomResource.getUnitOfMeasurement();
+//    Assert.assertNotSame("Kg", uom.getSymbol());
+//
+//    uomResource.delete();       
   }
 
   public static class ConfigurationModule extends AbstractModule {
