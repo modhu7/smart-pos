@@ -5,11 +5,10 @@
 package com.smartitengineering.smartpos.inventory.resource;
 
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
-import com.smartitengineering.smartpos.admin.api.Organization;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.Store;
+import com.smartitengineering.smartpos.inventory.api.Store.StoreIdImpl;
 import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
-import com.smartitengineering.smartpos.inventory.impl.domainid.StoreIdImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -49,17 +48,9 @@ import org.slf4j.LoggerFactory;
 public class OrganizationStoresResource extends AbstractResource {
 
   protected final Logger logger = LoggerFactory.getLogger(OrganizationStoresResource.class);
-
   static final UriBuilder ORGANIZATION_STORES_URI_BUILDER;
   static final UriBuilder ORGANIZATION_STORES_BEFORE_USERNAME_URI_BUILDER;
   static final UriBuilder ORGANIZATION_STORES_AFTER_USERNAME_URI_BUILDER;
-
-  public OrganizationStoresResource(@PathParam("uniqueShortName") String organizationUniqueShortName) {
-
-    this.organizationUniqueShortName = organizationUniqueShortName;
-
-
-  }
 
   static {
     ORGANIZATION_STORES_URI_BUILDER = UriBuilder.fromResource(OrganizationStoresResource.class);
@@ -95,22 +86,9 @@ public class OrganizationStoresResource extends AbstractResource {
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
-//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
-//                                                                                           null,
-//                                                                                           false, count);
-
-//    Organization org = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
-//        organizationUniqueShortName);
-//    if (org == null) {
-//      responseBuilder = Response.status(Status.NOT_FOUND);
-//      return responseBuilder.build();
-//    }
-
-
-    Collection<Store> stores = Services.getInstance().getStoreService().getByOrganization(
-        organizationUniqueShortName, null, false, count);
-    
-
+    Collection<Store> stores = Services.getInstance().getStoreService().getByOrganization(organizationUniqueShortName,
+                                                                                          null,
+                                                                                          true, count);
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
@@ -123,7 +101,6 @@ public class OrganizationStoresResource extends AbstractResource {
 
     responseBuilder.entity(view);
     return responseBuilder.build();
-
   }
 
   @GET
@@ -131,8 +108,6 @@ public class OrganizationStoresResource extends AbstractResource {
   @Path("/frags")
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
-//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
-//                                                                                           null, false, count);
     Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, null, false, count);
 
@@ -154,8 +129,6 @@ public class OrganizationStoresResource extends AbstractResource {
   @Path("/before/{beforeStoreName}")
   public Response getBeforeHtml(@PathParam("beforeStoreName") String beforeStoreName) {
     ResponseBuilder responseBuilder = Response.ok();
-//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
-//        organizationUniqueShortName, beforeUserName, true, count);
     Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, beforeStoreName, true, count);
 
@@ -171,8 +144,6 @@ public class OrganizationStoresResource extends AbstractResource {
   @Path("/before/{beforeStoreName}/frags")
   public Response getBeforeHtmlFrags(@PathParam("beforeStoreName") String beforeStoreName) {
     ResponseBuilder responseBuilder = Response.ok();
-//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
-//        organizationUniqueShortName, beforeUserName, true, count);
 
     Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, beforeStoreName, true, count);
@@ -259,7 +230,7 @@ public class OrganizationStoresResource extends AbstractResource {
         nextUri.queryParam(key, values);
         previousUri.queryParam(key, values);
       }
-      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastStore.getCode()).toString());
+      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastStore.getId().getId()).toString());
 
 
       atomFeed.addLink(nextLink);
@@ -267,27 +238,25 @@ public class OrganizationStoresResource extends AbstractResource {
       /* link to the previous organizations based on count */
       Link prevLink = abderaFactory.newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
-      //User firstUser = userList.get(0);
       Store firstStore = StoreList.get(0);
 
       prevLink.setHref(
-          previousUri.build(organizationUniqueShortName, firstStore.getCode()).toString());
+          previousUri.build(organizationUniqueShortName, firstStore.getId().getId()).toString());
       atomFeed.addLink(prevLink);
 
-      //for (User user : users) {
       for (Store store : Stores) {
 
         Entry storeEntry = abderaFactory.newEntry();
 
-        storeEntry.setId(store.getCode());
+        storeEntry.setId(store.getId().getId());
         storeEntry.setTitle(store.getName());
         storeEntry.setSummary(store.getName());
-        //userEntry.setUpdated(Store.g);
+
 
         // setting link to the each individual user
         Link storeLink = abderaFactory.newLink();
         storeLink.setHref(OrganizationStoreResource.STORE_URI_BUILDER.clone().build(organizationUniqueShortName, store.
-            getCode()).toString());
+            getId().getId()).toString());
         storeLink.setRel(Link.REL_ALTERNATE);
         storeLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -304,10 +273,13 @@ public class OrganizationStoresResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Store store) {
     ResponseBuilder responseBuilder;
-    
-    try {      
+
+    try {
       basicPost(store);
       responseBuilder = Response.status(Status.CREATED);
+      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationStoreResource.STORE_URI_BUILDER.clone().
+          build(organizationUniqueShortName,
+                store.getId().getId()).toString()).build());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -366,7 +338,7 @@ public class OrganizationStoresResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private void basicPost(Store store){
+  private void basicPost(Store store) {
     StoreId storeId = new StoreIdImpl(organizationUniqueShortName, store.getId().getId());
     store.setId(storeId);
     logger.info(store.getId().getCompositeId());
