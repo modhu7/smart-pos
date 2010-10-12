@@ -66,14 +66,6 @@ public class UOMRowConverter extends AbstactObjectRowConverter<UnitOfMeasurement
   }
 
   @Override
-  public LinkedHashMap<String, Delete> objectToDeleteableRows(UnitOfMeasurement instance, ExecutorService service) {
-    LinkedHashMap<String, Delete> map = new LinkedHashMap<String, Delete>();
-    Delete delete = new Delete(Bytes.toBytes(instance.getId().getId()));
-
-    return map;
-  }
-
-  @Override
   protected String[] getTablesToAttainLock() {
     return new String[]{getInfoProvider().getMainTableName()};
   }
