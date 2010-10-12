@@ -37,17 +37,24 @@
       <label class="tablehead_label"><fmt:message key="inv.uomtablehead3"/></label>
     </div>
   </div>
-  <div class="tablecontentname" id="tablecontentid"></div>
+    <div class="tablecontentname" id="tablecontentid"></div>
   <div class="tableList" id="uomListContainer">
+    <ul id="list">
     <c:set var="uom" scope="page" value="${it}"></c:set>
     <c:forEach varStatus="status" items="${it}">
-      <div id="userRow${status.index}" class="row_of_list">
-        <div id="uomType${status.index}" class="uomType_column"><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].uomType}</a></div>
-        <div id="uomName${status.index}" class="name_column"><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].longName}</a></div>
-        <div id="symbol${status.index}" class="symbol_column"><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].symbol}</a></div>
-      </div>
+      <%--<div id="uomRow${status.index}" class="row_of_list">
+        <div id="uomType${status.index}" class="uomType_column"><a href="uoms/name/${uom[status.index].longName}">${uom[status.index].uomType}</a></div>
+        <div id="uomName${status.index}" class="name_column"><a href="uoms/name/${uom[status.index].longName}">${uom[status.index].longName}</a></div>
+        <div id="symbol${status.index}" class="symbol_column"><a href="uoms/name/${uom[status.index].longName}">${uom[status.index].symbol}</a></div>
+      </div>--%>
+      
+
+        <li><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].longName}</a></li>
+
+      
     </c:forEach>
-  </div>
+    </ul>
+  </div>    
 </div>
 
 <div class="hide"  id="create">
