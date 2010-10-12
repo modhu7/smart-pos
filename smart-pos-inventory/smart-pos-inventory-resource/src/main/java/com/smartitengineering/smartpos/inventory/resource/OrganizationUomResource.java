@@ -158,8 +158,14 @@ public class OrganizationUomResource extends AbstractResource {
   @POST
   @Path("/delete")
   public Response deletePost() {
-    Services.getInstance().getUomService().delete(uom);
     ResponseBuilder responseBuilder = Response.ok();
+    try{
+      Services.getInstance().getUomService().delete(uom);
+
+    }catch(Exception ex){
+      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+    }
+
     return responseBuilder.build();
   }
 
