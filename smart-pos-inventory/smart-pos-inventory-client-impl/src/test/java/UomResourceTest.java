@@ -113,13 +113,13 @@ public class UomResourceTest {
     UomResource uomResource = uomsResource.create(uom);
     Assert.assertNotNull(uomResource);
 
-//    UnitOfMeasurement fetchedUom = uomResource.getUnitOfMeasurement();
-//    Assert.assertNotNull(fetchedUom);
-//    fetchedUom.setSymbol("Kg");
-//    fetchedUom.setUomSystem("Metric");
-//    fetchedUom.setUomType("Weight");
-//
-//    uomResource.update();
+    UnitOfMeasurement fetchedUom = uomResource.getUnitOfMeasurement();
+    Assert.assertNotNull(fetchedUom);
+    fetchedUom.setSymbol("Kg");
+    fetchedUom.setUomSystem("Metric");
+    fetchedUom.setUomType("Weight");
+
+    uomResource.update();
 //
 //    UnitOfMeasurement changedUom = uomResource.getUnitOfMeasurement();
 //    Assert.assertNotSame("Kg", uom.getSymbol());

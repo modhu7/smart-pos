@@ -113,12 +113,7 @@ public class OrganizationUomResource extends AbstractResource {
   public Response update(UnitOfMeasurement uom) {
 
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    try {
-
-      if (uom.getOrganizationId() == null) {
-        throw new Exception("No organization found");
-      }
-
+    try {      
       Services.getInstance().getUomService().update(uom);
       responseBuilder = Response.ok(getUomFeed());
     }

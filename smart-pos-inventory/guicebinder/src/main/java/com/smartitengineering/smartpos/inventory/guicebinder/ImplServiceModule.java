@@ -41,6 +41,7 @@ import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.smartitengineering.smartpos.inventory.impl.domainidinstanceprovider.DomainIdInstanceProviderImpl;
 import com.smartitengineering.smartpos.inventory.impl.guice.EntrySchemaBaseConfigProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.ProductSchemaBaseConfigProvider;
+import com.smartitengineering.smartpos.inventory.impl.guice.StoreFilterConfigsProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.StoreSchemaBaseConfigProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.SupplierSchemaBaseConfigProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.UomFilterConfigsProvider;
@@ -124,6 +125,8 @@ public class ImplServiceModule extends AbstractModule{
     final TypeLiteral<SchemaInfoProviderImpl<Store, StoreId>> storeTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<Store, StoreId>>() {};
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Store>>() {
     }).toProvider(StoreSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<FilterConfigs<Store>>() {
+    }).toProvider(StoreFilterConfigsProvider.class).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<StoreId>>() {}).toInstance(StoreId.class);
     bind(new TypeLiteral<SchemaInfoProvider<Store, StoreId>>() {}).to(storeTypeLiteral).in(Singleton.class);

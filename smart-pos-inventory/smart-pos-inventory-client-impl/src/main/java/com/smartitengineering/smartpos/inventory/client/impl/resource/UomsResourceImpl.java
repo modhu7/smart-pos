@@ -27,7 +27,7 @@ import org.apache.abdera.model.Entry;
  */
 public class UomsResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements UomsResource{
 
-  private static final String REL_ORG = "uom";
+  private static final String REL_UOM = "uom";
   private static final String REL_ALT = "alternate";
 
   public UomsResourceImpl(Resource referrer, ResourceLink pageLink) {
@@ -47,10 +47,10 @@ public class UomsResourceImpl extends AbstractFeedClientResource<Resource<? exte
   @Override
   public UomResource create(UnitOfMeasurement uom) {
     ClientResponse response = post(MediaType.APPLICATION_JSON, uom, ClientResponse.Status.CREATED);
-    final ResourceLink orgLink = ClientUtil.createResourceLink(REL_ORG, response.getLocation(),
+    final ResourceLink uomLink = ClientUtil.createResourceLink(REL_UOM, response.getLocation(),
                                                                MediaType.APPLICATION_ATOM_XML);
-    logger.info(orgLink.getUri().toString());
-    return new UomResourceImpl(this,orgLink);
+    logger.info(uomLink.getUri().toString());
+    return new UomResourceImpl(this,uomLink);
   }
 
   @Override
