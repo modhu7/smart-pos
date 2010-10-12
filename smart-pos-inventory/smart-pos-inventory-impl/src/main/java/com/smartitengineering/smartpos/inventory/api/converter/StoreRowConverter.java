@@ -6,16 +6,12 @@
 package com.smartitengineering.smartpos.inventory.api.converter;
 
 import com.smartitengineering.dao.impl.hbase.spi.ExecutorService;
-import com.smartitengineering.dao.impl.hbase.spi.ObjectRowConverter;
 import com.smartitengineering.dao.impl.hbase.spi.impl.AbstactObjectRowConverter;
 import com.smartitengineering.smartpos.admin.api.Address;
 import com.smartitengineering.smartpos.admin.api.GeoLocation;
 import com.smartitengineering.smartpos.inventory.api.Store;
 import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
-import com.smartitengineering.smartpos.inventory.impl.domainid.StoreIdImpl;
-import java.util.LinkedHashMap;
 import java.util.NavigableMap;
-import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -75,8 +71,7 @@ public class StoreRowConverter extends AbstactObjectRowConverter<Store, StoreId>
 
     if(self != null && !self.isEmpty()){
       store.setName(Bytes.toString(self.get(CELL_NAME)));
-      store.setCode(Bytes.toString(self.get(CELL_CODE)));
-
+      
       address.setStreetAddress(Bytes.toString(self.get(CELL_STREEADDRESS)));
       address.setCity(Bytes.toString(CELL_CITY));
       address.setState(Bytes.toString(CELL_STATE));
@@ -101,8 +96,7 @@ public class StoreRowConverter extends AbstactObjectRowConverter<Store, StoreId>
 
   @Override
   protected void getPutForTable(Store instance, ExecutorService service, Put put) {
-    put.add(FAMILY_SELF, CELL_NAME, Bytes.toBytes(instance.getName()));
-    put.add(FAMILY_SELF, CELL_CODE, Bytes.toBytes(instance.getCode()));
+    put.add(FAMILY_SELF, CELL_NAME, Bytes.toBytes(instance.getName()));    
     put.add(FAMILY_ADDRESS, CELL_STREEADDRESS, Bytes.toBytes(instance.getAddress().getStreetAddress()));
     put.add(FAMILY_ADDRESS, CELL_CITY, Bytes.toBytes(instance.getAddress().getCity()));
     put.add(FAMILY_ADDRESS, CELL_STATE, Bytes.toBytes(instance.getAddress().getState()));

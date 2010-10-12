@@ -11,6 +11,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
@@ -21,8 +23,7 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
   private String longName;
   private String symbol;
   private String uomType;         // length, weight.. etc etc
-  private String uomSystem;       // metric system, SI system, etc
-  private Integer organizationId;
+  private String uomSystem;       // metric system, SI system, etc 
 
   public String getLongName() {
     return longName;
@@ -56,14 +57,8 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
     this.uomType = uomType;
   }
 
-  public Integer getOrganizationId() {
-    return organizationId;
-  }
-
-  public void setOrganizationId(Integer organizationID) {
-    this.organizationId = organizationID;
-  }
-
+  @JsonIgnore
+  @Override
   public boolean isValid() {
     if (StringUtils.isBlank(getId().getId()) || StringUtils.isBlank(symbol)) {
       return false;
@@ -71,6 +66,7 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
     return true;
   }
 
+  @Override
   public String toString() {
     String str = "";
     str += getId() + "\n";
@@ -81,6 +77,7 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
     return str;
   }
 
+  @JsonDeserialize(as = String.class)
   public static class UomIdImpl implements UomId {
 
     private String id;    
@@ -97,11 +94,13 @@ public class UnitOfMeasurement extends AbstractGenericPersistentDTO<UnitOfMeasur
       return id;
     }
 
+    @Override
     public void setId(String id) {
       this.id = id;
     }
 
     @Override
+    @JsonIgnore
     public String getCustomId(){
       return id;
     }
