@@ -43,7 +43,7 @@
     <c:forEach varStatus="status" items="${it}">
       <div id="userRow${status.index}" class="row_of_list">
         <div id="uomType${status.index}" class="uomType_column"><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].uomType}</a></div>
-        <div id="uomId${status.index}" class="id_column"><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].id.id}</a></div>
+        <div id="uomName${status.index}" class="name_column"><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].longName}</a></div>
         <div id="symbol${status.index}" class="symbol_column"><a href="uoms/name/${uom[status.index].id.id}">${uom[status.index].symbol}</a></div>
       </div>
     </c:forEach>
@@ -78,8 +78,8 @@
           <div class="form_textField_pos"><input type="text" name="id" id="id" class="textFieldPos" title="Unit"></div>
           <div class="clear"></div>
         </div>
-          <div class="individual_field_container">
-          <div class="form_label_pos"><label><fmt:message key="inv.uominput5"/></label></div>
+        <div class="individual_field_container">
+          <div class="form_label_pos"><label><fmt:message key="inv.uominput7"/></label></div>
           <div class="form_textField_pos"><input type="text" name="longName" id="longName" class="textFieldPos" title="Long Name"></div>
           <div class="clear"></div>
         </div>
