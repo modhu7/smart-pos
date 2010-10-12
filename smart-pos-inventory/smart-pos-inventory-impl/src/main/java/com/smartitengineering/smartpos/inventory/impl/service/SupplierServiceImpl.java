@@ -12,6 +12,7 @@ import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
 import com.smartitengineering.smartpos.inventory.api.Supplier;
 import com.smartitengineering.smartpos.inventory.api.converter.SupplierRowConverter;
 import com.smartitengineering.smartpos.inventory.api.service.SupplierService;
+import java.util.Collection;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,7 @@ public class SupplierServiceImpl extends AbstractSupplierService implements Supp
   }
 
   @Override
-  public Supplier getByOrganization(String organizatinUniqueShortName) {
+  public Collection<Supplier> getByOrganization(String organizatinUniqueShortName) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

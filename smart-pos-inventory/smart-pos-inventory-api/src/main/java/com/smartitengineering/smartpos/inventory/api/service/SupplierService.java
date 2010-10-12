@@ -7,6 +7,7 @@ package com.smartitengineering.smartpos.inventory.api.service;
 
 import com.smartitengineering.smartpos.inventory.api.Supplier;
 import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
+import java.util.Collection;
 
 /**
  *
@@ -23,7 +24,7 @@ public interface SupplierService {
   public void getAllUoms();
 
   // non paginated version
-  public Supplier getByOrganization(String organizatinUniqueShortName);
+  public Collection<Supplier> getByOrganization(String organizatinUniqueShortName);
 
   // paginated version
   public Supplier getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count);

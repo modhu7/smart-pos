@@ -54,12 +54,12 @@ public class OrganizationStoresResource extends AbstractResource {
   static final UriBuilder ORGANIZATION_STORES_BEFORE_USERNAME_URI_BUILDER;
   static final UriBuilder ORGANIZATION_STORES_AFTER_USERNAME_URI_BUILDER;
 
-  public OrganizationStoresResource(@PathParam("uniqueShortName") String organizationUniqueShortName) {
-
-    this.organizationUniqueShortName = organizationUniqueShortName;
-
-
-  }
+//  public OrganizationStoresResource(@PathParam("uniqueShortName") String organizationUniqueShortName) {
+//
+//    this.organizationUniqueShortName = organizationUniqueShortName;
+//
+//
+//  }
 
   static {
     ORGANIZATION_STORES_URI_BUILDER = UriBuilder.fromResource(OrganizationStoresResource.class);
@@ -235,8 +235,8 @@ public class OrganizationStoresResource extends AbstractResource {
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
 
-    Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
-        organizationUniqueShortName, userName, isBefore, count);
+    Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(organizationUniqueShortName,
+                                                                                          userName, isBefore, count);
 
     if (Stores != null && !Stores.isEmpty()) {
 
