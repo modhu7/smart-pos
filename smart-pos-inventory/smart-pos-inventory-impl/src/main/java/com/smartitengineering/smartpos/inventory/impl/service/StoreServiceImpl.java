@@ -71,7 +71,7 @@ public class StoreServiceImpl extends AbstractStoreService implements StoreServi
 
   @Override
   public Collection<Store> getAllStores() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return commonReadDao.getAll();
   }
 
   @Override
@@ -83,24 +83,9 @@ public class StoreServiceImpl extends AbstractStoreService implements StoreServi
   public Collection<Store> getByOrganization(String organizationUniqueShortName, String storeCode, boolean isSmallerThan,
                                              int count) {
 
-    QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("code", storeCode, MatchMode.START);
+    QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("id", organizationUniqueShortName, MatchMode.START);
 
     Collection<Store> stores = commonReadDao.getList(qp);
-
-//    List<Store> storeList = new ArrayList<Store>();
-//    Store store1 = new Store();
-//    store1.setName("Store 1");
-//    store1.setCode("S1");
-//    storeList.add(store1);
-//
-//    Store store2 = new Store();
-//    store2.setName("Store 2");
-//    store2.setCode("S2");
-//    storeList.add(store2);
-//
-//
-//
-//    Collection<Store> stores = storeList;
     return stores;
   }
 
