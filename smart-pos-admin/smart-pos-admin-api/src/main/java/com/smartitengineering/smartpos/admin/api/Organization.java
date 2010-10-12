@@ -14,19 +14,19 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Organization extends AbstractGenericPersistentDTO<Organization, OrganizationId, Long> {
 
-  private String shortName;
+  private String relativeUri;
 
-  public String getShortName() {
-    return shortName;
+  public String getRelativeUri() {
+    return relativeUri;
   }
 
-  public void setShortName(String shortName) {
-    this.shortName = shortName;
+  public void setRelativeUri(String relativeUri) {
+    this.relativeUri = relativeUri;
   }
 
   @Override
   public boolean isValid() {
-    if (StringUtils.isNotBlank(shortName)) {
+    if (StringUtils.isNotBlank(relativeUri)) {
       return true;
     }
     else {

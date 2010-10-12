@@ -62,4 +62,10 @@ public class OrganizationIdImpl implements OrganizationId {
     }
     return toString().compareTo(o.toString());
   }
+
+  @Override
+  public String toString() {
+    return id;
+  }
+
 }
