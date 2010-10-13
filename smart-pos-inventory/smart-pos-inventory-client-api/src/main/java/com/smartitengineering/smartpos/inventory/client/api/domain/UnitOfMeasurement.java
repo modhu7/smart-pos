@@ -9,11 +9,11 @@ package com.smartitengineering.smartpos.inventory.client.api.domain;
  *
  * @author saumitra
  */
-public interface UnitOfMeasurement {  
+public interface UnitOfMeasurement{
 
   public String getId();
 
-  public void setId(String id);  
+  public void setId(String id);
 
   public String getSymbol();
 
