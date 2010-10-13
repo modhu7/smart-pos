@@ -2,13 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.smartpos.inventory.resource;
 
-import com.smartitengineering.smartpos.admin.api.Address;
-import com.smartitengineering.smartpos.admin.api.GeoLocation;
+package com.smartitengineering.pos.inventory.resource;
+
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
-import com.smartitengineering.smartpos.inventory.api.Store;
-import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
+import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -42,21 +40,21 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-@Path("/orgs/sn/{uniqueShortName}/inv/stores/code/{storeCode}")
-public class OrganizationStoreResource extends AbstractResource {
+@Path("/orgs/sn/{uniqueShortName}/inv/prods/code/{productCode}")
+public class OrganizationProductResource extends AbstractResource{
 
-  protected final Logger logger = LoggerFactory.getLogger(OrganizationStoreResource.class);
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationProductResource.class);
 
-  private Store store;
-  static final UriBuilder STORE_URI_BUILDER = UriBuilder.fromResource(OrganizationStoreResource.class);
-  static final UriBuilder STORE_CONTENT_URI_BUILDER;
+  private PersistantProduct product;
+  static final UriBuilder PRODUCT_URI_BUILDER = UriBuilder.fromResource(OrganizationProductResource.class);
+  static final UriBuilder PRODUCT_CONTENT_URI_BUILDER;
   @Context
   private HttpServletRequest servletRequest;
 
   static {
-    STORE_CONTENT_URI_BUILDER = STORE_URI_BUILDER.clone();
+    PRODUCT_CONTENT_URI_BUILDER = PRODUCT_URI_BUILDER.clone();
     try {
-      STORE_CONTENT_URI_BUILDER.path(OrganizationStoreResource.class.getMethod("getStore"));
+      PRODUCT_CONTENT_URI_BUILDER.path(OrganizationProductResource.class.getMethod("getProduct"));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -66,28 +64,28 @@ public class OrganizationStoreResource extends AbstractResource {
   }
   @PathParam("organizationShortName")
   private String organizationUniqueShortName;
-  @PathParam("storeCode")
-  private String storeCode;
+  @PathParam("productCode")
+  private String productCode;
 
-  public OrganizationStoreResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
-      "storeCode") String storeCode) {
-    store = Services.getInstance().getStoreService().getByStoreCodeAndOrganization(organizationShortName, storeCode);    
+  public OrganizationProductResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
+      "productCode") String productCode) {
+    product = Services.getInstance().getProductService().getByProductCodeAndOrganization(organizationShortName, productCode);
 
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-    Feed userFeed = getStoreFeed();
-    ResponseBuilder responseBuilder = Response.ok(userFeed);
+    Feed productFeed = getProductFeed();
+    ResponseBuilder responseBuilder = Response.ok(productFeed);
     return responseBuilder.build();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
-  public Response getStore() {
-    ResponseBuilder responseBuilder = Response.ok(store);
+  public Response getProduct() {
+    ResponseBuilder responseBuilder = Response.ok(product);
     return responseBuilder.build();
   }
 
@@ -98,10 +96,10 @@ public class OrganizationStoreResource extends AbstractResource {
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoreResource/storeDetailsHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoreResource/storeDetails.jsp");
-    Viewable view = new Viewable("/template/template.jsp", store);
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productDetails.jsp");
+    Viewable view = new Viewable("/template/template.jsp", product);
 
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -110,12 +108,17 @@ public class OrganizationStoreResource extends AbstractResource {
   @PUT
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response update(Store store) {
+  public Response update(PersistantProduct product) {
 
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    try {                       
-      Services.getInstance().getStoreService().update(store);
-      responseBuilder = Response.ok(getStoreFeed());
+    try {
+
+      if (product.getOrganizationId() == null) {
+        throw new Exception("No organization found");
+      }
+      
+      Services.getInstance().getProductService().update(product);
+      responseBuilder = Response.ok(getProductFeed());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -124,34 +127,34 @@ public class OrganizationStoreResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private Feed getStoreFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed storeFeed = getFeed(store.getId().getId(), new Date());
-    storeFeed.setTitle(store.getName());
+  private Feed getProductFeed() throws UriBuilderException, IllegalArgumentException {
+    Feed productFeed = getFeed(product.getId().getId(), new Date());
+    productFeed.setTitle(product.getName());
 
     // add a self link
-    storeFeed.addLink(getSelfLink());
+    productFeed.addLink(getSelfLink());
 
     // add a edit link
     Link editLink = abderaFactory.newLink();
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
-    storeFeed.addLink(editLink);
+    productFeed.addLink(editLink);
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(STORE_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
-                                                           store.getId().getId()).toString());
+    altLink.setHref(PRODUCT_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
+                                                           product.getId()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
-    storeFeed.addLink(altLink);
+    productFeed.addLink(altLink);
 
-    return storeFeed;
+    return productFeed;
   }
 
   @DELETE
   public Response delete() {
-    Services.getInstance().getStoreService().delete(store);
+    Services.getInstance().getProductService().delete(product);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
   }
@@ -159,7 +162,7 @@ public class OrganizationStoreResource extends AbstractResource {
   @POST
   @Path("/delete")
   public Response deletePost() {
-    Services.getInstance().getStoreService().delete(store);
+    Services.getInstance().getProductService().delete(product);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
   }
@@ -202,10 +205,10 @@ public class OrganizationStoreResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Store newStore = getStoreFromContent(message);
+      PersistantProduct newProduct = getProductFromContent(message);
       try {
-        Services.getInstance().getStoreService().update(newStore);
-        responseBuilder = Response.ok(getStoreFeed());
+        Services.getInstance().getProductService().update(newProduct);
+        responseBuilder = Response.ok(getProductFeed());
       }
       catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -214,7 +217,7 @@ public class OrganizationStoreResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private Store getStoreFromContent(String message) {
+  private PersistantProduct getProductFromContent(String message) {
 
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
@@ -228,45 +231,11 @@ public class OrganizationStoreResource extends AbstractResource {
       }
     }
 
-    final Store store = new Store();
-    final Address address = new Address();
-    final GeoLocation geoLocation = new GeoLocation();
+    PersistantProduct newProduct = new PersistantProduct();
 
-    if(keyValueMap.get("id") != null){
-      StoreId storeId = new Store.StoreIdImpl();
-      storeId.setId(keyValueMap.get("id"));
-      store.setId(storeId);
-    }
+    // to do...
 
-    if(keyValueMap.get("name")!= null){
-      store.setName(keyValueMap.get("name"));
-    }
-
-    if(keyValueMap.get("streetAddress")!= null){
-      address.setStreetAddress(keyValueMap.get("streetAddress"));
-    }
-    if(keyValueMap.get("city")!= null){
-      address.setCity(keyValueMap.get("city"));
-    }
-    if(keyValueMap.get("state")!= null){
-      address.setState(keyValueMap.get("state"));
-    }
-    if(keyValueMap.get("country")!= null){
-      address.setCountry(keyValueMap.get("country"));
-    }
-    if(keyValueMap.get("zip")!= null){
-      address.setStreetAddress(keyValueMap.get("zip"));
-    }
-    if(keyValueMap.get("longitude")!= null){
-      geoLocation.setLongitude( Double.parseDouble(keyValueMap.get("longitude")));
-    }
-    if(keyValueMap.get("latitude")!= null){
-      geoLocation.setLatitude(Double.parseDouble(keyValueMap.get("latitude")));
-    }
-
-    address.setGeoLocation(geoLocation);
-    store.setAddress(address);
-   
-    return store;
+    return newProduct;
   }
+
 }

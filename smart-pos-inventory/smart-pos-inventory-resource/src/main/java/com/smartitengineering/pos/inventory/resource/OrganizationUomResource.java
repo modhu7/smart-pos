@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.smartpos.inventory.resource;
+package com.smartitengineering.pos.inventory.resource;
 
-import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.factory.Services;
+import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
@@ -45,7 +46,7 @@ public class OrganizationUomResource extends AbstractResource {
 
   protected final Logger logger = LoggerFactory.getLogger(OrganizationUomResource.class);
 
-  private UnitOfMeasurement uom;
+  private PersistantUnitOfMeasurement uom;
   static final UriBuilder UOM_URI_BUILDER = UriBuilder.fromResource(OrganizationUomResource.class);
   static final UriBuilder UOM_CONTENT_URI_BUILDER;
   @Context
@@ -66,7 +67,7 @@ public class OrganizationUomResource extends AbstractResource {
   private String uomName;
 
   public OrganizationUomResource(@PathParam("uomName") String uomName) {
-    UomId uomId = new UnitOfMeasurement.UomIdImpl(uomName);
+    UomId uomId = new PersistantUnitOfMeasurement.UomIdImpl(uomName);
     logger.info(uomId.toString());
     uom = Services.getInstance().getUomService().getById(uomId);
     //uom = Services.getInstance().getUomService().getByUomId(uomId);
@@ -88,7 +89,13 @@ public class OrganizationUomResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
   public Response getUom() {
-    ResponseBuilder responseBuilder = Response.ok(uom);
+    UnitOfMeasurement nUom = new UnitOfMeasurement();
+    nUom.setId(uom.getId().getId());
+    nUom.setLongName(uom.getLongName());
+    nUom.setSymbol(uom.getSymbol());
+    nUom.setUomSystem(uom.getUomSystem());
+    nUom.setUomType(uom.getUomType());
+    ResponseBuilder responseBuilder = Response.ok(nUom);
     return responseBuilder.build();
   }
 
@@ -110,7 +117,7 @@ public class OrganizationUomResource extends AbstractResource {
   @PUT
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response update(UnitOfMeasurement uom) {
+  public Response update(PersistantUnitOfMeasurement uom) {
 
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {      
@@ -149,7 +156,7 @@ public class OrganizationUomResource extends AbstractResource {
   }
 
   @DELETE
-  public Response delete() {
+  public Response delete() {    
     Services.getInstance().getUomService().delete(uom);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
@@ -208,7 +215,7 @@ public class OrganizationUomResource extends AbstractResource {
     logger.info(message);
 
     if (isHtmlPost) {
-      UnitOfMeasurement newUom = getUomFromContent(message);
+      PersistantUnitOfMeasurement newUom = getUomFromContent(message);
       try {
         Services.getInstance().getUomService().update(newUom);
         responseBuilder = Response.ok(getUomFeed());
@@ -221,7 +228,7 @@ public class OrganizationUomResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private UnitOfMeasurement getUomFromContent(String message) {
+  private PersistantUnitOfMeasurement getUomFromContent(String message) {
 
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
@@ -235,10 +242,10 @@ public class OrganizationUomResource extends AbstractResource {
       }
     }
 
-    UnitOfMeasurement uom = new UnitOfMeasurement();
+    PersistantUnitOfMeasurement uom = new PersistantUnitOfMeasurement();
 
     if(keyValueMap.get("id") != null){
-      UomId uomId = new UnitOfMeasurement.UomIdImpl(keyValueMap.get("id"));
+      UomId uomId = new PersistantUnitOfMeasurement.UomIdImpl(keyValueMap.get("id"));
       uom.setId(uomId);
     }
 

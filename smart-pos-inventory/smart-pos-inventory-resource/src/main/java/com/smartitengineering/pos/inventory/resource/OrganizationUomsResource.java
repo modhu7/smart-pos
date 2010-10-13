@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.smartpos.inventory.resource;
+package com.smartitengineering.pos.inventory.resource;
 
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
-import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
@@ -89,7 +89,7 @@ public class OrganizationUomsResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.ok();
 
 
-    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
+    Collection<PersistantUnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
     System.out.println(uoms.getClass().getName());
     
     servletRequest.setAttribute("templateHeadContent",
@@ -110,7 +110,7 @@ public class OrganizationUomsResource extends AbstractResource {
   @Path("/frags")
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
-    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
+    Collection<PersistantUnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
 
     Viewable view = new Viewable("uomFrags.jsp", uoms, OrganizationUomsResource.class);
     responseBuilder.entity(view);
@@ -132,7 +132,7 @@ public class OrganizationUomsResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.ok();
 //    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
 //        organizationUniqueShortName, beforeUserName, true, count);
-    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
+    Collection<PersistantUnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
 
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationUomsResource/uomList.jsp");
@@ -149,7 +149,7 @@ public class OrganizationUomsResource extends AbstractResource {
 //    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
 //        organizationUniqueShortName, beforeUserName, true, count);
 
-    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
+    Collection<PersistantUnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
 
     Viewable view = new Viewable("uomFrags.jsp", uoms);
     responseBuilder.entity(view);
@@ -170,7 +170,7 @@ public class OrganizationUomsResource extends AbstractResource {
 
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
+    Collection<PersistantUnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationUomsResource/uomList.jsp");
     Viewable view = new Viewable("/template/template.jsp", uoms);
@@ -185,7 +185,7 @@ public class OrganizationUomsResource extends AbstractResource {
 
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
+    Collection<PersistantUnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
 
     Viewable view = new Viewable("uomFrags.jsp", uoms);
     responseBuilder.entity(view);
@@ -207,12 +207,12 @@ public class OrganizationUomsResource extends AbstractResource {
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
 
-    Collection<UnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
+    Collection<PersistantUnitOfMeasurement> uoms = Services.getInstance().getUomService().getAllUoms();
 
     if (uoms != null && !uoms.isEmpty()) {
 
       MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
-      List<UnitOfMeasurement> uomList = new ArrayList<UnitOfMeasurement>(uoms);
+      List<PersistantUnitOfMeasurement> uomList = new ArrayList<PersistantUnitOfMeasurement>(uoms);
 
       // uri builder for next and previous organizations according to count
       final UriBuilder nextUri = ORGANIZATION_UOMS_AFTER_UOMNAME_URI_BUILDER.clone();
@@ -222,7 +222,7 @@ public class OrganizationUomsResource extends AbstractResource {
       Link nextLink = abderaFactory.newLink();
       nextLink.setRel(Link.REL_NEXT);
       //User lastUser = userList.get(userList.size() - 1);
-      UnitOfMeasurement lastUom = uomList.get(uomList.size() - 1);
+      PersistantUnitOfMeasurement lastUom = uomList.get(uomList.size() - 1);
 
 
       for (String key : queryParam.keySet()) {
@@ -239,14 +239,14 @@ public class OrganizationUomsResource extends AbstractResource {
       Link prevLink = abderaFactory.newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
       //User firstUser = userList.get(0);
-      UnitOfMeasurement firstUom = uomList.get(0);
+      PersistantUnitOfMeasurement firstUom = uomList.get(0);
 
       prevLink.setHref(
           previousUri.build(firstUom.getId().getId()).toString());
       atomFeed.addLink(prevLink);
 
       //for (User user : users) {
-      for (UnitOfMeasurement uom : uoms) {
+      for (PersistantUnitOfMeasurement uom : uoms) {
 
         Entry uomEntry = abderaFactory.newEntry();
 
@@ -273,7 +273,7 @@ public class OrganizationUomsResource extends AbstractResource {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response post(UnitOfMeasurement uom) {
+  public Response post(PersistantUnitOfMeasurement uom) {
 
 
     ResponseBuilder responseBuilder;
@@ -292,7 +292,7 @@ public class OrganizationUomsResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private UnitOfMeasurement getObjectFromContent(String message) {
+  private PersistantUnitOfMeasurement getObjectFromContent(String message) {
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
     String[] keyValuePairs = message.split("&");
@@ -303,10 +303,10 @@ public class OrganizationUomsResource extends AbstractResource {
       keyValueMap.put(keyValuePair[0], keyValuePair[1]);
     }
 
-    UnitOfMeasurement uom = new UnitOfMeasurement();
+    PersistantUnitOfMeasurement uom = new PersistantUnitOfMeasurement();
 
     if (keyValueMap.get("id") != null) {
-      UomId uomId = new UnitOfMeasurement.UomIdImpl();
+      UomId uomId = new PersistantUnitOfMeasurement.UomIdImpl();
       uomId.setId(keyValueMap.get("id"));
       uom.setId(uomId);
     }
@@ -369,7 +369,7 @@ public class OrganizationUomsResource extends AbstractResource {
 
     logger.info(message);
     if (isHtmlPost) {
-      UnitOfMeasurement uom = getObjectFromContent(message);
+      PersistantUnitOfMeasurement uom = getObjectFromContent(message);
 
       basicPost(uom);
 
@@ -377,8 +377,8 @@ public class OrganizationUomsResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private void basicPost(UnitOfMeasurement uom){
-    UomId uomId = new UnitOfMeasurement.UomIdImpl(uom.getId().getId());
+  private void basicPost(PersistantUnitOfMeasurement uom){
+    UomId uomId = new PersistantUnitOfMeasurement.UomIdImpl(uom.getId().getId());
     uom.setId(uomId);
     logger.info(uom.getId().getId());
     Services.getInstance().getUomService().save(uom);

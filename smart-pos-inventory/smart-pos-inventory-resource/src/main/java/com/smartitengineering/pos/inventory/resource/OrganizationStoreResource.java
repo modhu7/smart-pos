@@ -2,11 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package com.smartitengineering.pos.inventory.resource;
 
-package com.smartitengineering.smartpos.inventory.resource;
-
+import com.smartitengineering.smartpos.admin.api.Address;
+import com.smartitengineering.smartpos.admin.api.GeoLocation;
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
-import com.smartitengineering.smartpos.inventory.api.Entry;
+import com.smartitengineering.smartpos.inventory.api.PersistantStore;
+import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -40,21 +42,21 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-@Path("/orgs/sn/{uniqueShortName}/inv/entries/entrydate/{entryDate}")
-public class OrganizationEntryResource extends AbstractResource{
+@Path("/orgs/sn/{uniqueShortName}/inv/stores/code/{storeCode}")
+public class OrganizationStoreResource extends AbstractResource {
 
-  protected final Logger logger = LoggerFactory.getLogger(OrganizationEntryResource.class);
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationStoreResource.class);
 
-  private Entry entry;
-  static final UriBuilder ENTRY_URI_BUILDER = UriBuilder.fromResource(OrganizationEntryResource.class);
-  static final UriBuilder ENTRY_CONTENT_URI_BUILDER;
+  private PersistantStore store;
+  static final UriBuilder STORE_URI_BUILDER = UriBuilder.fromResource(OrganizationStoreResource.class);
+  static final UriBuilder STORE_CONTENT_URI_BUILDER;
   @Context
   private HttpServletRequest servletRequest;
 
   static {
-    ENTRY_CONTENT_URI_BUILDER = ENTRY_URI_BUILDER.clone();
+    STORE_CONTENT_URI_BUILDER = STORE_URI_BUILDER.clone();
     try {
-      ENTRY_CONTENT_URI_BUILDER.path(OrganizationEntryResource.class.getMethod("getEntry"));
+      STORE_CONTENT_URI_BUILDER.path(OrganizationStoreResource.class.getMethod("getStore"));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -62,30 +64,30 @@ public class OrganizationEntryResource extends AbstractResource{
 
     }
   }
-  @PathParam("uniqueShortName")
+  @PathParam("organizationShortName")
   private String organizationUniqueShortName;
-  @PathParam("entryDate")
-  private String entryDate;
+  @PathParam("storeCode")
+  private String storeCode;
 
-  public OrganizationEntryResource(@PathParam("uniqueShortName") String organizationShortName, @PathParam(
-      "entryDate") String entryDate) {
-    entry = Services.getInstance().getEntryService().getByOrganizationAndEntryDate(organizationUniqueShortName, null);
+  public OrganizationStoreResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
+      "storeCode") String storeCode) {
+    store = Services.getInstance().getStoreService().getByStoreCodeAndOrganization(organizationShortName, storeCode);    
 
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-    Feed entryFeed = getEntryFeed();
-    ResponseBuilder responseBuilder = Response.ok(entryFeed);
+    Feed userFeed = getStoreFeed();
+    ResponseBuilder responseBuilder = Response.ok(userFeed);
     return responseBuilder.build();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
-  public Response getEntry() {
-    ResponseBuilder responseBuilder = Response.ok(entry);
+  public Response getStore() {
+    ResponseBuilder responseBuilder = Response.ok(store);
     return responseBuilder.build();
   }
 
@@ -96,10 +98,10 @@ public class OrganizationEntryResource extends AbstractResource{
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntryResource/entryDetailsHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoreResource/storeDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntryResource/entryDetails.jsp");
-    Viewable view = new Viewable("/template/template.jsp", entry);
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoreResource/storeDetails.jsp");
+    Viewable view = new Viewable("/template/template.jsp", store);
 
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -108,18 +110,12 @@ public class OrganizationEntryResource extends AbstractResource{
   @PUT
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response update(Entry entry) {
+  public Response update(PersistantStore store) {
 
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    try {
-
-      if (entry.getOrganizationId() == null) {
-        throw new Exception("No organization found");
-      }
-
-      //Services.getInstance().getOrganizationService().populateOrganization(newUserPerson.getUser());
-      Services.getInstance().getEntryService().update(entry);
-      responseBuilder = Response.ok(getEntryFeed());
+    try {                       
+      Services.getInstance().getStoreService().update(store);
+      responseBuilder = Response.ok(getStoreFeed());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -128,34 +124,34 @@ public class OrganizationEntryResource extends AbstractResource{
     return responseBuilder.build();
   }
 
-  private Feed getEntryFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed entryFeed = getFeed(entry.getEntryDate().toString(), new Date());
-    entryFeed.setTitle(entry.getEntryDate().toString());
+  private Feed getStoreFeed() throws UriBuilderException, IllegalArgumentException {
+    Feed storeFeed = getFeed(store.getId().getId(), new Date());
+    storeFeed.setTitle(store.getName());
 
     // add a self link
-    entryFeed.addLink(getSelfLink());
+    storeFeed.addLink(getSelfLink());
 
     // add a edit link
     Link editLink = abderaFactory.newLink();
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
-    entryFeed.addLink(editLink);
+    storeFeed.addLink(editLink);
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(ENTRY_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
-                                                           entry.getEntryDate().toString()).toString());
+    altLink.setHref(STORE_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
+                                                           store.getId().getId()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
-    entryFeed.addLink(altLink);
+    storeFeed.addLink(altLink);
 
-    return entryFeed;
+    return storeFeed;
   }
 
   @DELETE
   public Response delete() {
-    Services.getInstance().getEntryService().delete(entry);
+    Services.getInstance().getStoreService().delete(store);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
   }
@@ -163,7 +159,7 @@ public class OrganizationEntryResource extends AbstractResource{
   @POST
   @Path("/delete")
   public Response deletePost() {
-    Services.getInstance().getEntryService().delete(entry);
+    Services.getInstance().getStoreService().delete(store);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
   }
@@ -206,10 +202,10 @@ public class OrganizationEntryResource extends AbstractResource{
     }
 
     if (isHtmlPost) {
-      Entry newEntry = getEntryFromContent(message);
+      PersistantStore newStore = getStoreFromContent(message);
       try {
-        Services.getInstance().getEntryService().update(newEntry);
-        responseBuilder = Response.ok(getEntryFeed());
+        Services.getInstance().getStoreService().update(newStore);
+        responseBuilder = Response.ok(getStoreFeed());
       }
       catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -218,7 +214,7 @@ public class OrganizationEntryResource extends AbstractResource{
     return responseBuilder.build();
   }
 
-  private Entry getEntryFromContent(String message) {
+  private PersistantStore getStoreFromContent(String message) {
 
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
@@ -232,11 +228,45 @@ public class OrganizationEntryResource extends AbstractResource{
       }
     }
 
-    Entry newEntry = new Entry();
+    final PersistantStore store = new PersistantStore();
+    final Address address = new Address();
+    final GeoLocation geoLocation = new GeoLocation();
 
-    // to do...
+    if(keyValueMap.get("id") != null){
+      StoreId storeId = new PersistantStore.StoreIdImpl();
+      storeId.setId(keyValueMap.get("id"));
+      store.setId(storeId);
+    }
 
-    return newEntry;
+    if(keyValueMap.get("name")!= null){
+      store.setName(keyValueMap.get("name"));
+    }
+
+    if(keyValueMap.get("streetAddress")!= null){
+      address.setStreetAddress(keyValueMap.get("streetAddress"));
+    }
+    if(keyValueMap.get("city")!= null){
+      address.setCity(keyValueMap.get("city"));
+    }
+    if(keyValueMap.get("state")!= null){
+      address.setState(keyValueMap.get("state"));
+    }
+    if(keyValueMap.get("country")!= null){
+      address.setCountry(keyValueMap.get("country"));
+    }
+    if(keyValueMap.get("zip")!= null){
+      address.setStreetAddress(keyValueMap.get("zip"));
+    }
+    if(keyValueMap.get("longitude")!= null){
+      geoLocation.setLongitude( Double.parseDouble(keyValueMap.get("longitude")));
+    }
+    if(keyValueMap.get("latitude")!= null){
+      geoLocation.setLatitude(Double.parseDouble(keyValueMap.get("latitude")));
+    }
+
+    address.setGeoLocation(geoLocation);
+    store.setAddress(address);
+   
+    return store;
   }
-
 }
