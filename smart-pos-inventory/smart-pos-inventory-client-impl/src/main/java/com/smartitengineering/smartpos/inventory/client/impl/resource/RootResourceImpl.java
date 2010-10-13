@@ -9,6 +9,7 @@ import com.smartitengineering.smartpos.inventory.client.api.resource.EntriesReso
 import com.smartitengineering.smartpos.inventory.client.api.resource.ProductsResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.StoreResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.StoresResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
@@ -33,6 +34,7 @@ public class RootResourceImpl extends AbstractFeedClientResource<Resource<? exte
   public static Logger logger = LoggerFactory.getLogger(RootResourceImpl.class);
 
   public static final String REL_UOMS = "uoms";
+  public static final String REL_STORES = "stores";
   private Link UOMS_LINK;
   
   public static RootResource getRoot(URI uri) {
@@ -81,9 +83,11 @@ public class RootResourceImpl extends AbstractFeedClientResource<Resource<? exte
   }
 
   @Override
-  public StoreResource getOrganizationStoreResource() {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public StoresResource getStoresResource() {
+    return new StoresResourceImpl(this, AtomClientUtil.convertFromAtomLinkToResourceLink(get().getLink(REL_STORES)));
   }
+
+
 
   @Override
   public ResourceLink getLoginLink() {
