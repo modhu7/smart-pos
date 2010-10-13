@@ -23,10 +23,12 @@ import com.smartitengineering.dao.impl.hbase.spi.impl.MixedExecutorServiceImpl;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderBaseConfig;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
 import com.smartitengineering.pos.admin.api.domain.id.OrganizationId;
+import com.smartitengineering.pos.admin.api.service.OrganizationService;
 import com.smartitengineering.pos.admin.impl.converter.OrganizationRowConverter;
 import com.smartitengineering.pos.admin.impl.guice.OrganizationFilterConfigsProvider;
 import com.smartitengineering.pos.admin.impl.guice.OrganizationSchemaBaseConfigProvider;
 import com.smartitengineering.pos.admin.impl.provider.domain.idinstance.DomainIdInstanceProviderImpl;
+import com.smartitengineering.pos.admin.impl.service.OrganizationServiceImpl;
 import com.smartitengineering.smartpos.admin.api.Organization;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -76,6 +78,7 @@ public class ImplServiceModule extends AbstractModule {
     bind(new TypeLiteral<SchemaInfoProvider<Organization, OrganizationId>>() {
     }).to(wTypeLiteral).in(Singleton.class);
 
-    bind(DomainIdInstanceProvider.class).to(DomainIdInstanceProviderImpl.class).in(Scopes.SINGLETON);   
+    bind(DomainIdInstanceProvider.class).to(DomainIdInstanceProviderImpl.class).in(Scopes.SINGLETON);
+    bind(OrganizationService.class).to(OrganizationServiceImpl.class).in(Scopes.SINGLETON);
   }
 }

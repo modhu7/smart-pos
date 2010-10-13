@@ -22,7 +22,7 @@ public class Services {
   private Services() {
   }
 
-  @InjectableField(beanName="organizationService")
+  @InjectableField
   private OrganizationService organizationService;
 
   public OrganizationService getOrganizationService() {

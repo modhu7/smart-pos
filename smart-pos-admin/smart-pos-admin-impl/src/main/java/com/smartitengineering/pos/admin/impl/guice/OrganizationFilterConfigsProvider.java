@@ -20,7 +20,7 @@ public class OrganizationFilterConfigsProvider implements Provider<FilterConfigs
   public FilterConfigs<Organization> get() {
     try {
       return JsonConfigLoader.parseJsonAsFilterConfigMap(getClass().getClassLoader().
-          getResourceAsStream("com/smartitengineering/pos/admin/impl/organization/UomFilterConfigs.json"));
+          getResourceAsStream("com/smartitengineering/pos/admin/impl/organization/OrganizationFilterConfigs.json"));
     }
     catch (IOException ex) {
       throw new RuntimeException(ex);
