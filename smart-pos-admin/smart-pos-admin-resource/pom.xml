@@ -7,7 +7,7 @@
     <groupId>com.smartitengineering.smart-pos</groupId>
     <version>0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.smartitengineering.smart-pos</groupId>
+  <groupId>com.smartitengineering.smart-pos.admin</groupId>
   <artifactId>smart-pos-admin-resource</artifactId>
   <version>${parent.version}</version>
   <name>smart-pos-admin-resource</name>
@@ -43,7 +43,7 @@
       <artifactId>abdera-extensions-opensearch</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.smartitengineering.smart-pos</groupId>
+      <groupId>com.smartitengineering.smart-pos.admin</groupId>
       <artifactId>smart-pos-admin-api</artifactId>
       <version>${project.version}</version>
     </dependency>
