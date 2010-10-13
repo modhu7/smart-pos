@@ -1,0 +1,4 @@
+contextName=com.smartitengineering.pos.admin.api.service
+modules=com.smartitengineering.pos.admin.binder.guice.APIModule, com.smartitengineering.pos.admin.binder.guice.ImplServiceModule
+ignoreMissingDependency=false
+com.smartitengineering.pos.admin.globalNamespace=com.smartitengineering.pos.admin
