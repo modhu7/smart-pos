@@ -8,17 +8,17 @@ package com.smartitengineering.smartpos.inventory.impl.guice;
 import com.google.inject.Provider;
 import com.smartitengineering.dao.impl.hbase.spi.FilterConfigs;
 import com.smartitengineering.dao.impl.hbase.spi.impl.JsonConfigLoader;
-import com.smartitengineering.smartpos.inventory.api.Product;
+import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
 import java.io.IOException;
 
 /**
  *
  * @author russel
  */
-public class ProductFilterConfigsProvider implements Provider<FilterConfigs<Product>>{
+public class ProductFilterConfigsProvider implements Provider<FilterConfigs<PersistantProduct>>{
 
   @Override
-  public FilterConfigs<Product> get() {
+  public FilterConfigs<PersistantProduct> get() {
     try {
       return JsonConfigLoader.parseJsonAsFilterConfigMap(getClass().getClassLoader().
           getResourceAsStream("com/smartitengineering/pos/impl/product/ProductFilterConfigs.json"));

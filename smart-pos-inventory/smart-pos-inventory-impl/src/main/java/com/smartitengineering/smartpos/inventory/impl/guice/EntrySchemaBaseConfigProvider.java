@@ -8,7 +8,7 @@ package com.smartitengineering.smartpos.inventory.impl.guice;
 import com.google.inject.Provider;
 import com.smartitengineering.dao.impl.hbase.spi.impl.JsonConfigLoader;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderBaseConfig;
-import com.smartitengineering.smartpos.inventory.api.Entry;
+import com.smartitengineering.smartpos.inventory.api.PersistantEntry;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,10 +16,10 @@ import java.io.InputStream;
  *
  * @author russel
  */
-public class EntrySchemaBaseConfigProvider implements Provider<SchemaInfoProviderBaseConfig<Entry>>{
+public class EntrySchemaBaseConfigProvider implements Provider<SchemaInfoProviderBaseConfig<PersistantEntry>>{
 
   @Override
-  public SchemaInfoProviderBaseConfig<Entry> get() {
+  public SchemaInfoProviderBaseConfig<PersistantEntry> get() {
     try {
       final InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(
           "com/smartitengineering/pos/impl/entry/EntrySchemaBaseConfig.json");
