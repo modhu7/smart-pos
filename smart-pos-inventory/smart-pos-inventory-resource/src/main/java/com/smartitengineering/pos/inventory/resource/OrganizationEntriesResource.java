@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.smartpos.inventory.resource;
+package com.smartitengineering.pos.inventory.resource;
 
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
-import com.smartitengineering.smartpos.inventory.api.Entry;
+import com.smartitengineering.smartpos.inventory.api.PersistantEntry;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -95,7 +95,7 @@ public class OrganizationEntriesResource extends AbstractResource {
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganization(
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganization(
         organizationUniqueShortName, null, false, count);
 
 
@@ -120,7 +120,7 @@ public class OrganizationEntriesResource extends AbstractResource {
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganization(
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganization(
         organizationUniqueShortName, null, false, count);
 
 
@@ -152,7 +152,7 @@ public class OrganizationEntriesResource extends AbstractResource {
       logger.error(ex.getMessage());
     }
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganization(
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganization(
         organizationUniqueShortName, entryDate, true, count);
 
     servletRequest.setAttribute("templateContent",
@@ -177,7 +177,7 @@ public class OrganizationEntriesResource extends AbstractResource {
       ex.printStackTrace();
     }
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganization(
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganization(
         organizationUniqueShortName, entryDate, true, count);
 
     Viewable view = new Viewable("entriesFrags.jsp", entries);
@@ -208,7 +208,7 @@ public class OrganizationEntriesResource extends AbstractResource {
       ex.printStackTrace();
     }
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganization(
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganization(
         organizationUniqueShortName, entryDate, false, count);
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntriesResource/entryList.jsp");
@@ -233,7 +233,7 @@ public class OrganizationEntriesResource extends AbstractResource {
       ex.printStackTrace();
     }
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganization(
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganization(
         organizationUniqueShortName, entryDate, false, count);
 
     Viewable view = new Viewable("entryFrags.jsp", entries);
@@ -247,7 +247,7 @@ public class OrganizationEntriesResource extends AbstractResource {
     return get(organizationUniqueShortName, null, null, true);
   }
 
-  private Response get(String uniqueOrganizationName, Entry.TransactionType type, String entryDate, boolean isBefore) {
+  private Response get(String uniqueOrganizationName, PersistantEntry.TransactionType type, String entryDate, boolean isBefore) {
     ResponseBuilder responseBuilder = Response.ok();
     Feed atomFeed = getFeed(entryDate, new Date());
 
@@ -265,13 +265,13 @@ public class OrganizationEntriesResource extends AbstractResource {
       ex.printStackTrace();
     }
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
         uniqueOrganizationName, type, date, isBefore, count);
 
     if (entries != null && !entries.isEmpty()) {
 
       MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
-      List<Entry> entryList = new ArrayList<Entry>(entries);
+      List<PersistantEntry> entryList = new ArrayList<PersistantEntry>(entries);
 
       // uri builder for next and previous organizations according to count
       final UriBuilder nextUri = ORGANIZATION_ENTRIES_AFTER_ENTRYDATE_URI_BUILDER.clone();
@@ -281,7 +281,7 @@ public class OrganizationEntriesResource extends AbstractResource {
       Link nextLink = abderaFactory.newLink();
       nextLink.setRel(Link.REL_NEXT);
       //User lastUser = userList.get(userList.size() - 1);
-      Entry lastEntry = entryList.get(entryList.size() - 1);
+      PersistantEntry lastEntry = entryList.get(entryList.size() - 1);
 
 
       for (String key : queryParam.keySet()) {
@@ -298,14 +298,14 @@ public class OrganizationEntriesResource extends AbstractResource {
       Link prevLink = abderaFactory.newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
       //User firstUser = userList.get(0);
-      Entry firstEntry = entryList.get(0);
+      PersistantEntry firstEntry = entryList.get(0);
 
       prevLink.setHref(
           previousUri.build(organizationUniqueShortName, firstEntry.getEntryDate()).toString());
       atomFeed.addLink(prevLink);
 
       //for (User user : users) {
-      for (Entry entry : entries) {
+      for (PersistantEntry entry : entries) {
 
         org.apache.abdera.model.Entry entryEntry = abderaFactory.newEntry();
 
@@ -335,7 +335,7 @@ public class OrganizationEntriesResource extends AbstractResource {
    */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response post(Entry entry) {
+  public Response post(PersistantEntry entry) {
     return generalPost(entry);
   }
 
@@ -381,7 +381,7 @@ public class OrganizationEntriesResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Entry entry = getObjectFromContent(message);
+      PersistantEntry entry = getObjectFromContent(message);
 
 
       Services.getInstance().getEntryService().save(entry);
@@ -397,7 +397,7 @@ public class OrganizationEntriesResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/purchase")
   public Response getPurchase(){
-    return get(organizationUniqueShortName, Entry.TransactionType.INBOUND_PURCHASE, null, false);
+    return get(organizationUniqueShortName, PersistantEntry.TransactionType.INBOUND_PURCHASE, null, false);
   }
 
   /*
@@ -409,8 +409,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   public Response getPurchaseHtml(){
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
-        organizationUniqueShortName, Entry.TransactionType.INBOUND_PURCHASE, null, false, count);
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, PersistantEntry.TransactionType.INBOUND_PURCHASE, null, false, count);
 
 
 
@@ -433,8 +433,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/purchase")
-  public Response postForPurchase(Entry entry) {
-    entry.setType(Entry.TransactionType.INBOUND_PURCHASE);
+  public Response postForPurchase(PersistantEntry entry) {
+    entry.setType(PersistantEntry.TransactionType.INBOUND_PURCHASE);
 
     return generalPost(entry);
   }
@@ -481,7 +481,7 @@ public class OrganizationEntriesResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Entry entry = getObjectFromContent(message);
+      PersistantEntry entry = getObjectFromContent(message);
 
 
       Services.getInstance().getEntryService().save(entry);
@@ -497,7 +497,7 @@ public class OrganizationEntriesResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/returnin")
   public Response getReturnIn(){
-    return get(organizationUniqueShortName, Entry.TransactionType.INBOUND_RETURN, null, false);
+    return get(organizationUniqueShortName, PersistantEntry.TransactionType.INBOUND_RETURN, null, false);
   }
 
   /*
@@ -509,8 +509,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   public Response getReturnInHtml(){
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
-        organizationUniqueShortName, Entry.TransactionType.INBOUND_RETURN, null, false, count);
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, PersistantEntry.TransactionType.INBOUND_RETURN, null, false, count);
 
 
 
@@ -533,8 +533,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/returnin")
-  public Response postForReturnIn(Entry entry) {
-    entry.setType(Entry.TransactionType.INBOUND_RETURN);
+  public Response postForReturnIn(PersistantEntry entry) {
+    entry.setType(PersistantEntry.TransactionType.INBOUND_RETURN);
 
     return generalPost(entry);
   }
@@ -581,7 +581,7 @@ public class OrganizationEntriesResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Entry entry = getObjectFromContent(message);
+      PersistantEntry entry = getObjectFromContent(message);
 
 
       Services.getInstance().getEntryService().save(entry);
@@ -597,7 +597,7 @@ public class OrganizationEntriesResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/transferin")
   public Response getTransferIn(){
-    return get(organizationUniqueShortName, Entry.TransactionType.INBOUND_WAREHOUSE_RECIEVE, null, false);
+    return get(organizationUniqueShortName, PersistantEntry.TransactionType.INBOUND_WAREHOUSE_RECIEVE, null, false);
   }
 
   /*
@@ -609,8 +609,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   public Response getTransferInHtml(){
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
-        organizationUniqueShortName, Entry.TransactionType.INBOUND_WAREHOUSE_RECIEVE, null, false, count);
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, PersistantEntry.TransactionType.INBOUND_WAREHOUSE_RECIEVE, null, false, count);
 
 
 
@@ -633,8 +633,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/transferin")
-  public Response postForTransfer(Entry entry) {
-    entry.setType(Entry.TransactionType.INBOUND_WAREHOUSE_RECIEVE);
+  public Response postForTransfer(PersistantEntry entry) {
+    entry.setType(PersistantEntry.TransactionType.INBOUND_WAREHOUSE_RECIEVE);
 
     return generalPost(entry);
   }
@@ -681,7 +681,7 @@ public class OrganizationEntriesResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Entry entry = getObjectFromContent(message);
+      PersistantEntry entry = getObjectFromContent(message);
 
 
       Services.getInstance().getEntryService().save(entry);
@@ -697,7 +697,7 @@ public class OrganizationEntriesResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/sale")
   public Response getSale(){
-    return get(organizationUniqueShortName, Entry.TransactionType.OUTBOUND_SALE, null, false);
+    return get(organizationUniqueShortName, PersistantEntry.TransactionType.OUTBOUND_SALE, null, false);
   }
 
   /*
@@ -709,8 +709,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   public Response getSaleHtml(){
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
-        organizationUniqueShortName, Entry.TransactionType.OUTBOUND_SALE, null, false, count);
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, PersistantEntry.TransactionType.OUTBOUND_SALE, null, false, count);
 
 
 
@@ -733,8 +733,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/sale")
-  public Response postForSale(Entry entry) {
-    entry.setType(Entry.TransactionType.OUTBOUND_SALE);
+  public Response postForSale(PersistantEntry entry) {
+    entry.setType(PersistantEntry.TransactionType.OUTBOUND_SALE);
 
     return generalPost(entry);
   }
@@ -781,7 +781,7 @@ public class OrganizationEntriesResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Entry entry = getObjectFromContent(message);
+      PersistantEntry entry = getObjectFromContent(message);
 
 
       Services.getInstance().getEntryService().save(entry);
@@ -797,7 +797,7 @@ public class OrganizationEntriesResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/returnout")
   public Response getReturnOut(){
-    return get(organizationUniqueShortName, Entry.TransactionType.OUTBOUND_RETURN, null, false);
+    return get(organizationUniqueShortName, PersistantEntry.TransactionType.OUTBOUND_RETURN, null, false);
   }
 
   /*
@@ -809,8 +809,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   public Response getReturnOutHtml(){
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
-        organizationUniqueShortName, Entry.TransactionType.OUTBOUND_RETURN, null, false, count);
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, PersistantEntry.TransactionType.OUTBOUND_RETURN, null, false, count);
 
 
 
@@ -834,9 +834,9 @@ public class OrganizationEntriesResource extends AbstractResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/returnout")
-  public Response postForReturnOut(Entry entry) {
+  public Response postForReturnOut(PersistantEntry entry) {
 
-    entry.setType(Entry.TransactionType.OUTBOUND_RETURN);
+    entry.setType(PersistantEntry.TransactionType.OUTBOUND_RETURN);
     return generalPost(entry);
   }
 
@@ -882,7 +882,7 @@ public class OrganizationEntriesResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Entry entry = getObjectFromContent(message);
+      PersistantEntry entry = getObjectFromContent(message);
 
 
       Services.getInstance().getEntryService().save(entry);
@@ -898,7 +898,7 @@ public class OrganizationEntriesResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Path("/transferout")
   public Response getTransferOut(){
-    return get(organizationUniqueShortName, Entry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER, null, false);
+    return get(organizationUniqueShortName, PersistantEntry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER, null, false);
   }
 
   /*
@@ -910,8 +910,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   public Response getTransferOutHtml(){
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Entry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
-        organizationUniqueShortName, Entry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER, null, false, count);
+    Collection<PersistantEntry> entries = Services.getInstance().getEntryService().getByOrganizationAndType(
+        organizationUniqueShortName, PersistantEntry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER, null, false, count);
 
 
 
@@ -934,8 +934,8 @@ public class OrganizationEntriesResource extends AbstractResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/transferout")
-  public Response postForTransferOut(Entry entry) {
-    entry.setType(Entry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER);
+  public Response postForTransferOut(PersistantEntry entry) {
+    entry.setType(PersistantEntry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER);
 
     return generalPost(entry);
   }
@@ -982,7 +982,7 @@ public class OrganizationEntriesResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Entry entry = getObjectFromContent(message);
+      PersistantEntry entry = getObjectFromContent(message);
 
 
       Services.getInstance().getEntryService().save(entry);
@@ -991,7 +991,7 @@ public class OrganizationEntriesResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private Response generalPost(Entry entry) {
+  private Response generalPost(PersistantEntry entry) {
     ResponseBuilder responseBuilder;
 
     try {
@@ -1008,7 +1008,7 @@ public class OrganizationEntriesResource extends AbstractResource {
 //  private Response generalHtmlPost(String contentType, String message){
 //
 //  }
-  private Entry getObjectFromContent(String message) {
+  private PersistantEntry getObjectFromContent(String message) {
 
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
@@ -1020,7 +1020,7 @@ public class OrganizationEntriesResource extends AbstractResource {
       keyValueMap.put(keyValuePair[0], keyValuePair[1]);
     }
 
-    Entry entry = new Entry();
+    PersistantEntry entry = new PersistantEntry();
 
     if(keyValueMap.get("entryDate") != null){
       try{
@@ -1053,28 +1053,28 @@ public class OrganizationEntriesResource extends AbstractResource {
       entry.setType(getTransactionType(keyValueMap.get("type")));
     }
     
-    return new Entry();
+    return new PersistantEntry();
   }
 
-  private Entry.TransactionType getTransactionType(String string){
+  private PersistantEntry.TransactionType getTransactionType(String string){
     if(string.toUpperCase().equals("INBOUND_PURCHASE")){
-      return Entry.TransactionType.INBOUND_PURCHASE;
+      return PersistantEntry.TransactionType.INBOUND_PURCHASE;
     }
     if(string.toUpperCase().equals("INBOUND_RETURN")){
-      return Entry.TransactionType.INBOUND_RETURN;
+      return PersistantEntry.TransactionType.INBOUND_RETURN;
     }
     if(string.toUpperCase().equals("INBOUND_WAREHOUSE_RECIEVE")){
-      return Entry.TransactionType.INBOUND_WAREHOUSE_RECIEVE;
+      return PersistantEntry.TransactionType.INBOUND_WAREHOUSE_RECIEVE;
     }
     if(string.toUpperCase().equals("OUTBOUND_SALE")){
-      return Entry.TransactionType.OUTBOUND_SALE;
+      return PersistantEntry.TransactionType.OUTBOUND_SALE;
     }
     if(string.toUpperCase().equals("OUTBOUND_RETURN")){
-      return Entry.TransactionType.OUTBOUND_RETURN;
+      return PersistantEntry.TransactionType.OUTBOUND_RETURN;
     }
     if(string.toUpperCase().equals("OUTBOUND_WAREHOUSE_TRANSFER")){
-      return Entry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER;
+      return PersistantEntry.TransactionType.OUTBOUND_WAREHOUSE_TRANSFER;
     }
-    return Entry.TransactionType.INBOUND_PURCHASE;
+    return PersistantEntry.TransactionType.INBOUND_PURCHASE;
   }
 }

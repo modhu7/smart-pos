@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.smartpos.inventory.resource;
+package com.smartitengineering.pos.inventory.resource;
 
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
-import com.smartitengineering.smartpos.inventory.api.Product;
+import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
 import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
 import com.smartitengineering.smartpos.inventory.impl.domainid.ProductIdImpl;
 import com.sun.jersey.api.view.Viewable;
@@ -106,7 +106,7 @@ public class OrganizationProductsResource extends AbstractResource {
 //    }
 
 
-    Collection<Product> products = Services.getInstance().getProductService().getByOrganization(
+    Collection<PersistantProduct> products = Services.getInstance().getProductService().getByOrganization(
         organizationUniqueShortName, null, false, count);
 
 
@@ -133,7 +133,7 @@ public class OrganizationProductsResource extends AbstractResource {
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Product> products = Services.getInstance().getProductService().getByOrganization(
+    Collection<PersistantProduct> products = Services.getInstance().getProductService().getByOrganization(
         organizationUniqueShortName, null, false, count);
 
 
@@ -157,7 +157,7 @@ public class OrganizationProductsResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.ok();
 //    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
 //        organizationUniqueShortName, beforeUserName, true, count);
-    Collection<Product> products = Services.getInstance().getProductService().getByOrganization(
+    Collection<PersistantProduct> products = Services.getInstance().getProductService().getByOrganization(
         organizationUniqueShortName, beforeProductCode, true, count);
 
     servletRequest.setAttribute("templateContent",
@@ -175,7 +175,7 @@ public class OrganizationProductsResource extends AbstractResource {
 //    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
 //        organizationUniqueShortName, beforeUserName, true, count);
 
-    Collection<Product> products = Services.getInstance().getProductService().getByOrganization(
+    Collection<PersistantProduct> products = Services.getInstance().getProductService().getByOrganization(
         organizationUniqueShortName, beforeProductCode, true, count);
 
     Viewable view = new Viewable("productFrags.jsp", products);
@@ -197,7 +197,7 @@ public class OrganizationProductsResource extends AbstractResource {
 
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Product> products = Services.getInstance().getProductService().getByOrganization(
+    Collection<PersistantProduct> products = Services.getInstance().getProductService().getByOrganization(
         organizationUniqueShortName, afterProductCode, false, count);
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productList.jsp");
@@ -213,7 +213,7 @@ public class OrganizationProductsResource extends AbstractResource {
 
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Product> products = Services.getInstance().getProductService().getByOrganization(
+    Collection<PersistantProduct> products = Services.getInstance().getProductService().getByOrganization(
         organizationUniqueShortName, afterProductCode, false, count);
 
     Viewable view = new Viewable("productFrags.jsp", products);
@@ -236,13 +236,13 @@ public class OrganizationProductsResource extends AbstractResource {
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
 
-    Collection<Product> products = Services.getInstance().getProductService().getByOrganization(
+    Collection<PersistantProduct> products = Services.getInstance().getProductService().getByOrganization(
         organizationUniqueShortName, userName, isBefore, count);
 
     if (products != null && !products.isEmpty()) {
 
       MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
-      List<Product> productList = new ArrayList<Product>(products);
+      List<PersistantProduct> productList = new ArrayList<PersistantProduct>(products);
 
       // uri builder for next and previous organizations according to count
       final UriBuilder nextUri = ORGANIZATION_PRODUCTS_AFTER_PRODUCTCODE_URI_BUILDER.clone();
@@ -252,7 +252,7 @@ public class OrganizationProductsResource extends AbstractResource {
       Link nextLink = abderaFactory.newLink();
       nextLink.setRel(Link.REL_NEXT);
       //User lastUser = userList.get(userList.size() - 1);
-      Product lastProduct = productList.get(productList.size() - 1);
+      PersistantProduct lastProduct = productList.get(productList.size() - 1);
 
 
       for (String key : queryParam.keySet()) {
@@ -269,14 +269,14 @@ public class OrganizationProductsResource extends AbstractResource {
       Link prevLink = abderaFactory.newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
       //User firstUser = userList.get(0);
-      Product firstProduct = productList.get(0);
+      PersistantProduct firstProduct = productList.get(0);
 
       prevLink.setHref(
           previousUri.build(organizationUniqueShortName, firstProduct.getId()).toString());
       atomFeed.addLink(prevLink);
 
       //for (User user : users) {
-      for (Product product : products) {
+      for (PersistantProduct product : products) {
 
         Entry productEntry = abderaFactory.newEntry();
 
@@ -303,7 +303,7 @@ public class OrganizationProductsResource extends AbstractResource {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response post(Product product) {
+  public Response post(PersistantProduct product) {
 
 
     ResponseBuilder responseBuilder;
@@ -325,9 +325,9 @@ public class OrganizationProductsResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private Product getObjectFromContent(String message) {
+  private PersistantProduct getObjectFromContent(String message) {
 
-    return new Product();
+    return new PersistantProduct();
   }
 
   @POST
@@ -369,7 +369,7 @@ public class OrganizationProductsResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Product product = getObjectFromContent(message);
+      PersistantProduct product = getObjectFromContent(message);
 
 
       Services.getInstance().getProductService().save(product);

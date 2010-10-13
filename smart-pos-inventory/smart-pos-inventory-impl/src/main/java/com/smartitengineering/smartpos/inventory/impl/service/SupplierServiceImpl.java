@@ -9,7 +9,7 @@ import com.smartitengineering.dao.impl.hbase.CommonDao;
 import com.smartitengineering.dao.impl.hbase.spi.AsyncExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.impl.MixedExecutorServiceImpl;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
-import com.smartitengineering.smartpos.inventory.api.Supplier;
+import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
 import com.smartitengineering.smartpos.inventory.api.converter.SupplierRowConverter;
 import com.smartitengineering.smartpos.inventory.api.service.SupplierService;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -24,7 +24,7 @@ public class SupplierServiceImpl extends AbstractSupplierService implements Supp
 
   protected final Logger logger = LoggerFactory.getLogger(SupplierServiceImpl.class);
 
-//  private CommonDao<Supplier, String> supplierDao;
+//  private CommonDao<PersistantSupplier, String> supplierDao;
 //  private SupplierRowConverter supplierRowConverter;
 //  private static final MixedExecutorServiceImpl executorService = new MixedExecutorServiceImpl();
 
@@ -38,7 +38,7 @@ public class SupplierServiceImpl extends AbstractSupplierService implements Supp
 
   public SupplierServiceImpl(){
 //    supplierRowConverter = new SupplierRowConverter();
-//    supplierDao = new CommonDao<Supplier, String>();
+//    supplierDao = new CommonDao<PersistantSupplier, String>();
 //    supplierDao.setExecutorService(getAsyncExecutorService());
 //    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
 //    providerImpl.setMainTableName("supplier");
@@ -47,17 +47,17 @@ public class SupplierServiceImpl extends AbstractSupplierService implements Supp
   }
 
   @Override
-  public void save(Supplier supplier) {
+  public void save(PersistantSupplier supplier) {
     commonWriteDao.save(supplier);
   }
 
   @Override
-  public void update(Supplier supplier) {
+  public void update(PersistantSupplier supplier) {
     commonWriteDao.update(supplier);
   }
 
   @Override
-  public void delete(Supplier supplier) {
+  public void delete(PersistantSupplier supplier) {
     commonWriteDao.delete(supplier);
   }
 
@@ -67,17 +67,17 @@ public class SupplierServiceImpl extends AbstractSupplierService implements Supp
   }
 
   @Override
-  public Supplier getByOrganization(String organizatinUniqueShortName) {
+  public PersistantSupplier getByOrganization(String organizatinUniqueShortName) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public Supplier getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count) {
+  public PersistantSupplier getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public Supplier getByOrganizationAndSname(String organizatinUniqueShortName, String supplierName) {
+  public PersistantSupplier getByOrganizationAndSname(String organizatinUniqueShortName, String supplierName) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

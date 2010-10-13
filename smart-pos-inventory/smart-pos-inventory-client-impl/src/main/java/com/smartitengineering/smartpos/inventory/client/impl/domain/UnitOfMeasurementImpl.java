@@ -5,9 +5,9 @@
 
 package com.smartitengineering.smartpos.inventory.client.impl.domain;
 
+
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -19,11 +19,7 @@ public class UnitOfMeasurementImpl implements UnitOfMeasurement{
   private String longName;
   private String uomType;
   private String uomSystem;
-  private String symbol;
-
-  public void setId(String id) {
-    this.id = id;
-  }
+  private String symbol;  
 
   public void setSymbol(String symbol) {
     this.symbol = symbol;
@@ -35,12 +31,7 @@ public class UnitOfMeasurementImpl implements UnitOfMeasurement{
 
   public void setUomType(String uomType) {
     this.uomType = uomType;
-  }
-
-  @Override
-  public String getId() {
-    return id;
-  }
+  }  
 
   @Override
   public String getSymbol() {
@@ -74,12 +65,16 @@ public class UnitOfMeasurementImpl implements UnitOfMeasurement{
       longName = "";
     }
     return longName;
+  }  
+
+  @Override
+  public String getId() {
+    return id;
   }
 
-//  public boolean isValid() {
-//    if (StringUtils.isBlank(getId()) || StringUtils.isBlank(symbol)) {
-//      return false;
-//    }
-//    return true;
-//  }
+  @Override
+  public void setId(String id) {
+    this.id = id;
+  }
+
 }

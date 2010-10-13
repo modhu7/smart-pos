@@ -8,7 +8,7 @@ package com.smartitengineering.smartpos.inventory.impl.service;
 import com.google.inject.Inject;
 import com.smartitengineering.dao.common.CommonReadDao;
 import com.smartitengineering.dao.common.CommonWriteDao;
-import com.smartitengineering.smartpos.inventory.api.Store;
+import com.smartitengineering.smartpos.inventory.api.PersistantStore;
 import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
 import com.smartitengineering.smartpos.inventory.api.service.StoreService;
 
@@ -18,11 +18,11 @@ import com.smartitengineering.smartpos.inventory.api.service.StoreService;
  */
 public abstract class AbstractStoreService implements StoreService{
   @Inject
-  protected CommonReadDao<Store, StoreId> commonReadDao;
+  protected CommonReadDao<PersistantStore, StoreId> commonReadDao;
   @Inject
-  protected CommonWriteDao<Store> commonWriteDao;
+  protected CommonWriteDao<PersistantStore> commonWriteDao;
 
-  public Store getById(StoreId id){
+  public PersistantStore getById(StoreId id){
     if(id == null)
       return null;
     return commonReadDao.getById(id);

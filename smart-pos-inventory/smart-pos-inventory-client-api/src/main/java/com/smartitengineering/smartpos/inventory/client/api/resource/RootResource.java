@@ -16,9 +16,9 @@ public interface RootResource {
 
   EntriesResource getEntriesResource();
 
-  ProductsResource getOrganizationProductsResource();
+  ProductsResource getOrganizationProductsResource();  
 
-  StoreResource getOrganizationStoreResource();
+  StoresResource getStoresResource();
 
   ResourceLink getLoginLink();
 

@@ -6,7 +6,7 @@ package com.smartitengineering.smartpos.inventory.api.converter;
 
 import com.smartitengineering.dao.impl.hbase.spi.ExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.ObjectRowConverter;
-import com.smartitengineering.smartpos.inventory.api.Entry;
+import com.smartitengineering.smartpos.inventory.api.PersistantEntry;
 import com.smartitengineering.smartpos.inventory.impl.domainid.EntryIdImpl;
 import java.util.LinkedHashMap;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-public class EntryRowConverter implements ObjectRowConverter<Entry> {
+public class EntryRowConverter implements ObjectRowConverter<PersistantEntry> {
 
   protected final Logger logger = LoggerFactory.getLogger(EntryRowConverter.class);
 
@@ -36,7 +36,7 @@ public class EntryRowConverter implements ObjectRowConverter<Entry> {
   public static final String ENTRY_TBL_NAME = "entry";
 
   //@Override
-  public LinkedHashMap<String, Put> objectToRows(Entry instance) {
+  public LinkedHashMap<String, Put> objectToRows(PersistantEntry instance) {
     LinkedHashMap<String, Put> map = new LinkedHashMap<String, Put>();
     Put put = new Put(Bytes.toBytes(instance.getId().getId()));
     put.add(QUANTITY[0], QUANTITY[1], Bytes.toBytes(instance.getQuantity()));
@@ -50,7 +50,7 @@ public class EntryRowConverter implements ObjectRowConverter<Entry> {
   }
 
   //@Override
-  public LinkedHashMap<String, Delete> objectToDeleteableRows(Entry instance) {
+  public LinkedHashMap<String, Delete> objectToDeleteableRows(PersistantEntry instance) {
     LinkedHashMap<String, Delete> map = new LinkedHashMap<String, Delete>();
     Delete delete = new Delete(Bytes.toBytes(instance.getId().getId()));
     map.put(ENTRY_TBL_NAME, delete);
@@ -58,11 +58,11 @@ public class EntryRowConverter implements ObjectRowConverter<Entry> {
   }
 
   @Override
-  public Entry rowsToObject(Result startRow, ExecutorService executorService) {
+  public PersistantEntry rowsToObject(Result startRow, ExecutorService executorService) {
     if (startRow.isEmpty()) {
       return null;
     }
-    Entry entry = new Entry();
+    PersistantEntry entry = new PersistantEntry();
     entry.setId(new EntryIdImpl(Bytes.toString(startRow.getRow())));
     entry.setQuantity(Bytes.toDouble(startRow.getValue(QUANTITY[0], QUANTITY[1])));
     try{
@@ -80,12 +80,12 @@ public class EntryRowConverter implements ObjectRowConverter<Entry> {
   }
 
   @Override
-  public LinkedHashMap<String, Put> objectToRows(Entry instance, ExecutorService service) {
+  public LinkedHashMap<String, Put> objectToRows(PersistantEntry instance, ExecutorService service) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public LinkedHashMap<String, Delete> objectToDeleteableRows(Entry instance, ExecutorService service) {
+  public LinkedHashMap<String, Delete> objectToDeleteableRows(PersistantEntry instance, ExecutorService service) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 }

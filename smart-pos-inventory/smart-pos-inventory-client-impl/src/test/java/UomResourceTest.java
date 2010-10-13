@@ -2,19 +2,26 @@
 import com.google.inject.AbstractModule;
 import com.smartitengineering.dao.hbase.ddl.HBaseTableGenerator;
 import com.smartitengineering.dao.hbase.ddl.config.json.ConfigurationJsonParser;
+import com.smartitengineering.smartpos.inventory.client.api.domain.Store;
 import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.client.api.resource.RootResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.StoreResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.StoresResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
+import com.smartitengineering.smartpos.inventory.client.impl.domain.StoreImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.domain.UnitOfMeasurementImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.resource.RootResourceImpl;
 import com.smartitengineering.smartpos.inventory.guicebinder.Initializer;
+import com.smartitengineering.user.client.impl.domain.Address;
 import com.smartitengineering.util.rest.client.ConnectionConfig;
 import com.smartitengineering.util.bean.guice.GuiceUtil;
 import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import java.io.File;
 import java.net.URI;
 import java.util.Properties;
+import javax.ws.rs.core.Response.Status;
 import junit.framework.Assert;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
@@ -103,7 +110,7 @@ public class UomResourceTest {
     UomsResource uomsResource = rootResource.getOrganizationUomsResource();
     Assert.assertNotNull(uomsResource);
 //
-    UnitOfMeasurementImpl uom = new UnitOfMeasurementImpl();
+    UnitOfMeasurementImpl uom = new UnitOfMeasurementImpl();    
     uom.setId("KG");
     uom.setLongName("Kilogram");
     uom.setSymbol("Kg");
@@ -121,10 +128,39 @@ public class UomResourceTest {
 
     uomResource.update();
 //
-//    UnitOfMeasurement changedUom = uomResource.getUnitOfMeasurement();
-//    Assert.assertNotSame("Kg", uom.getSymbol());
+    UnitOfMeasurement changedUom = uomResource.getUnitOfMeasurement();
+    Assert.assertNotSame(fetchedUom.getUomSystem(), uom.getUomSystem());
 //
-//    uomResource.delete();       
+    uomResource.delete();
+    try {
+      uomResource.get();
+      Assert.fail("Should have thorown exception");
+    }
+    catch(UniformInterfaceException ex){
+      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
+    }
+    catch (Exception e) {
+      Assert.fail("Should not throw exception other than UniformInterfaceException");
+    }
+
+
+    StoresResource storesResource = rootResource.getStoresResource();
+    Assert.assertNotNull(storesResource);
+
+    StoreImpl store = new StoreImpl();
+    Address address = new Address();
+    store.setId("S1");
+    store.setName("Store 1");
+    address.setStreetAddress("Haji Chinu Mia road");
+    address.setCity("Dhaka");
+    address.setState("Dhaka");
+    address.setCountry("Bangladesh");
+    address.setZip("1207");
+    store.setAddress(address);
+
+//    StoreResource storeResource = storesResource.create(store);
+//    Assert.assertNotNull(storeResource);
+
   }
 
   public static class ConfigurationModule extends AbstractModule {

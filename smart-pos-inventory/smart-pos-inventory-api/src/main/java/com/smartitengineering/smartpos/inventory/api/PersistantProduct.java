@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author russel
  */
-public class Product extends AbstractGenericPersistentDTO<Product, ProductId, Long>{
+public class PersistantProduct extends AbstractGenericPersistentDTO<PersistantProduct, ProductId, Long>{
 
   private String name;
   private String description;

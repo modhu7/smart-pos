@@ -5,7 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.api.service;
 
-import com.smartitengineering.smartpos.inventory.api.Supplier;
+import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
 import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
 
 /**
@@ -14,24 +14,24 @@ import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
  */
 public interface SupplierService {
 
-  public void save(Supplier supplier);
+  public void save(PersistantSupplier supplier);
 
-  public void update(Supplier supplier);
+  public void update(PersistantSupplier supplier);
 
-  public void delete(Supplier supplier);
+  public void delete(PersistantSupplier supplier);
 
   public void getAllUoms();
 
   // non paginated version
-  public Supplier getByOrganization(String organizatinUniqueShortName);
+  public PersistantSupplier getByOrganization(String organizatinUniqueShortName);
 
   // paginated version
-  public Supplier getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count);
+  public PersistantSupplier getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count);
 
   // non paginated version
-  public Supplier getByOrganizationAndSname(String organizatinUniqueShortName, String supplierName);
+  public PersistantSupplier getByOrganizationAndSname(String organizatinUniqueShortName, String supplierName);
 
-  public Supplier getById(SupplierId supplierId);
+  public PersistantSupplier getById(SupplierId supplierId);
   
 
 }

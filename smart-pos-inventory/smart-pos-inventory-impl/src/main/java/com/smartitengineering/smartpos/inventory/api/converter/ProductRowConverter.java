@@ -6,7 +6,7 @@ package com.smartitengineering.smartpos.inventory.api.converter;
 
 import com.smartitengineering.dao.impl.hbase.spi.ExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.ObjectRowConverter;
-import com.smartitengineering.smartpos.inventory.api.Product;
+import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
 import com.smartitengineering.smartpos.inventory.impl.domainid.ProductIdImpl;
 import java.util.LinkedHashMap;
 import org.apache.hadoop.hbase.client.Delete;
@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-public class ProductRowConverter implements ObjectRowConverter<Product> {
+public class ProductRowConverter implements ObjectRowConverter<PersistantProduct> {
 
   protected final Logger logger = LoggerFactory.getLogger(ProductRowConverter.class);
 
@@ -31,7 +31,7 @@ public class ProductRowConverter implements ObjectRowConverter<Product> {
   public static final String PRODUCT_TBL_NAME = "product";
 
 //  @Override
-//  public LinkedHashMap<String, Put> objectToRows(Product instance) {
+//  public LinkedHashMap<String, Put> objectToRows(PersistantProduct instance) {
 //    LinkedHashMap<String, Put> map = new LinkedHashMap<String, Put>();
 //    Put put = new Put(Bytes.toBytes(instance.getId()));
 //    put.add(NAME[0], NAME[1], Bytes.toBytes(instance.getName()));
@@ -43,7 +43,7 @@ public class ProductRowConverter implements ObjectRowConverter<Product> {
 //  }
 //
 //  @Override
-//  public LinkedHashMap<String, Delete> objectToDeleteableRows(Product instance) {
+//  public LinkedHashMap<String, Delete> objectToDeleteableRows(PersistantProduct instance) {
 //    LinkedHashMap<String, Delete> map = new LinkedHashMap<String, Delete>();
 //    Delete delete = new Delete(Bytes.toBytes(instance.getId()));
 //    map.put(PRODUCT_TBL_NAME, delete);
@@ -51,11 +51,11 @@ public class ProductRowConverter implements ObjectRowConverter<Product> {
 //  }
 
   @Override
-  public Product rowsToObject(Result startRow, ExecutorService executorService) {
+  public PersistantProduct rowsToObject(Result startRow, ExecutorService executorService) {
     if (startRow.isEmpty()) {
       return null;
     }
-    final Product product = new Product();
+    final PersistantProduct product = new PersistantProduct();
     product.setId(new ProductIdImpl(Bytes.toString(startRow.getRow())));
     product.setOrganizationId(Bytes.toInt(startRow.getValue(ORG_ID[0], ORG_ID[1])));
     product.setName(Bytes.toString(startRow.getValue(NAME[0], NAME[1])));
@@ -65,12 +65,12 @@ public class ProductRowConverter implements ObjectRowConverter<Product> {
   }
 
   @Override
-  public LinkedHashMap<String, Put> objectToRows(Product instance, ExecutorService service) {
+  public LinkedHashMap<String, Put> objectToRows(PersistantProduct instance, ExecutorService service) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public LinkedHashMap<String, Delete> objectToDeleteableRows(Product instance, ExecutorService service) {
+  public LinkedHashMap<String, Delete> objectToDeleteableRows(PersistantProduct instance, ExecutorService service) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 }

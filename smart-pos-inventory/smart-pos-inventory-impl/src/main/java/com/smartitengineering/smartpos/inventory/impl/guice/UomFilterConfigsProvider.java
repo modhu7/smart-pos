@@ -8,17 +8,17 @@ package com.smartitengineering.smartpos.inventory.impl.guice;
 import com.google.inject.Provider;
 import com.smartitengineering.dao.impl.hbase.spi.FilterConfigs;
 import com.smartitengineering.dao.impl.hbase.spi.impl.JsonConfigLoader;
-import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
 import java.io.IOException;
 
 /**
  *
  * @author russel
  */
-public class UomFilterConfigsProvider implements Provider<FilterConfigs<UnitOfMeasurement>>{
+public class UomFilterConfigsProvider implements Provider<FilterConfigs<PersistantUnitOfMeasurement>>{
 
   @Override
-  public FilterConfigs<UnitOfMeasurement> get() {
+  public FilterConfigs<PersistantUnitOfMeasurement> get() {
     try {
       return JsonConfigLoader.parseJsonAsFilterConfigMap(getClass().getClassLoader().
           getResourceAsStream("com/smartitengineering/pos/impl/uom/UomFilterConfigs.json"));

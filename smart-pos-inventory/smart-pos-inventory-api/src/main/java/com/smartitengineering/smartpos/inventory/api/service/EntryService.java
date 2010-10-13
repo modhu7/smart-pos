@@ -4,7 +4,7 @@
  */
 package com.smartitengineering.smartpos.inventory.api.service;
 
-import com.smartitengineering.smartpos.inventory.api.Entry;
+import com.smartitengineering.smartpos.inventory.api.PersistantEntry;
 import java.util.Collection;
 import java.util.Date;
 
@@ -14,50 +14,50 @@ import java.util.Date;
  */
 public interface EntryService {
 
-  public void save(Entry entry);
+  public void save(PersistantEntry entry);
 
-  public void update(Entry product);
+  public void update(PersistantEntry product);
 
-  public void delete(Entry product);
+  public void delete(PersistantEntry product);
 
   public void getAllEntries();
 
   // non paginated version
-  public Collection<Entry> getByOrganization(String organizationUniqueShortName);
+  public Collection<PersistantEntry> getByOrganization(String organizationUniqueShortName);
 
   // paginated version (pagination by entry date)
-  public Collection<Entry> getByOrganization(String organizationUniqueShortName, Date entryDate, boolean isSmallerThan,
+  public Collection<PersistantEntry> getByOrganization(String organizationUniqueShortName, Date entryDate, boolean isSmallerThan,
                                              int count);
 
   // non paginated version
-  public Collection<Entry> getByOrganizationAndType(String organizationUniqueShortName, Entry.TransactionType type);
+  public Collection<PersistantEntry> getByOrganizationAndType(String organizationUniqueShortName, PersistantEntry.TransactionType type);
 
   // paginated version (pagination by entry date)
-  public Collection<Entry> getByOrganizationAndType(String organizationUniqueShortName, Entry.TransactionType type,
+  public Collection<PersistantEntry> getByOrganizationAndType(String organizationUniqueShortName, PersistantEntry.TransactionType type,
                                                     Date entryDate, boolean isSmallerThan, int count);
 
   // non paginated version
-  public Collection<Entry> getByOrganizationAndStore(String organizationUniqueShortName, String storeCode);
+  public Collection<PersistantEntry> getByOrganizationAndStore(String organizationUniqueShortName, String storeCode);
 
   // paginated version (pagination by entry date)
-  public Collection<Entry> getByOrganizationAndStore(String organizationUniqueShortName, String storeCode,
+  public Collection<PersistantEntry> getByOrganizationAndStore(String organizationUniqueShortName, String storeCode,
                                                      Date entryDate, boolean isSmallerThan, int count);
 
   // non paginated version
-  public Collection<Entry> getByOrganizationAndProduct(String organizationUniqueShortName, String productCode);
+  public Collection<PersistantEntry> getByOrganizationAndProduct(String organizationUniqueShortName, String productCode);
 
   // paginated version (pagination by entry date)
-  public Collection<Entry> getByOrganizationAndProduct(String organizationUniqueShortName, String productCode,
+  public Collection<PersistantEntry> getByOrganizationAndProduct(String organizationUniqueShortName, String productCode,
                                                        Date entryDate, boolean isSmallerThan, int count);
 
   // non paginated version
-  public Collection<Entry> getByOrganizationAndProductAndStore(String organizationUniqueShortName, String productCode,
+  public Collection<PersistantEntry> getByOrganizationAndProductAndStore(String organizationUniqueShortName, String productCode,
                                                                String storeCode);
 
   // paginated version (pagination by entry date)
-  public Collection<Entry> getByOrganizationAndProductAndStore(String organizationUniqueShortName, String productCode,
+  public Collection<PersistantEntry> getByOrganizationAndProductAndStore(String organizationUniqueShortName, String productCode,
                                                                String storeCode, Date entryDate, boolean isSmallerThan,
                                                                int count);
 
-  public Entry getByOrganizationAndEntryDate(String organizationUniqueShortName, Date entryDate);
+  public PersistantEntry getByOrganizationAndEntryDate(String organizationUniqueShortName, Date entryDate);
 }

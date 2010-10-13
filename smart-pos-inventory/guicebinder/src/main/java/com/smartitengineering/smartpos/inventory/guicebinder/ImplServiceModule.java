@@ -23,11 +23,11 @@ import com.smartitengineering.dao.impl.hbase.spi.impl.DiffBasedMergeService;
 import com.smartitengineering.dao.impl.hbase.spi.impl.MixedExecutorServiceImpl;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderBaseConfig;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
-import com.smartitengineering.smartpos.inventory.api.Entry;
-import com.smartitengineering.smartpos.inventory.api.Product;
-import com.smartitengineering.smartpos.inventory.api.Store;
-import com.smartitengineering.smartpos.inventory.api.Supplier;
-import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.PersistantEntry;
+import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
+import com.smartitengineering.smartpos.inventory.api.PersistantStore;
+import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
+import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.converter.EntryRowConverter;
 import com.smartitengineering.smartpos.inventory.api.converter.ProductRowConverter;
 import com.smartitengineering.smartpos.inventory.api.converter.StoreRowConverter;
@@ -71,80 +71,80 @@ public class ImplServiceModule extends AbstractModule{
     /*
      * Start injection specific to common dao of uom
      */    
-    bind( new TypeLiteral<ObjectRowConverter<UnitOfMeasurement>>(){}).to(UOMRowConverter.class).in(Singleton.class);
-    bind(new TypeLiteral<CommonReadDao<UnitOfMeasurement, UomId>>(){}).to(new TypeLiteral<CommonDao<UnitOfMeasurement, UomId>>(){}).in(Singleton.class);
-    bind(new TypeLiteral<CommonWriteDao<UnitOfMeasurement>>(){}).to(new TypeLiteral<CommonDao<UnitOfMeasurement, UomId>>(){}).in(Singleton.class);
-    bind(new TypeLiteral<CommonDao<UnitOfMeasurement, UomId>>(){}).to(new TypeLiteral<com.smartitengineering.dao.impl.hbase.CommonDao<UnitOfMeasurement, UomId>>(){}).in(Singleton.class);
-    final TypeLiteral<SchemaInfoProviderImpl<UnitOfMeasurement, UomId>> wTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<UnitOfMeasurement, UomId>>() {};
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<UnitOfMeasurement>>() {
+    bind( new TypeLiteral<ObjectRowConverter<PersistantUnitOfMeasurement>>(){}).to(UOMRowConverter.class).in(Singleton.class);
+    bind(new TypeLiteral<CommonReadDao<PersistantUnitOfMeasurement, UomId>>(){}).to(new TypeLiteral<CommonDao<PersistantUnitOfMeasurement, UomId>>(){}).in(Singleton.class);
+    bind(new TypeLiteral<CommonWriteDao<PersistantUnitOfMeasurement>>(){}).to(new TypeLiteral<CommonDao<PersistantUnitOfMeasurement, UomId>>(){}).in(Singleton.class);
+    bind(new TypeLiteral<CommonDao<PersistantUnitOfMeasurement, UomId>>(){}).to(new TypeLiteral<com.smartitengineering.dao.impl.hbase.CommonDao<PersistantUnitOfMeasurement, UomId>>(){}).in(Singleton.class);
+    final TypeLiteral<SchemaInfoProviderImpl<PersistantUnitOfMeasurement, UomId>> wTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<PersistantUnitOfMeasurement, UomId>>() {};
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<PersistantUnitOfMeasurement>>() {
     }).toProvider(UomSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
-    bind(new TypeLiteral<FilterConfigs<UnitOfMeasurement>>() {
+    bind(new TypeLiteral<FilterConfigs<PersistantUnitOfMeasurement>>() {
     }).toProvider(UomFilterConfigsProvider.class).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<UomId>>() {}).toInstance(UomId.class);
-    bind(new TypeLiteral<SchemaInfoProvider<UnitOfMeasurement, UomId>>() {}).to(wTypeLiteral).in(Singleton.class);
+    bind(new TypeLiteral<SchemaInfoProvider<PersistantUnitOfMeasurement, UomId>>() {}).to(wTypeLiteral).in(Singleton.class);
 
     /*
-     * Start injection specific to common dao of Entry
+     * Start injection specific to common dao of PersistantEntry
      */
 
-    bind( new TypeLiteral<ObjectRowConverter<Entry>>(){}).to(EntryRowConverter.class).in(Singleton.class);
-    bind(new TypeLiteral<CommonReadDao<Entry, EntryId>>(){}).to(new TypeLiteral<CommonDao<Entry, EntryId>>(){}).in(Singleton.class);
-    bind(new TypeLiteral<CommonWriteDao<Entry>>(){}).to(new TypeLiteral<CommonDao<Entry, EntryId>>(){}).in(Singleton.class);
-    bind(new TypeLiteral<CommonDao<Entry, EntryId>>(){}).to(new TypeLiteral<com.smartitengineering.dao.impl.hbase.CommonDao<Entry, EntryId>>(){}).in(Singleton.class);
-    final TypeLiteral<SchemaInfoProviderImpl<Entry, EntryId>> entryTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<Entry, EntryId>>() {};
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Entry>>() {
+    bind( new TypeLiteral<ObjectRowConverter<PersistantEntry>>(){}).to(EntryRowConverter.class).in(Singleton.class);
+    bind(new TypeLiteral<CommonReadDao<PersistantEntry, EntryId>>(){}).to(new TypeLiteral<CommonDao<PersistantEntry, EntryId>>(){}).in(Singleton.class);
+    bind(new TypeLiteral<CommonWriteDao<PersistantEntry>>(){}).to(new TypeLiteral<CommonDao<PersistantEntry, EntryId>>(){}).in(Singleton.class);
+    bind(new TypeLiteral<CommonDao<PersistantEntry, EntryId>>(){}).to(new TypeLiteral<com.smartitengineering.dao.impl.hbase.CommonDao<PersistantEntry, EntryId>>(){}).in(Singleton.class);
+    final TypeLiteral<SchemaInfoProviderImpl<PersistantEntry, EntryId>> entryTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<PersistantEntry, EntryId>>() {};
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<PersistantEntry>>() {
     }).toProvider(EntrySchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<EntryId>>() {}).toInstance(EntryId.class);
-    bind(new TypeLiteral<SchemaInfoProvider<Entry, EntryId>>() {}).to(entryTypeLiteral).in(Singleton.class);
+    bind(new TypeLiteral<SchemaInfoProvider<PersistantEntry, EntryId>>() {}).to(entryTypeLiteral).in(Singleton.class);
 
     /*
-     * Start injection specific to common dao of Product
+     * Start injection specific to common dao of PersistantProduct
      */
 
-    bind( new TypeLiteral<ObjectRowConverter<Product>>(){}).to(ProductRowConverter.class).in(Singleton.class);
-    bind(new TypeLiteral<CommonReadDao<Product, ProductId>>(){}).to(new TypeLiteral<CommonDao<Product, ProductId>>(){}).in(Singleton.class);
-    bind(new TypeLiteral<CommonWriteDao<Product>>(){}).to(new TypeLiteral<CommonDao<Product, ProductId>>(){}).in(Singleton.class);
-    bind(new TypeLiteral<CommonDao<Product, ProductId>>(){}).to(new TypeLiteral<com.smartitengineering.dao.impl.hbase.CommonDao<Product, ProductId>>(){}).in(Singleton.class);
-    final TypeLiteral<SchemaInfoProviderImpl<Product, ProductId>> productTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<Product, ProductId>>() {};
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Product>>() {
+    bind( new TypeLiteral<ObjectRowConverter<PersistantProduct>>(){}).to(ProductRowConverter.class).in(Singleton.class);
+    bind(new TypeLiteral<CommonReadDao<PersistantProduct, ProductId>>(){}).to(new TypeLiteral<CommonDao<PersistantProduct, ProductId>>(){}).in(Singleton.class);
+    bind(new TypeLiteral<CommonWriteDao<PersistantProduct>>(){}).to(new TypeLiteral<CommonDao<PersistantProduct, ProductId>>(){}).in(Singleton.class);
+    bind(new TypeLiteral<CommonDao<PersistantProduct, ProductId>>(){}).to(new TypeLiteral<com.smartitengineering.dao.impl.hbase.CommonDao<PersistantProduct, ProductId>>(){}).in(Singleton.class);
+    final TypeLiteral<SchemaInfoProviderImpl<PersistantProduct, ProductId>> productTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<PersistantProduct, ProductId>>() {};
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<PersistantProduct>>() {
     }).toProvider(ProductSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<ProductId>>() {}).toInstance(ProductId.class);
-    bind(new TypeLiteral<SchemaInfoProvider<Product, ProductId>>() {}).to(productTypeLiteral).in(Singleton.class);
+    bind(new TypeLiteral<SchemaInfoProvider<PersistantProduct, ProductId>>() {}).to(productTypeLiteral).in(Singleton.class);
 
     /*
-     * Start injection specific to common dao of Store
+     * Start injection specific to common dao of PersistantStore
      */
 
-    bind( new TypeLiteral<ObjectRowConverter<Store>>(){}).to(StoreRowConverter.class).in(Singleton.class);
-    bind(new TypeLiteral<CommonReadDao<Store, StoreId>>(){}).to(new TypeLiteral<CommonDao<Store, StoreId>>(){}).in(Singleton.class);
-    bind(new TypeLiteral<CommonWriteDao<Store>>(){}).to(new TypeLiteral<CommonDao<Store, StoreId>>(){}).in(Singleton.class);
-    bind(new TypeLiteral<CommonDao<Store, StoreId>>(){}).to(new TypeLiteral<com.smartitengineering.dao.impl.hbase.CommonDao<Store, StoreId>>(){}).in(Singleton.class);
-    final TypeLiteral<SchemaInfoProviderImpl<Store, StoreId>> storeTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<Store, StoreId>>() {};
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Store>>() {
+    bind( new TypeLiteral<ObjectRowConverter<PersistantStore>>(){}).to(StoreRowConverter.class).in(Singleton.class);
+    bind(new TypeLiteral<CommonReadDao<PersistantStore, StoreId>>(){}).to(new TypeLiteral<CommonDao<PersistantStore, StoreId>>(){}).in(Singleton.class);
+    bind(new TypeLiteral<CommonWriteDao<PersistantStore>>(){}).to(new TypeLiteral<CommonDao<PersistantStore, StoreId>>(){}).in(Singleton.class);
+    bind(new TypeLiteral<CommonDao<PersistantStore, StoreId>>(){}).to(new TypeLiteral<com.smartitengineering.dao.impl.hbase.CommonDao<PersistantStore, StoreId>>(){}).in(Singleton.class);
+    final TypeLiteral<SchemaInfoProviderImpl<PersistantStore, StoreId>> storeTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<PersistantStore, StoreId>>() {};
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<PersistantStore>>() {
     }).toProvider(StoreSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
-    bind(new TypeLiteral<FilterConfigs<Store>>() {
+    bind(new TypeLiteral<FilterConfigs<PersistantStore>>() {
     }).toProvider(StoreFilterConfigsProvider.class).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<StoreId>>() {}).toInstance(StoreId.class);
-    bind(new TypeLiteral<SchemaInfoProvider<Store, StoreId>>() {}).to(storeTypeLiteral).in(Singleton.class);
+    bind(new TypeLiteral<SchemaInfoProvider<PersistantStore, StoreId>>() {}).to(storeTypeLiteral).in(Singleton.class);
 
     /*
-     * Start injection specific to common dao of Supplier
+     * Start injection specific to common dao of PersistantSupplier
      */
 
-    bind( new TypeLiteral<ObjectRowConverter<Supplier>>(){}).to(SupplierRowConverter.class).in(Singleton.class);
-    bind(new TypeLiteral<CommonReadDao<Supplier, SupplierId>>(){}).to(new TypeLiteral<CommonDao<Supplier, SupplierId>>(){}).in(Singleton.class);
-    bind(new TypeLiteral<CommonWriteDao<Supplier>>(){}).to(new TypeLiteral<CommonDao<Supplier, SupplierId>>(){}).in(Singleton.class);
-    bind(new TypeLiteral<CommonDao<Supplier, SupplierId>>(){}).to(new TypeLiteral<com.smartitengineering.dao.impl.hbase.CommonDao<Supplier, SupplierId>>(){}).in(Singleton.class);
-    final TypeLiteral<SchemaInfoProviderImpl<Supplier, SupplierId>> supplierTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<Supplier, SupplierId>>() {};
-    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<Supplier>>() {
+    bind( new TypeLiteral<ObjectRowConverter<PersistantSupplier>>(){}).to(SupplierRowConverter.class).in(Singleton.class);
+    bind(new TypeLiteral<CommonReadDao<PersistantSupplier, SupplierId>>(){}).to(new TypeLiteral<CommonDao<PersistantSupplier, SupplierId>>(){}).in(Singleton.class);
+    bind(new TypeLiteral<CommonWriteDao<PersistantSupplier>>(){}).to(new TypeLiteral<CommonDao<PersistantSupplier, SupplierId>>(){}).in(Singleton.class);
+    bind(new TypeLiteral<CommonDao<PersistantSupplier, SupplierId>>(){}).to(new TypeLiteral<com.smartitengineering.dao.impl.hbase.CommonDao<PersistantSupplier, SupplierId>>(){}).in(Singleton.class);
+    final TypeLiteral<SchemaInfoProviderImpl<PersistantSupplier, SupplierId>> supplierTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<PersistantSupplier, SupplierId>>() {};
+    bind(new TypeLiteral<SchemaInfoProviderBaseConfig<PersistantSupplier>>() {
     }).toProvider(SupplierSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<SupplierId>>() {}).toInstance(SupplierId.class);
-    bind(new TypeLiteral<SchemaInfoProvider<Supplier, SupplierId>>() {}).to(supplierTypeLiteral).in(Singleton.class);
+    bind(new TypeLiteral<SchemaInfoProvider<PersistantSupplier, SupplierId>>() {}).to(supplierTypeLiteral).in(Singleton.class);
 
     bind(DomainIdInstanceProvider.class).to(DomainIdInstanceProviderImpl.class).in(Scopes.SINGLETON);   
 

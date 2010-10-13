@@ -16,14 +16,8 @@ public interface Store {
 
   public String getName();
 
-  public String getCode();
-
-  public Organization getOrganization();
+  public String getId();  
 
   public Address getAddress();
-
-  public Integer getOrganizationID();
-
-  public  String[] getProductIds();
 
 }

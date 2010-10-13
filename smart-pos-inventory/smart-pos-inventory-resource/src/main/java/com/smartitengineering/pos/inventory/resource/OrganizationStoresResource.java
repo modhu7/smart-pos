@@ -2,16 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.smartpos.inventory.resource;
+package com.smartitengineering.pos.inventory.resource;
 
+import com.smartitengineering.pos.inventory.adapter.StoreAdapterHelper;
 import com.smartitengineering.smartpos.admin.api.Address;
 import com.smartitengineering.smartpos.admin.api.GeoLocation;
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
+import com.smartitengineering.smartpos.inventory.api.PersistantStore;
+import com.smartitengineering.smartpos.inventory.api.PersistantStore.StoreIdImpl;
 import com.smartitengineering.smartpos.inventory.api.Store;
-import com.smartitengineering.smartpos.inventory.api.Store.StoreIdImpl;
 import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
 import com.smartitengineering.smartpos.inventory.api.service.StoreService;
+import com.smartitengineering.util.bean.adapter.GenericAdapter;
+import com.smartitengineering.util.bean.adapter.GenericAdapterImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -87,12 +91,21 @@ public class OrganizationStoresResource extends AbstractResource {
   @Context
   private HttpServletRequest servletRequest;
 
+  private GenericAdapterImpl<Store, PersistantStore> adapter;
+
+  public OrganizationStoresResource(){
+    adapter = new GenericAdapterImpl<Store, PersistantStore>();
+    adapter.setHelper(new StoreAdapterHelper());
+
+  }
+
+
   @GET
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Store> stores = Services.getInstance().getStoreService().getByOrganization(organizationUniqueShortName,
+    Collection<PersistantStore> stores = Services.getInstance().getStoreService().getByOrganization(organizationUniqueShortName,
                                                                                           null,
                                                                                           true, count);
 
@@ -114,7 +127,7 @@ public class OrganizationStoresResource extends AbstractResource {
   @Path("/frags")
   public Response getHtmlFrags() {
     ResponseBuilder responseBuilder = Response.ok();
-    Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
+    Collection<PersistantStore> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, null, false, count);
 
     Viewable view = new Viewable("storeFrags.jsp", Stores, OrganizationStoresResource.class);
@@ -135,7 +148,7 @@ public class OrganizationStoresResource extends AbstractResource {
   @Path("/before/{beforeStoreName}")
   public Response getBeforeHtml(@PathParam("beforeStoreName") String beforeStoreName) {
     ResponseBuilder responseBuilder = Response.ok();
-    Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
+    Collection<PersistantStore> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, beforeStoreName, true, count);
 
     servletRequest.setAttribute("templateContent",
@@ -151,7 +164,7 @@ public class OrganizationStoresResource extends AbstractResource {
   public Response getBeforeHtmlFrags(@PathParam("beforeStoreName") String beforeStoreName) {
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
+    Collection<PersistantStore> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, beforeStoreName, true, count);
 
     Viewable view = new Viewable("storeFrags.jsp", Stores);
@@ -173,7 +186,7 @@ public class OrganizationStoresResource extends AbstractResource {
 
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
+    Collection<PersistantStore> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, afterStoreName, false, count);
     servletRequest.setAttribute("templateContent",
                                 "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoresResource/storeList.jsp");
@@ -189,7 +202,7 @@ public class OrganizationStoresResource extends AbstractResource {
 
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
+    Collection<PersistantStore> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, afterStoreName, false, count);
 
     Viewable view = new Viewable("storeFrags.jsp", Stores);
@@ -212,13 +225,13 @@ public class OrganizationStoresResource extends AbstractResource {
     parentLink.setRel("parent");
     atomFeed.addLink(parentLink);
 
-    Collection<Store> Stores = Services.getInstance().getStoreService().getByOrganization(
+    Collection<PersistantStore> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, userName, isBefore, count);
 
     if (Stores != null && !Stores.isEmpty()) {
 
       MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
-      List<Store> StoreList = new ArrayList<Store>(Stores);
+      List<PersistantStore> StoreList = new ArrayList<PersistantStore>(Stores);
 
       // uri builder for next and previous organizations according to count
       final UriBuilder nextUri = ORGANIZATION_STORES_AFTER_USERNAME_URI_BUILDER.clone();
@@ -228,7 +241,7 @@ public class OrganizationStoresResource extends AbstractResource {
       Link nextLink = abderaFactory.newLink();
       nextLink.setRel(Link.REL_NEXT);
       //User lastUser = userList.get(userList.size() - 1);
-      Store lastStore = StoreList.get(StoreList.size() - 1);
+      PersistantStore lastStore = StoreList.get(StoreList.size() - 1);
 
 
       for (String key : queryParam.keySet()) {
@@ -244,13 +257,13 @@ public class OrganizationStoresResource extends AbstractResource {
       /* link to the previous organizations based on count */
       Link prevLink = abderaFactory.newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
-      Store firstStore = StoreList.get(0);
+      PersistantStore firstStore = StoreList.get(0);
 
       prevLink.setHref(
           previousUri.build(organizationUniqueShortName, firstStore.getId().getId()).toString());
       atomFeed.addLink(prevLink);
 
-      for (Store store : Stores) {
+      for (PersistantStore store : Stores) {
 
         Entry storeEntry = abderaFactory.newEntry();
 
@@ -279,13 +292,15 @@ public class OrganizationStoresResource extends AbstractResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response post(Store store) {
     ResponseBuilder responseBuilder;
+    store.setOrgUniqueShortName(organizationUniqueShortName);
+    PersistantStore persistantStore = adapter.convert(store);
 
     try {
-      basicPost(store);
+      basicPost(persistantStore);
       responseBuilder = Response.status(Status.CREATED);
       responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationStoreResource.STORE_URI_BUILDER.clone().
           build(organizationUniqueShortName,
-                store.getId().getId()).toString()).build());
+                persistantStore.getId().getId()).toString()).build());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -294,7 +309,7 @@ public class OrganizationStoresResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private Store getObjectFromContent(String message) {
+  private PersistantStore getObjectFromContent(String message) {
 
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
@@ -306,7 +321,7 @@ public class OrganizationStoresResource extends AbstractResource {
       keyValueMap.put(keyValuePair[0], keyValuePair[1]);
     }
 
-    final Store store = new Store();
+    final PersistantStore store = new PersistantStore();
     final Address address = new Address();
     final GeoLocation geoLocation = new GeoLocation();
 
@@ -345,7 +360,7 @@ public class OrganizationStoresResource extends AbstractResource {
     address.setGeoLocation(geoLocation);
     store.setAddress(address);
 
-    return new Store();
+    return new PersistantStore();
   }
 
   @POST
@@ -387,15 +402,13 @@ public class OrganizationStoresResource extends AbstractResource {
     }
 
     if (isHtmlPost) {
-      Store store = getObjectFromContent(message);
+      PersistantStore store = getObjectFromContent(message);
       basicPost(store);
     }
     return responseBuilder.build();
   }
 
-  private void basicPost(Store store) {
-    StoreId storeId = new StoreIdImpl(organizationUniqueShortName, store.getId().getId());
-    store.setId(storeId);
+  private void basicPost(PersistantStore store) {    
     logger.info(store.getId().getCompositeId());
     logger.info(store.toString());
     Services.getInstance().getStoreService().save(store);

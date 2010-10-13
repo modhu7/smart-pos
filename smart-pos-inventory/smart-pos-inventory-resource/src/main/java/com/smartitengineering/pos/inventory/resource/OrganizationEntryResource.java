@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.smartpos.inventory.resource;
+package com.smartitengineering.pos.inventory.resource;
 
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
-import com.smartitengineering.smartpos.inventory.api.Product;
+import com.smartitengineering.smartpos.inventory.api.PersistantEntry;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -40,21 +40,21 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-@Path("/orgs/sn/{uniqueShortName}/inv/prods/code/{productCode}")
-public class OrganizationProductResource extends AbstractResource{
+@Path("/orgs/sn/{uniqueShortName}/inv/entries/entrydate/{entryDate}")
+public class OrganizationEntryResource extends AbstractResource{
 
-  protected final Logger logger = LoggerFactory.getLogger(OrganizationProductResource.class);
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationEntryResource.class);
 
-  private Product product;
-  static final UriBuilder PRODUCT_URI_BUILDER = UriBuilder.fromResource(OrganizationProductResource.class);
-  static final UriBuilder PRODUCT_CONTENT_URI_BUILDER;
+  private PersistantEntry entry;
+  static final UriBuilder ENTRY_URI_BUILDER = UriBuilder.fromResource(OrganizationEntryResource.class);
+  static final UriBuilder ENTRY_CONTENT_URI_BUILDER;
   @Context
   private HttpServletRequest servletRequest;
 
   static {
-    PRODUCT_CONTENT_URI_BUILDER = PRODUCT_URI_BUILDER.clone();
+    ENTRY_CONTENT_URI_BUILDER = ENTRY_URI_BUILDER.clone();
     try {
-      PRODUCT_CONTENT_URI_BUILDER.path(OrganizationProductResource.class.getMethod("getProduct"));
+      ENTRY_CONTENT_URI_BUILDER.path(OrganizationEntryResource.class.getMethod("getEntry"));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -62,30 +62,30 @@ public class OrganizationProductResource extends AbstractResource{
 
     }
   }
-  @PathParam("organizationShortName")
+  @PathParam("uniqueShortName")
   private String organizationUniqueShortName;
-  @PathParam("productCode")
-  private String productCode;
+  @PathParam("entryDate")
+  private String entryDate;
 
-  public OrganizationProductResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
-      "productCode") String productCode) {
-    product = Services.getInstance().getProductService().getByProductCodeAndOrganization(organizationShortName, productCode);
+  public OrganizationEntryResource(@PathParam("uniqueShortName") String organizationShortName, @PathParam(
+      "entryDate") String entryDate) {
+    entry = Services.getInstance().getEntryService().getByOrganizationAndEntryDate(organizationUniqueShortName, null);
 
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-    Feed productFeed = getProductFeed();
-    ResponseBuilder responseBuilder = Response.ok(productFeed);
+    Feed entryFeed = getEntryFeed();
+    ResponseBuilder responseBuilder = Response.ok(entryFeed);
     return responseBuilder.build();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
-  public Response getProduct() {
-    ResponseBuilder responseBuilder = Response.ok(product);
+  public Response getEntry() {
+    ResponseBuilder responseBuilder = Response.ok(entry);
     return responseBuilder.build();
   }
 
@@ -96,10 +96,10 @@ public class OrganizationProductResource extends AbstractResource{
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productDetailsHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntryResource/entryDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationProductsResource/productDetails.jsp");
-    Viewable view = new Viewable("/template/template.jsp", product);
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationEntryResource/entryDetails.jsp");
+    Viewable view = new Viewable("/template/template.jsp", entry);
 
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -108,17 +108,18 @@ public class OrganizationProductResource extends AbstractResource{
   @PUT
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response update(Product product) {
+  public Response update(PersistantEntry entry) {
 
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
 
-      if (product.getOrganizationId() == null) {
+      if (entry.getOrganizationId() == null) {
         throw new Exception("No organization found");
       }
-      
-      Services.getInstance().getProductService().update(product);
-      responseBuilder = Response.ok(getProductFeed());
+
+      //Services.getInstance().getOrganizationService().populateOrganization(newUserPerson.getUser());
+      Services.getInstance().getEntryService().update(entry);
+      responseBuilder = Response.ok(getEntryFeed());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -127,34 +128,34 @@ public class OrganizationProductResource extends AbstractResource{
     return responseBuilder.build();
   }
 
-  private Feed getProductFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed productFeed = getFeed(product.getId().getId(), new Date());
-    productFeed.setTitle(product.getName());
+  private Feed getEntryFeed() throws UriBuilderException, IllegalArgumentException {
+    Feed entryFeed = getFeed(entry.getEntryDate().toString(), new Date());
+    entryFeed.setTitle(entry.getEntryDate().toString());
 
     // add a self link
-    productFeed.addLink(getSelfLink());
+    entryFeed.addLink(getSelfLink());
 
     // add a edit link
     Link editLink = abderaFactory.newLink();
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
-    productFeed.addLink(editLink);
+    entryFeed.addLink(editLink);
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(PRODUCT_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
-                                                           product.getId()).toString());
+    altLink.setHref(ENTRY_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
+                                                           entry.getEntryDate().toString()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
-    productFeed.addLink(altLink);
+    entryFeed.addLink(altLink);
 
-    return productFeed;
+    return entryFeed;
   }
 
   @DELETE
   public Response delete() {
-    Services.getInstance().getProductService().delete(product);
+    Services.getInstance().getEntryService().delete(entry);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
   }
@@ -162,7 +163,7 @@ public class OrganizationProductResource extends AbstractResource{
   @POST
   @Path("/delete")
   public Response deletePost() {
-    Services.getInstance().getProductService().delete(product);
+    Services.getInstance().getEntryService().delete(entry);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
   }
@@ -205,10 +206,10 @@ public class OrganizationProductResource extends AbstractResource{
     }
 
     if (isHtmlPost) {
-      Product newProduct = getProductFromContent(message);
+      PersistantEntry newEntry = getEntryFromContent(message);
       try {
-        Services.getInstance().getProductService().update(newProduct);
-        responseBuilder = Response.ok(getProductFeed());
+        Services.getInstance().getEntryService().update(newEntry);
+        responseBuilder = Response.ok(getEntryFeed());
       }
       catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -217,7 +218,7 @@ public class OrganizationProductResource extends AbstractResource{
     return responseBuilder.build();
   }
 
-  private Product getProductFromContent(String message) {
+  private PersistantEntry getEntryFromContent(String message) {
 
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
@@ -231,11 +232,11 @@ public class OrganizationProductResource extends AbstractResource{
       }
     }
 
-    Product newProduct = new Product();
+    PersistantEntry newEntry = new PersistantEntry();
 
     // to do...
 
-    return newProduct;
+    return newEntry;
   }
 
 }

@@ -5,7 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.api.service;
 
-import com.smartitengineering.smartpos.inventory.api.Store;
+import com.smartitengineering.smartpos.inventory.api.PersistantStore;
 import java.util.Collection;
 
 /**
@@ -14,20 +14,20 @@ import java.util.Collection;
  */
 public interface StoreService {
 
-  public void save(Store store);
+  public void save(PersistantStore store);
 
-  public void update(Store store);
+  public void update(PersistantStore store);
 
-  public void delete(Store store);
+  public void delete(PersistantStore store);
 
-  public Collection<Store> getAllStores();
+  public Collection<PersistantStore> getAllStores();
 
-  public Collection<Store> getStores(String storeCodeLike, String storeCode, boolean isSmallerThan, int count);
+  public Collection<PersistantStore> getStores(String storeCodeLike, String storeCode, boolean isSmallerThan, int count);
 
-  public Collection<Store> getByOrganization(String organizationUniqueShortName, String storeCode, boolean isSmallerThan, int count);
+  public Collection<PersistantStore> getByOrganization(String organizationUniqueShortName, String storeCode, boolean isSmallerThan, int count);
 
-  public Store getByStoreCodeAndOrganization(String organizationUniqueShortName, String storeCode);
+  public PersistantStore getByStoreCodeAndOrganization(String organizationUniqueShortName, String storeCode);
 
-  public Store getByCode(String storeCode);
+  public PersistantStore getByCode(String storeCode);
   
 }
