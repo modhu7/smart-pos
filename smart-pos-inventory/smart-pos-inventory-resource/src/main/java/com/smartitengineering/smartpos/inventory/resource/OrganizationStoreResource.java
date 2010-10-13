@@ -4,8 +4,11 @@
  */
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.admin.api.Address;
+import com.smartitengineering.smartpos.admin.api.GeoLocation;
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.inventory.api.Store;
+import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -225,8 +228,45 @@ public class OrganizationStoreResource extends AbstractResource {
       }
     }
 
-    Store newStore = new Store();
+    final Store store = new Store();
+    final Address address = new Address();
+    final GeoLocation geoLocation = new GeoLocation();
+
+    if(keyValueMap.get("id") != null){
+      StoreId storeId = new Store.StoreIdImpl();
+      storeId.setId(keyValueMap.get("id"));
+      store.setId(storeId);
+    }
+
+    if(keyValueMap.get("name")!= null){
+      store.setName(keyValueMap.get("name"));
+    }
+
+    if(keyValueMap.get("streetAddress")!= null){
+      address.setStreetAddress(keyValueMap.get("streetAddress"));
+    }
+    if(keyValueMap.get("city")!= null){
+      address.setCity(keyValueMap.get("city"));
+    }
+    if(keyValueMap.get("state")!= null){
+      address.setState(keyValueMap.get("state"));
+    }
+    if(keyValueMap.get("country")!= null){
+      address.setCountry(keyValueMap.get("country"));
+    }
+    if(keyValueMap.get("zip")!= null){
+      address.setStreetAddress(keyValueMap.get("zip"));
+    }
+    if(keyValueMap.get("longitude")!= null){
+      geoLocation.setLongitude( Double.parseDouble(keyValueMap.get("longitude")));
+    }
+    if(keyValueMap.get("latitude")!= null){
+      geoLocation.setLatitude(Double.parseDouble(keyValueMap.get("latitude")));
+    }
+
+    address.setGeoLocation(geoLocation);
+    store.setAddress(address);
    
-    return newStore;
+    return store;
   }
 }

@@ -4,18 +4,23 @@
  */
 package com.smartitengineering.smartpos.inventory.resource;
 
+import com.smartitengineering.smartpos.admin.api.Address;
+import com.smartitengineering.smartpos.admin.api.GeoLocation;
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.Store;
 import com.smartitengineering.smartpos.inventory.api.Store.StoreIdImpl;
 import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
+import com.smartitengineering.smartpos.inventory.api.service.StoreService;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -39,6 +44,7 @@ import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.security.action.GetLongAction;
 
 /**
  *
@@ -289,6 +295,55 @@ public class OrganizationStoresResource extends AbstractResource {
   }
 
   private Store getObjectFromContent(String message) {
+
+    Map<String, String> keyValueMap = new HashMap<String, String>();
+
+    String[] keyValuePairs = message.split("&");
+
+    for (int i = 0; i < keyValuePairs.length; i++) {
+
+      String[] keyValuePair = keyValuePairs[i].split("=");
+      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+    }
+
+    final Store store = new Store();
+    final Address address = new Address();
+    final GeoLocation geoLocation = new GeoLocation();
+
+    if(keyValueMap.get("id") != null){
+      StoreId storeId = new StoreIdImpl();
+      storeId.setId(keyValueMap.get("id"));
+      store.setId(storeId);
+    }
+
+    if(keyValueMap.get("name")!= null){
+      store.setName(keyValueMap.get("name"));
+    }
+
+    if(keyValueMap.get("streetAddress")!= null){
+      address.setStreetAddress(keyValueMap.get("streetAddress"));
+    }
+    if(keyValueMap.get("city")!= null){
+      address.setCity(keyValueMap.get("city"));
+    }
+    if(keyValueMap.get("state")!= null){
+      address.setState(keyValueMap.get("state"));
+    }
+    if(keyValueMap.get("country")!= null){
+      address.setCountry(keyValueMap.get("country"));
+    }
+    if(keyValueMap.get("zip")!= null){
+      address.setStreetAddress(keyValueMap.get("zip"));
+    }
+    if(keyValueMap.get("longitude")!= null){
+      geoLocation.setLongitude( Double.parseDouble(keyValueMap.get("longitude")));
+    }
+    if(keyValueMap.get("latitude")!= null){
+      geoLocation.setLatitude(Double.parseDouble(keyValueMap.get("latitude")));
+    }
+
+    address.setGeoLocation(geoLocation);
+    store.setAddress(address);
 
     return new Store();
   }
