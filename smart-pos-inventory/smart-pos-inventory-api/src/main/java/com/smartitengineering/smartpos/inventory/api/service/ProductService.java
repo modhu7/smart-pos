@@ -5,7 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.api.service;
 
-import com.smartitengineering.smartpos.inventory.api.Product;
+import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
 import java.util.Collection;
 
 /**
@@ -14,20 +14,20 @@ import java.util.Collection;
  */
 public interface ProductService {
 
-  public void save(Product product);
+  public void save(PersistantProduct product);
 
-  public void update(Product product);
+  public void update(PersistantProduct product);
 
-  public void delete(Product product);
+  public void delete(PersistantProduct product);
 
-  public Collection<Product> getAllProducts();
+  public Collection<PersistantProduct> getAllProducts();
 
-  public Collection<Product> getProducts(String productCodeLike, String productCode, boolean isSmallerThan, int count);
+  public Collection<PersistantProduct> getProducts(String productCodeLike, String productCode, boolean isSmallerThan, int count);
 
-  public Collection<Product> getByOrganization(String organizationUniqueShortName, String productCode, boolean isSmallerThan, int count);
+  public Collection<PersistantProduct> getByOrganization(String organizationUniqueShortName, String productCode, boolean isSmallerThan, int count);
 
-  public Product getByProductCodeAndOrganization(String organizationUniqueShortName, String productCode);
+  public PersistantProduct getByProductCodeAndOrganization(String organizationUniqueShortName, String productCode);
 
-  public Product getByCode(String productCode);
+  public PersistantProduct getByCode(String productCode);
 
 }
