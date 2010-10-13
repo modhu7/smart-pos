@@ -24,5 +24,6 @@
     <module>smart-pos-admin-api</module>
     <module>smart-pos-admin-impl</module>
     <module>smart-pos-admin-resource</module>
+    <module>admin-guice-binder</module>
   </modules>
 </project>
