@@ -16,10 +16,7 @@ import com.smartitengineering.user.client.api.Organization;
 public class StoreImpl implements Store{
 
   private String name;
-  private String code;
-  private Integer orgid;
-  private String[] products;
-  private Organization org;
+  private String id;
   private Address address;
 
 
@@ -32,49 +29,21 @@ public class StoreImpl implements Store{
     this.address = address;
   }
 
-  public void setCode(String code) {
-    this.code = code;
+  public void setId(String id) {
+    this.id = id;
   }
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public void setOrg(Organization org) {
-    this.org = org;
-  }
-
-  public void setOrgid(Integer orgid) {
-    this.orgid = orgid;
-  }
-
-  public void setProducts(String[] products) {
-    this.products = products;
-  }
+  }  
 
   @Override
-  public String getCode() {
-    return code;
-  }
-
-  @Override
-  public Organization getOrganization() {
-    return org;
-  }
+  public String getId() {
+    return id;
+  }  
 
   @Override
   public Address getAddress() {
     return address;
-  }
-
-  @Override
-  public Integer getOrganizationID() {
-    return orgid;
-  }
-
-  @Override
-  public String[] getProductIds() {
-    return products;
-  }
-
+  }  
 }
