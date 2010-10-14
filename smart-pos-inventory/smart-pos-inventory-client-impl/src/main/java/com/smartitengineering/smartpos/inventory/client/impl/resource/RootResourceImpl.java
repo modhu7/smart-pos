@@ -7,8 +7,8 @@ package com.smartitengineering.smartpos.inventory.client.impl.resource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.EntriesResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.ProductsResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.RootResource;
-import com.smartitengineering.smartpos.inventory.client.api.resource.StoreResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.StoresResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.SuppliersResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.atom.AtomClientUtil;
@@ -34,6 +34,7 @@ public class RootResourceImpl extends AbstractFeedClientResource<Resource<? exte
   public static final String REL_UOMS = "uoms";
   public static final String REL_STORES = "stores";
   public static final String REL_PRODUCTS = "products";
+  public static final String REL_SUPPLIERS = "suppliers";
   private Link UOMS_LINK;
 
   public static RootResource getRoot(URI uri) {
@@ -85,7 +86,7 @@ public class RootResourceImpl extends AbstractFeedClientResource<Resource<? exte
   public StoresResource getStoresResource() {
     return new StoresResourceImpl(this, AtomClientUtil.convertFromAtomLinkToResourceLink(get().getLink(REL_STORES)));
   }
-
+  
   @Override
   public ResourceLink getLoginLink() {
     throw new UnsupportedOperationException("Not supported yet.");
@@ -94,5 +95,10 @@ public class RootResourceImpl extends AbstractFeedClientResource<Resource<? exte
   @Override
   public ProductsResource getProductsResource() {
     return new ProductsResourceImpl(this, AtomClientUtil.convertFromAtomLinkToResourceLink(get().getLink(REL_PRODUCTS)));
+  }
+
+  @Override
+  public SuppliersResource getSuppliersResource() {
+    return new SuppliersResourceImpl(this, AtomClientUtil.convertFromAtomLinkToResourceLink(get().getLink(REL_SUPPLIERS)));
   }
 }

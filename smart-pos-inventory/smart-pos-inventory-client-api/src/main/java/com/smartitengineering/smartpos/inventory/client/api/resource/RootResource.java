@@ -22,6 +22,7 @@ public interface RootResource {
 
   ProductsResource getProductsResource();
 
-  ResourceLink getLoginLink();
+  SuppliersResource getSuppliersResource();
 
+  ResourceLink getLoginLink();
 }
