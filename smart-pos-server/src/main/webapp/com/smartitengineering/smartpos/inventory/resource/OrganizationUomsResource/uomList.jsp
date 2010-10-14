@@ -26,7 +26,8 @@
   <div id="title_of_organization_uom" class="header_of_list">
     <label><fmt:message key="inv.uomtabletitle"/></label>
   </div>
-  <div id="top_row" class="list_column_names"><input type="text" id="filterText" style="float: left"/>
+  <div id="top_row" class="list_column_names">
+    <input type="text" id="filterText" style="float: left"/>
     <c:set var="uom" scope="page" value="${it}"></c:set>    
     <div class="tableheadname_user">
       <label class="tablehead_label"><fmt:message key="inv.uomtablehead1"/></label>
@@ -34,31 +35,25 @@
     <div class="tableheadname_user">
       <label class="tablehead_label"><fmt:message key="inv.uomtablehead2"/></label>
     </div>
-    <%--<div class="tableheadname_user">
-      <label class="tablehead_label"><fmt:message key="inv.uomtablehead3"/></label>
-    </div>--%>
+
     <div class="">
       <form action="" onsubmit="return false" method="GET" id="search-form">
         <input id="search"/>
       </form>
     </div>
   </div>
-    <div class="tablecontentname" id="tablecontentid"></div>
+  <div class="tablecontentname" id="tablecontentid"></div>
   <div class="tableList" id="uomListContainer">
     <ul id="list">
 
-      <c:forEach varStatus="status" items="${it}"><li>
-        <div id="uomRow${status.index}" class="row_of_list">
-          <div id="${uom[status.index].uomType}" class="uomType_column">${uom[status.index].uomType}</div>
-          <div id="longName${status.index}" class="name_column"><label>${uom[status.index].longName} (${uom[status.index].id.id})</label></div>
-          <div id="symbol${uom[status.index].id.id}" class="symbol_column">${uom[status.index].symbol}</div>
-          <div id="${uom[status.index].longName}"><a href="uoms/name/${uom[status.index].id.id}">edit</a></div>
-        </div></li>
-        <%--<c:set var="id" value="${uom[status.index].id.id}"/>--%>
-
-        <%--<li id="${uom[status.index].id.id}">${uom[status.index].longName}<a href="uoms/name/${uom[status.index].id.id}">edit</a></li>--%>
-
-
+      <c:forEach varStatus="status" items="${it}">
+        <li>
+          <div id="uomRow${status.index}" class="row_of_list">
+            <div id="${uom[status.index].uomType}" class="uomType_column">${uom[status.index].uomType}</div>
+            <div id="longName${status.index}" class="name_column"><label>${uom[status.index].longName} (${uom[status.index].id.id})</label></div>
+            <div id="${uom[status.index].longName}"><a href="uoms/name/${uom[status.index].id.id}">edit</a></div>
+          </div>
+        </li>
       </c:forEach>
     </ul>
   </div>    
