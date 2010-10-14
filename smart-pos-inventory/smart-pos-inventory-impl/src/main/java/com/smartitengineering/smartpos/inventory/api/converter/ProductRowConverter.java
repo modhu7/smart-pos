@@ -5,10 +5,10 @@
 package com.smartitengineering.smartpos.inventory.api.converter;
 
 import com.smartitengineering.dao.impl.hbase.spi.ExecutorService;
-import com.smartitengineering.dao.impl.hbase.spi.ObjectRowConverter;
+import com.smartitengineering.dao.impl.hbase.spi.impl.AbstactObjectRowConverter;
 import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
-import com.smartitengineering.smartpos.inventory.impl.domainid.ProductIdImpl;
-import java.util.LinkedHashMap;
+import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
+import java.util.NavigableMap;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -20,57 +20,67 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-public class ProductRowConverter implements ObjectRowConverter<PersistantProduct> {
+public class ProductRowConverter extends AbstactObjectRowConverter<PersistantProduct, ProductId> {
 
-  protected final Logger logger = LoggerFactory.getLogger(ProductRowConverter.class);
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-  public static final byte[][] NAME = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("name")};
-  public static final byte[][] DESCRIPTION = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("description")};
-  public static final byte[][] SKU_ID = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("sku_id")};
-  public static final byte[][] ORG_ID = new byte[][]{Bytes.toBytes("self"), Bytes.toBytes("org_id")};
-  public static final String PRODUCT_TBL_NAME = "product";
+  public static final String NAME = "name";
+  public static final String DESCRIPTION = "description"; 
+  public static final String SKU_ID = "skuId";
+  public static final String SKU_NAME = "skuName";
 
-//  @Override
-//  public LinkedHashMap<String, Put> objectToRows(PersistantProduct instance) {
-//    LinkedHashMap<String, Put> map = new LinkedHashMap<String, Put>();
-//    Put put = new Put(Bytes.toBytes(instance.getId()));
-//    put.add(NAME[0], NAME[1], Bytes.toBytes(instance.getName()));
-//    put.add(DESCRIPTION[0], DESCRIPTION[1], Bytes.toBytes(instance.getDescription()));
-//    put.add(SKU_ID[0], SKU_ID[1], Bytes.toBytes(instance.getSkuId()));
-//    put.add(ORG_ID[0], ORG_ID[1], Bytes.toBytes(instance.getOrganizationId()));
-//    map.put(PRODUCT_TBL_NAME, put);
-//    return map;
-//  }
-//
-//  @Override
-//  public LinkedHashMap<String, Delete> objectToDeleteableRows(PersistantProduct instance) {
-//    LinkedHashMap<String, Delete> map = new LinkedHashMap<String, Delete>();
-//    Delete delete = new Delete(Bytes.toBytes(instance.getId()));
-//    map.put(PRODUCT_TBL_NAME, delete);
-//    return map;
-//  }
+  public static final byte[] FAMILY_SELF = Bytes.toBytes("self");
+  public static final byte[] FAMILY_SKU = Bytes.toBytes("sku");
+
+  public static final byte[] CELL_NAME = Bytes.toBytes(NAME);
+  public static final byte[] CELL_DESCRIPTION = Bytes.toBytes(DESCRIPTION);
+  public static final byte[] CELL_SKUID = Bytes.toBytes(SKU_ID);
+  public static final byte[] CELL_SKUNAME = Bytes.toBytes(SKU_NAME);
 
   @Override
-  public PersistantProduct rowsToObject(Result startRow, ExecutorService executorService) {
-    if (startRow.isEmpty()) {
+  protected String[] getTablesToAttainLock() {
+    return new String[] {getInfoProvider().getMainTableName()};
+  }
+
+  @Override
+  protected void getPutForTable(PersistantProduct t, ExecutorService es, Put put) {
+    put.add(FAMILY_SELF, CELL_NAME, Bytes.toBytes(t.getName()));
+    put.add(FAMILY_SELF, CELL_DESCRIPTION, Bytes.toBytes(t.getDescription()));
+    put.add(FAMILY_SKU, CELL_SKUID, Bytes.toBytes(t.getSkuId()));
+    put.add(FAMILY_SKU, CELL_SKUNAME, Bytes.toBytes(t.getSkuName()));
+  }
+
+  @Override
+  protected void getDeleteForTable(PersistantProduct t, ExecutorService es, Delete delete) {
+    logger.info("Deleting whole product with id:" + t.getId().toString());
+  }
+
+  @Override
+  public PersistantProduct rowsToObject(Result result, ExecutorService es) {
+    if(result.isEmpty())
       return null;
-    }
+
     final PersistantProduct product = new PersistantProduct();
-    product.setId(new ProductIdImpl(Bytes.toString(startRow.getRow())));
-    product.setOrganizationId(Bytes.toInt(startRow.getValue(ORG_ID[0], ORG_ID[1])));
-    product.setName(Bytes.toString(startRow.getValue(NAME[0], NAME[1])));
-    product.setDescription(Bytes.toString(startRow.getValue(DESCRIPTION[0], DESCRIPTION[1])));
-    product.setSkuId(Bytes.toString(startRow.getValue(SKU_ID[0], SKU_ID[1])));
+
+    NavigableMap<byte[], NavigableMap<byte[], byte[]>> allFamilies = result.getNoVersionMap();
+
+    NavigableMap<byte[], byte[]> self = allFamilies.get(FAMILY_SELF);
+
+    if(self != null && !self.isEmpty()){
+      try{
+        product.setId(getInfoProvider().getIdFromRowId(result.getRow()));
+      }catch(Exception ex){
+        logger.error("could not parse id");
+      }
+      product.setName(Bytes.toString(self.get(CELL_NAME)));
+      product.setDescription(Bytes.toString(self.get(CELL_DESCRIPTION)));
+    }
+
+    NavigableMap<byte[], byte[]> skuFamily = allFamilies.get(FAMILY_SKU);
+    if(skuFamily != null && !skuFamily.isEmpty()){
+      product.setSkuId(Bytes.toString(skuFamily.get(CELL_SKUID)));
+      product.setDescription(Bytes.toString(skuFamily.get(CELL_SKUNAME)));
+    }
     return product;
-  }
-
-  @Override
-  public LinkedHashMap<String, Put> objectToRows(PersistantProduct instance, ExecutorService service) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public LinkedHashMap<String, Delete> objectToDeleteableRows(PersistantProduct instance, ExecutorService service) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+  }  
 }

@@ -11,12 +11,20 @@ package com.smartitengineering.smartpos.inventory.client.api.domain;
  */
 public interface Product {
 
-  public String getProductName();
+  public String getId();
+
+  public void setId(String id);
+
+  public String getName();
+
+  public void setName(String name);
 
   public String getDescription();
 
-  public Integer getOrganizationId();
+  public void setDescription(String description);
 
   public String getSkuId();
+
+  public void setSkuId(String skuId);
 
 }

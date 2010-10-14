@@ -4,11 +4,15 @@
  */
 package com.smartitengineering.pos.inventory.resource;
 
+import com.smartitengineering.pos.inventory.adapter.ProductAdapterHelper;
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
-import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
-import com.smartitengineering.smartpos.inventory.impl.domainid.ProductIdImpl;
+import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.Product;
+import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
+import com.smartitengineering.util.bean.adapter.GenericAdapterImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -48,25 +52,18 @@ import org.slf4j.LoggerFactory;
 public class OrganizationProductsResource extends AbstractResource {
 
   protected final Logger logger = LoggerFactory.getLogger(OrganizationProductsResource.class);
-
   static final UriBuilder ORGANIZATION_PRODUCTS_URI_BUILDER;
   static final UriBuilder ORGANIZATION_PRODUCTS_BEFORE_PRODUCTCODE_URI_BUILDER;
-  static final UriBuilder ORGANIZATION_PRODUCTS_AFTER_PRODUCTCODE_URI_BUILDER;
-
-  public OrganizationProductsResource(@PathParam("uniqueShortName") String organizationUniqueShortName) {
-
-    this.organizationUniqueShortName = organizationUniqueShortName;
-
-
-  }
+  static final UriBuilder ORGANIZATION_PRODUCTS_AFTER_PRODUCTCODE_URI_BUILDER;  
 
   static {
     ORGANIZATION_PRODUCTS_URI_BUILDER = UriBuilder.fromResource(OrganizationProductsResource.class);
 
     ORGANIZATION_PRODUCTS_AFTER_PRODUCTCODE_URI_BUILDER = UriBuilder.fromResource(OrganizationProductsResource.class);
     try {
-      ORGANIZATION_PRODUCTS_AFTER_PRODUCTCODE_URI_BUILDER.path(OrganizationProductsResource.class.getMethod("getAfter",
-                                                                                                     String.class));
+      ORGANIZATION_PRODUCTS_AFTER_PRODUCTCODE_URI_BUILDER.path(
+          OrganizationProductsResource.class.getMethod("getAfter",
+                                                       String.class));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -74,8 +71,9 @@ public class OrganizationProductsResource extends AbstractResource {
 
     ORGANIZATION_PRODUCTS_BEFORE_PRODUCTCODE_URI_BUILDER = UriBuilder.fromResource(OrganizationProductsResource.class);
     try {
-      ORGANIZATION_PRODUCTS_BEFORE_PRODUCTCODE_URI_BUILDER.path(OrganizationProductsResource.class.getMethod("getBefore",
-                                                                                                      String.class));
+      ORGANIZATION_PRODUCTS_BEFORE_PRODUCTCODE_URI_BUILDER.path(
+          OrganizationProductsResource.class.getMethod("getBefore",
+                                                       String.class));
     }
     catch (Exception ex) {
       ex.printStackTrace();
@@ -88,22 +86,17 @@ public class OrganizationProductsResource extends AbstractResource {
   private String organizationUniqueShortName;
   @Context
   private HttpServletRequest servletRequest;
+  private GenericAdapterImpl<Product, PersistantProduct> adapter;
+
+  public OrganizationProductsResource() {    
+    adapter = new GenericAdapterImpl();
+    adapter.setHelper(new ProductAdapterHelper());
+  }
 
   @GET
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
-
-//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(organizationUniqueShortName,
-//                                                                                           null,
-//                                                                                           false, count);
-
-//    Organization org = Services.getInstance().getOrganizationService().getOrganizationByUniqueShortName(
-//        organizationUniqueShortName);
-//    if (org == null) {
-//      responseBuilder = Response.status(Status.NOT_FOUND);
-//      return responseBuilder.build();
-//    }
 
 
     Collection<PersistantProduct> products = Services.getInstance().getProductService().getByOrganization(
@@ -120,7 +113,7 @@ public class OrganizationProductsResource extends AbstractResource {
     servletRequest.getAttribute("templateContent");
 
     Viewable view = new Viewable("/template/template.jsp", products);
-    
+
 
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -155,8 +148,6 @@ public class OrganizationProductsResource extends AbstractResource {
   @Path("/before/{beforeProductCode}")
   public Response getBeforeHtml(@PathParam("beforeProductCode") String beforeProductCode) {
     ResponseBuilder responseBuilder = Response.ok();
-//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
-//        organizationUniqueShortName, beforeUserName, true, count);
     Collection<PersistantProduct> products = Services.getInstance().getProductService().getByOrganization(
         organizationUniqueShortName, beforeProductCode, true, count);
 
@@ -172,8 +163,6 @@ public class OrganizationProductsResource extends AbstractResource {
   @Path("/before/{beforeProductCode}/frags")
   public Response getBeforeHtmlFrags(@PathParam("beforeProductCode") String beforeProductCode) {
     ResponseBuilder responseBuilder = Response.ok();
-//    Collection<User> users = Services.getInstance().getUserService().getUserByOrganization(
-//        organizationUniqueShortName, beforeUserName, true, count);
 
     Collection<PersistantProduct> products = Services.getInstance().getProductService().getByOrganization(
         organizationUniqueShortName, beforeProductCode, true, count);
@@ -251,7 +240,7 @@ public class OrganizationProductsResource extends AbstractResource {
       // link to the next organizations based on count
       Link nextLink = abderaFactory.newLink();
       nextLink.setRel(Link.REL_NEXT);
-      //User lastUser = userList.get(userList.size() - 1);
+
       PersistantProduct lastProduct = productList.get(productList.size() - 1);
 
 
@@ -260,7 +249,7 @@ public class OrganizationProductsResource extends AbstractResource {
         nextUri.queryParam(key, values);
         previousUri.queryParam(key, values);
       }
-      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastProduct.getId()).toString());
+      nextLink.setHref(nextUri.build(organizationUniqueShortName, lastProduct.getId().getId()).toString());
 
 
       atomFeed.addLink(nextLink);
@@ -268,11 +257,11 @@ public class OrganizationProductsResource extends AbstractResource {
       /* link to the previous organizations based on count */
       Link prevLink = abderaFactory.newLink();
       prevLink.setRel(Link.REL_PREVIOUS);
-      //User firstUser = userList.get(0);
+
       PersistantProduct firstProduct = productList.get(0);
 
       prevLink.setHref(
-          previousUri.build(organizationUniqueShortName, firstProduct.getId()).toString());
+          previousUri.build(organizationUniqueShortName, firstProduct.getId().getId()).toString());
       atomFeed.addLink(prevLink);
 
       //for (User user : users) {
@@ -283,12 +272,12 @@ public class OrganizationProductsResource extends AbstractResource {
         productEntry.setId(product.getId().getId());
         productEntry.setTitle(product.getName());
         productEntry.setSummary(product.getName());
-        
+
 
         // setting link to the each individual user
         Link productLink = abderaFactory.newLink();
         productLink.setHref(OrganizationProductResource.PRODUCT_URI_BUILDER.clone().build(organizationUniqueShortName, product.
-            getId()).toString());
+            getId().getId()).toString());
         productLink.setRel(Link.REL_ALTERNATE);
         productLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
 
@@ -303,20 +292,16 @@ public class OrganizationProductsResource extends AbstractResource {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response post(PersistantProduct product) {
+  public Response post(Product product) {
+    ResponseBuilder responseBuilder = Response.status(Status.OK);
 
-
-    ResponseBuilder responseBuilder;
+    product.setOrgUniqueShortName(organizationUniqueShortName);    
+    PersistantProduct persistantProduct = adapter.convert(product);    
 
     try {
-      if (product.getOrganizationId() == null) {
-        throw new Exception("No organization found");
-      }
-      ProductId productId = new ProductIdImpl();
-      productId.setId(organizationUniqueShortName+":"+ product.getId().getId());
-      product.setId( productId);
-      Services.getInstance().getProductService().save(product);
+      basicPost(persistantProduct);
       responseBuilder = Response.status(Status.CREATED);
+      responseBuilder.location(uriInfo.getBaseUriBuilder().path(OrganizationProductResource.PRODUCT_URI_BUILDER.clone().build(organizationUniqueShortName, persistantProduct.getId().getId()).toString()).build());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -372,9 +357,18 @@ public class OrganizationProductsResource extends AbstractResource {
       PersistantProduct product = getObjectFromContent(message);
 
 
-      Services.getInstance().getProductService().save(product);
+      basicPost(product);
 
     }
     return responseBuilder.build();
+  }
+
+  public void basicPost(PersistantProduct product) {
+    UomId uomId = new PersistantUnitOfMeasurement.UomIdImpl();
+    uomId.setId(product.getSkuId());
+    PersistantUnitOfMeasurement persistantUom = Services.getInstance().getUomService().getById(uomId);
+    logger.info("uom:"+persistantUom);
+    product.setSkuName(persistantUom.getLongName());
+    Services.getInstance().getProductService().save(product);
   }
 }

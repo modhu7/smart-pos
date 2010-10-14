@@ -5,8 +5,14 @@
 
 package com.smartitengineering.pos.inventory.resource;
 
+import com.smartitengineering.pos.inventory.adapter.ProductAdapterHelper;
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
+import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.Product;
+import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
+import com.smartitengineering.util.bean.adapter.GenericAdapterImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -62,20 +68,30 @@ public class OrganizationProductResource extends AbstractResource{
 
     }
   }
-  @PathParam("organizationShortName")
-  private String organizationUniqueShortName;
-  @PathParam("productCode")
+  
+  private String organizationUniqueShortName;  
   private String productCode;
+  private GenericAdapterImpl<Product, PersistantProduct> adapter;
 
-  public OrganizationProductResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
-      "productCode") String productCode) {
-    product = Services.getInstance().getProductService().getByProductCodeAndOrganization(organizationShortName, productCode);
+  public OrganizationProductResource(@PathParam("uniqueShortName")String orgShortName, @PathParam("productCode")String productCode){
+    this.organizationUniqueShortName = orgShortName;
+    this.productCode = productCode;
+    logger.info(productCode + "::" + organizationUniqueShortName);
+    ProductId productId = new PersistantProduct.ProductIdImpl(organizationUniqueShortName+":"+productCode);
+    product = Services.getInstance().getProductService().getById(productId);
 
+    if(product == null)
+      logger.info("product is ::" + product);
+    adapter = new GenericAdapterImpl();
+    adapter.setHelper(new ProductAdapterHelper());
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
+    if(product == null){
+      return Response.status(Status.NOT_FOUND).build();
+    }
     Feed productFeed = getProductFeed();
     ResponseBuilder responseBuilder = Response.ok(productFeed);
     return responseBuilder.build();
@@ -85,7 +101,7 @@ public class OrganizationProductResource extends AbstractResource{
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
   public Response getProduct() {
-    ResponseBuilder responseBuilder = Response.ok(product);
+    ResponseBuilder responseBuilder = Response.ok(adapter.convertInversely(product));
     return responseBuilder.build();
   }
 
@@ -108,26 +124,26 @@ public class OrganizationProductResource extends AbstractResource{
   @PUT
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response update(PersistantProduct product) {
+  public Response update(Product product) {
 
-    ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
+    product.setOrgUniqueShortName(organizationUniqueShortName);
+    PersistantProduct persistantProduct = adapter.convert(product);
+
+    ResponseBuilder responseBuilder = Response.status(Status.OK);
     try {
-
-      if (product.getOrganizationId() == null) {
-        throw new Exception("No organization found");
-      }
-      
-      Services.getInstance().getProductService().update(product);
+      basicUpdate(persistantProduct);
       responseBuilder = Response.ok(getProductFeed());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
-      ex.printStackTrace();
+      logger.error(ex.getMessage());
     }
     return responseBuilder.build();
   }
 
-  private Feed getProductFeed() throws UriBuilderException, IllegalArgumentException {
+  private Feed getProductFeed() throws UriBuilderException, IllegalArgumentException {    
+    logger.info(product.toString());
+    logger.info(product.getId().getId());
     Feed productFeed = getFeed(product.getId().getId(), new Date());
     productFeed.setTitle(product.getName());
 
@@ -144,7 +160,7 @@ public class OrganizationProductResource extends AbstractResource{
     // add a alternate link
     Link altLink = abderaFactory.newLink();
     altLink.setHref(PRODUCT_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
-                                                           product.getId()).toString());
+                                                           product.getId().getId()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     productFeed.addLink(altLink);
@@ -154,6 +170,7 @@ public class OrganizationProductResource extends AbstractResource{
 
   @DELETE
   public Response delete() {
+    logger.info("Inside delete method");
     Services.getInstance().getProductService().delete(product);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
@@ -162,6 +179,7 @@ public class OrganizationProductResource extends AbstractResource{
   @POST
   @Path("/delete")
   public Response deletePost() {
+    logger.info("Inside the delete method");
     Services.getInstance().getProductService().delete(product);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
@@ -199,15 +217,14 @@ public class OrganizationProductResource extends AbstractResource{
 
       }
     }
-    else {
-      contentType = contentType;
+    else {      
       isHtmlPost = false;
     }
 
     if (isHtmlPost) {
       PersistantProduct newProduct = getProductFromContent(message);
       try {
-        Services.getInstance().getProductService().update(newProduct);
+        basicUpdate(newProduct);
         responseBuilder = Response.ok(getProductFeed());
       }
       catch (Exception ex) {
@@ -236,6 +253,17 @@ public class OrganizationProductResource extends AbstractResource{
     // to do...
 
     return newProduct;
+  }
+
+  private void basicUpdate(PersistantProduct persistantProduct){
+    
+    UomId uomId = new PersistantUnitOfMeasurement.UomIdImpl();
+    uomId.setId(persistantProduct.getSkuId());
+    PersistantUnitOfMeasurement persistantUom = Services.getInstance().getUomService().getById(uomId);
+    logger.info("uom:"+persistantUom);
+    
+    persistantProduct.setSkuName(persistantUom.getLongName());
+    Services.getInstance().getProductService().update(persistantProduct);
   }
 
 }

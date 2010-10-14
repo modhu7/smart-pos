@@ -20,6 +20,8 @@ public interface RootResource {
 
   StoresResource getStoresResource();
 
+  ProductsResource getProductsResource();
+
   ResourceLink getLoginLink();
 
 }

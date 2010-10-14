@@ -40,6 +40,7 @@ import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
 import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.smartitengineering.smartpos.inventory.impl.domainidinstanceprovider.DomainIdInstanceProviderImpl;
 import com.smartitengineering.smartpos.inventory.impl.guice.EntrySchemaBaseConfigProvider;
+import com.smartitengineering.smartpos.inventory.impl.guice.ProductFilterConfigsProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.ProductSchemaBaseConfigProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.StoreFilterConfigsProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.StoreSchemaBaseConfigProvider;
@@ -110,6 +111,8 @@ public class ImplServiceModule extends AbstractModule{
     final TypeLiteral<SchemaInfoProviderImpl<PersistantProduct, ProductId>> productTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<PersistantProduct, ProductId>>() {};
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<PersistantProduct>>() {
     }).toProvider(ProductSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<FilterConfigs<PersistantProduct>>() {
+    }).toProvider(ProductFilterConfigsProvider.class).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<ProductId>>() {}).toInstance(ProductId.class);
     bind(new TypeLiteral<SchemaInfoProvider<PersistantProduct, ProductId>>() {}).to(productTypeLiteral).in(Singleton.class);

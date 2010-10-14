@@ -10,10 +10,12 @@ import com.smartitengineering.smartpos.inventory.client.api.resource.ProductReso
 import com.smartitengineering.util.rest.atom.AbstractFeedClientResource;
 import com.smartitengineering.util.rest.client.Resource;
 import com.smartitengineering.util.rest.client.ResourceLink;
+import com.smartitengineering.util.rest.client.SimpleResourceImpl;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.config.ClientConfig;
 import javax.ws.rs.core.MediaType;
 import org.apache.abdera.model.Feed;
+import org.apache.abdera.model.Link;
 
 /**
  *
@@ -25,6 +27,11 @@ public class ProductResourceImpl extends AbstractFeedClientResource<Resource<? e
 
   public ProductResourceImpl(Resource referrer, ResourceLink pageLink) {
     super(referrer, pageLink);
+    final ResourceLink altLink = getRelatedResourceUris().getFirst(Link.REL_ALTERNATE);
+    addNestedResource(REL_PRODUCT, new SimpleResourceImpl<com.smartitengineering.smartpos.inventory.client.impl.domain.ProductImpl>(
+        this, altLink.getUri(), altLink.getMimeType(),
+        com.smartitengineering.smartpos.inventory.client.impl.domain.ProductImpl.class,
+        null, false, null, null));
   }
 
   @Override
@@ -54,6 +61,11 @@ public class ProductResourceImpl extends AbstractFeedClientResource<Resource<? e
     else{
       return product.getLastReadStateOfEntity();
     }
+  }
+
+  @Override
+  public void delete() {
+    delete(ClientResponse.Status.OK);
   }
 
 }

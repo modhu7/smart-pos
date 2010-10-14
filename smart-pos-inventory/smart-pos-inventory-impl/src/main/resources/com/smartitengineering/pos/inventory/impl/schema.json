@@ -11,9 +11,22 @@
     "tableName": "store",
     "columnFamilyConfigurations": [
       {
-        "familyName": "self",
+        "familyName": "self"
+      },
+      {
         "familyName": "address"
       }      
+    ]
+  },
+  {
+    "tableName": "product",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      },
+      {
+        "familyName": "sku"
+      }
     ]
   }
 ]

@@ -23,6 +23,7 @@ public abstract class AbstractProductService implements ProductService{
   @Inject
   protected CommonWriteDao<PersistantProduct> commonWriteDao;
 
+  @Override
   public PersistantProduct getById(ProductId id){
     if(id == null)
       return null;

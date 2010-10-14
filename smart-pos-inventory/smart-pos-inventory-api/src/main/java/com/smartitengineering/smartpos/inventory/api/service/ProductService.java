@@ -6,6 +6,7 @@
 package com.smartitengineering.smartpos.inventory.api.service;
 
 import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
+import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
 import java.util.Collection;
 
 /**
@@ -13,6 +14,8 @@ import java.util.Collection;
  * @author russel
  */
 public interface ProductService {
+
+  public PersistantProduct getById(ProductId productId);
 
   public void save(PersistantProduct product);
 

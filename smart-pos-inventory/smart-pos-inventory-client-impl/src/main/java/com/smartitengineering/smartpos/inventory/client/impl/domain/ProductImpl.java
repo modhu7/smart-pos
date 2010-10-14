@@ -13,31 +13,26 @@ import com.smartitengineering.smartpos.inventory.client.api.domain.Product;
  */
 public class ProductImpl implements Product{
 
+  private String id;
   private String name;
   private String description;
   private String skuId;
-  private Integer orgId;
+  private String skuName;
 
+  @Override
   public void setDescription(String description) {
     this.description = description;
   }
 
+  @Override
   public void setName(String name) {
     this.name = name;
   }
 
-  public void setOrgId(Integer orgId) {
-    this.orgId = orgId;
-  }
-
+  @Override
   public void setSkuId(String skuId) {
     this.skuId = skuId;
-  }
-
-  @Override
-  public String getProductName() {
-    return name;
-  }
+  } 
 
   @Override
   public String getDescription() {
@@ -45,13 +40,31 @@ public class ProductImpl implements Product{
   }
 
   @Override
-  public Integer getOrganizationId() {
-    return orgId;
-  }
-
-  @Override
   public String getSkuId() {
     return skuId;
   }
+
+  @Override
+  public String getId() {
+    return id;
+  }
+
+  @Override
+  public void setId(String id){
+    this.id = id;
+  }
+
+  @Override
+  public String getName() {
+    return name;
+  }
+
+  public String getSkuName() {
+    return skuName;
+  }
+
+  public void setSkuName(String skuName) {
+    this.skuName = skuName;
+  }  
 
 }
