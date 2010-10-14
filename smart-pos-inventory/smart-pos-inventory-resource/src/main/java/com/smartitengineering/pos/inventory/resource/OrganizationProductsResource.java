@@ -8,9 +8,12 @@ import com.smartitengineering.pos.inventory.adapter.ProductAdapterHelper;
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
+import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
 import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.Product;
 import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
+import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
 import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.smartitengineering.util.bean.adapter.GenericAdapterImpl;
 import com.sun.jersey.api.view.Viewable;
@@ -19,7 +22,9 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -312,7 +317,33 @@ public class OrganizationProductsResource extends AbstractResource {
 
   private PersistantProduct getObjectFromContent(String message) {
 
-    return new PersistantProduct();
+    Map<String, String> keyValueMap = new HashMap<String, String>();
+
+    String[] keyValuePairs = message.split("&");
+
+    for (int i = 0; i < keyValuePairs.length; i++) {
+
+      String[] keyValuePair = keyValuePairs[i].split("=");
+      keyValueMap.put(keyValuePair[0], keyValuePair[1]);
+    }
+
+    final PersistantProduct persistantProduct = new PersistantProduct();
+
+    if(keyValueMap.get("id") != null){
+      ProductId productId = new PersistantProduct.ProductIdImpl(organizationUniqueShortName, keyValueMap.get("id"));
+      persistantProduct.setId(productId);
+    }
+    if(keyValueMap.get("name") != null){
+      persistantProduct.setName(keyValueMap.get("name"));
+    }
+    if(keyValueMap.get("description")!= null){
+      persistantProduct.setDescription(keyValueMap.get("description"));
+    }
+    if(keyValueMap.get("skuId")!= null){
+      persistantProduct.setDescription(keyValueMap.get("skuId"));
+    }   
+
+    return persistantProduct;
   }
 
   @POST
@@ -355,8 +386,6 @@ public class OrganizationProductsResource extends AbstractResource {
 
     if (isHtmlPost) {
       PersistantProduct product = getObjectFromContent(message);
-
-
       basicPost(product);
 
     }
