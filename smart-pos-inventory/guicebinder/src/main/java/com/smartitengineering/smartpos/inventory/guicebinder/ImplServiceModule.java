@@ -44,6 +44,7 @@ import com.smartitengineering.smartpos.inventory.impl.guice.ProductFilterConfigs
 import com.smartitengineering.smartpos.inventory.impl.guice.ProductSchemaBaseConfigProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.StoreFilterConfigsProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.StoreSchemaBaseConfigProvider;
+import com.smartitengineering.smartpos.inventory.impl.guice.SupplierFilterConfigsProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.SupplierSchemaBaseConfigProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.UomFilterConfigsProvider;
 import com.smartitengineering.smartpos.inventory.impl.guice.UomSchemaBaseConfigProvider;
@@ -145,6 +146,8 @@ public class ImplServiceModule extends AbstractModule{
     final TypeLiteral<SchemaInfoProviderImpl<PersistantSupplier, SupplierId>> supplierTypeLiteral = new TypeLiteral<SchemaInfoProviderImpl<PersistantSupplier, SupplierId>>() {};
     bind(new TypeLiteral<SchemaInfoProviderBaseConfig<PersistantSupplier>>() {
     }).toProvider(SupplierSchemaBaseConfigProvider.class).in(Scopes.SINGLETON);
+    bind(new TypeLiteral<FilterConfigs<PersistantSupplier>>() {
+    }).toProvider(SupplierFilterConfigsProvider.class).in(Scopes.SINGLETON);
 
     bind(new TypeLiteral<Class<SupplierId>>() {}).toInstance(SupplierId.class);
     bind(new TypeLiteral<SchemaInfoProvider<PersistantSupplier, SupplierId>>() {}).to(supplierTypeLiteral).in(Singleton.class);
