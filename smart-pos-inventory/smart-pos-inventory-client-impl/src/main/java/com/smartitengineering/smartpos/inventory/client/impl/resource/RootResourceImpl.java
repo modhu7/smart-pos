@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.smartpos.inventory.client.impl.resource;
 
 import com.smartitengineering.smartpos.inventory.client.api.resource.EntriesResource;
@@ -29,14 +28,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-public class RootResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements RootResource{
+public class RootResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements RootResource {
 
   public static Logger logger = LoggerFactory.getLogger(RootResourceImpl.class);
-
   public static final String REL_UOMS = "uoms";
   public static final String REL_STORES = "stores";
+  public static final String REL_PRODUCTS = "products";
   private Link UOMS_LINK;
-  
+
   public static RootResource getRoot(URI uri) {
     try {
       RootResource resource = new RootResourceImpl(uri);
@@ -46,11 +45,11 @@ public class RootResourceImpl extends AbstractFeedClientResource<Resource<? exte
       logger.error(ex.getMessage(), ex);
       throw ex;
     }
-  }    
+  }
 
-  private RootResourceImpl(URI uri) throws IllegalArgumentException, UniformInterfaceException{
+  private RootResourceImpl(URI uri) throws IllegalArgumentException, UniformInterfaceException {
     super(null, uri, false, null);
-    
+
   }
 
   @Override
@@ -87,11 +86,13 @@ public class RootResourceImpl extends AbstractFeedClientResource<Resource<? exte
     return new StoresResourceImpl(this, AtomClientUtil.convertFromAtomLinkToResourceLink(get().getLink(REL_STORES)));
   }
 
-
-
   @Override
   public ResourceLink getLoginLink() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
+  @Override
+  public ProductsResource getProductsResource() {
+    return new ProductsResourceImpl(this, AtomClientUtil.convertFromAtomLinkToResourceLink(get().getLink(REL_PRODUCTS)));
+  }
 }
