@@ -4,29 +4,28 @@
  */
 package com.smartitengineering.smartpos.inventory.api;
 
-import com.smartitengineering.domain.AbstractGenericPersistentDTO;
-import com.smartitengineering.smartpos.admin.api.Address;
-import com.smartitengineering.smartpos.admin.api.Organization;
-import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
-import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
  * @author russel
  */
-public class Supplier extends AbstractGenericPersistentDTO<Supplier, SupplierId, Long> {
+public class Supplier{
 
+  private String id;
   private String name;
   private String email;
   private String contactNumber;
   private Address address;
-  private Organization organization;
-  private Integer organizationID;
-
   @JsonIgnore
-  public Integer getOrganizationID() {
-    return organizationID;
+  private String orgUniqueShortName;
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public Address getAddress() {
@@ -61,16 +60,15 @@ public class Supplier extends AbstractGenericPersistentDTO<Supplier, SupplierId,
     this.name = name;
   }
 
-  public Organization getOrganization() {
-    return organization;
+  @JsonIgnore
+  public String getOrgUniqueShortName() {
+    return orgUniqueShortName;
   }
 
-  @Override
   @JsonIgnore
-  public boolean isValid() {
-    if (StringUtils.isBlank(name)) {
-      return false;
-    }
-    return true;
+  public void setOrgUniqueShortName(String orgUniqueShortName) {
+    this.orgUniqueShortName = orgUniqueShortName;
   }
+
+  
 }

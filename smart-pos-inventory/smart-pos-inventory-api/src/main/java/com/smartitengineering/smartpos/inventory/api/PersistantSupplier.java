@@ -5,7 +5,6 @@
 package com.smartitengineering.smartpos.inventory.api;
 
 import com.smartitengineering.domain.AbstractGenericPersistentDTO;
-import com.smartitengineering.smartpos.admin.api.Address;
 import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
 import com.smartitengineering.smartpos.inventory.impl.domainid.Utils;
 import java.io.DataInput;
@@ -74,8 +73,22 @@ public class PersistantSupplier extends AbstractGenericPersistentDTO<PersistantS
     public SupplierIdImpl() {
     }
 
-    public SupplierIdImpl(String id) {
+    public SupplierIdImpl(String orgUniqueShortName, String id){
+      this.orgUniqueShortName = orgUniqueShortName;
       this.id = id;
+    }
+
+    public SupplierIdImpl(String compositId){
+      System.out.println("Composit Id:" + compositId);
+      String[] infos = compositId.split(":");
+      if(infos.length == 1){
+        throw new RuntimeException("Object should have been in the format");
+      }
+      System.out.println("size:" + infos.length);
+      this.orgUniqueShortName = infos[0];
+      this.id = infos[1];
+      System.out.println("id: "+id);
+      System.out.println("orgName:"+ orgUniqueShortName);
     }
 
     @Override
@@ -83,6 +96,7 @@ public class PersistantSupplier extends AbstractGenericPersistentDTO<PersistantS
       return id;
     }
 
+    @Override
     public void setId(String id) {
       this.id = id;
     }
@@ -107,7 +121,12 @@ public class PersistantSupplier extends AbstractGenericPersistentDTO<PersistantS
     }
 
     @Override
-    public String toString(){
+    public String getCompositId() {
+      return orgUniqueShortName + ":" + id;
+    }
+
+    @Override
+    public String toString() {
       return orgUniqueShortName + ":" + id;
     }
 
@@ -120,6 +139,11 @@ public class PersistantSupplier extends AbstractGenericPersistentDTO<PersistantS
         return 0;
       }
       return toString().compareTo(o.toString());
+    }
+
+    @Override
+    public String getOrgUniqueShortName() {
+      return orgUniqueShortName;
     }
   }
 }
