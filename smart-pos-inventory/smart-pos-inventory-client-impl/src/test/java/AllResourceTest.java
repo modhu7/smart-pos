@@ -2,6 +2,7 @@
 import com.google.inject.AbstractModule;
 import com.smartitengineering.dao.hbase.ddl.HBaseTableGenerator;
 import com.smartitengineering.dao.hbase.ddl.config.json.ConfigurationJsonParser;
+import com.smartitengineering.smartpos.inventory.client.api.domain.Address;
 import com.smartitengineering.smartpos.inventory.client.api.domain.Product;
 import com.smartitengineering.smartpos.inventory.client.api.domain.Store;
 import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
@@ -12,12 +13,12 @@ import com.smartitengineering.smartpos.inventory.client.api.resource.StoreResour
 import com.smartitengineering.smartpos.inventory.client.api.resource.StoresResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
+import com.smartitengineering.smartpos.inventory.client.impl.domain.AddressImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.domain.ProductImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.domain.StoreImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.domain.UnitOfMeasurementImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.resource.RootResourceImpl;
 import com.smartitengineering.smartpos.inventory.guicebinder.Initializer;
-import com.smartitengineering.user.client.impl.domain.Address;
 import com.smartitengineering.util.rest.client.ConnectionConfig;
 import com.smartitengineering.util.bean.guice.GuiceUtil;
 import com.smartitengineering.util.rest.client.ApplicationWideClientFactoryImpl;
@@ -29,9 +30,6 @@ import javax.ws.rs.core.Response.Status;
 import junit.framework.Assert;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
-import org.apache.hadoop.hbase.HColumnDescriptor;
-import org.apache.hadoop.hbase.HTableDescriptor;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -43,17 +41,16 @@ import org.junit.Test;
  *
  * @author russel
  */
-public class UomResourceTest {
+public class AllResourceTest {
 
   private static Server jettyServer;
   private static final int PORT = 10090;
   private RootResource rootResource;
   private static final HBaseTestingUtility TEST_UTIL = new HBaseTestingUtility();
   public static final String ROOT_URI_STRING = "http://localhost:" + PORT + "/orgs/sn/SITEL/dashboard";
-  
 
   @BeforeClass
-  public static void setUp() throws Exception{
+  public static void setUp() throws Exception {
 
     /*
      * Start HBase and initialize tables
@@ -69,7 +66,8 @@ public class UomResourceTest {
 //    uomTable.addFamily(new HColumnDescriptor("self"));
 //    admin.createTable(uomTable);
 
-    new HBaseTableGenerator(ConfigurationJsonParser.getConfigurations(UomResourceTest.class.getClassLoader().getResourceAsStream(
+    new HBaseTableGenerator(ConfigurationJsonParser.getConfigurations(AllResourceTest.class.getClassLoader().
+        getResourceAsStream(
         "com/smartitengineering/pos/inventory/impl/schema.json")), TEST_UTIL.getConfiguration(), true).generateTables();
 
     // DI
@@ -100,13 +98,13 @@ public class UomResourceTest {
   }
 
   @AfterClass
-  public static void tearDown() throws Exception{
+  public static void tearDown() throws Exception {
     TEST_UTIL.shutdownMiniCluster();
     jettyServer.stop();
   }
 
   @Test
-  public void testCreate() throws Exception{
+  public void testCreate() throws Exception {
 
     rootResource = RootResourceImpl.getRoot(new URI(ROOT_URI_STRING));
     Assert.assertNotNull(rootResource);
@@ -114,7 +112,7 @@ public class UomResourceTest {
     UomsResource uomsResource = rootResource.getOrganizationUomsResource();
     Assert.assertNotNull(uomsResource);
 //
-    UnitOfMeasurementImpl uom = new UnitOfMeasurementImpl();    
+    UnitOfMeasurementImpl uom = new UnitOfMeasurementImpl();
     uom.setId("KG");
     uom.setLongName("Kilogram");
     uom.setSymbol("Kg");
@@ -140,7 +138,7 @@ public class UomResourceTest {
       uomResource.get();
       Assert.fail("Should have thorown exception");
     }
-    catch(UniformInterfaceException ex){
+    catch (UniformInterfaceException ex) {
       Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
     }
     catch (Exception e) {
@@ -149,48 +147,6 @@ public class UomResourceTest {
 
     uomResource = uomsResource.create(uom);
 
-    // store test
-
-
-//    StoresResource storesResource = rootResource.getStoresResource();
-//    Assert.assertNotNull(storesResource);
-//
-//    StoreImpl store = new StoreImpl();
-//    Address address = new Address();
-//    store.setId("S1");
-//    store.setName("Store 1");
-//    address.setStreetAddress("Haji Chinu Mia road");
-//    address.setCity("Dhaka");
-//    address.setState("Dhaka");
-//    address.setCountry("Bangladesh");
-//    address.setZip("1207");
-//    store.setAddress(address);
-//
-//    StoreResource storeResource = storesResource.create(store);
-//    Assert.assertNotNull(storeResource);
-//
-//    Store fetchedStore = storeResource.getStore();
-//    Assert.assertNotNull(fetchedStore);
-//
-//    fetchedStore.setName("Modified Store");
-//
-//    storeResource.update();
-//
-//    Store updatedStore = storeResource.getStore();
-//    Assert.assertNotSame(updatedStore.getName(), store.getName());
-//
-//    storeResource.delete();
-//
-//    try {
-//      storeResource.get();
-//      Assert.fail("Should have thorown exception");
-//    }
-//    catch(UniformInterfaceException ex){
-//      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
-//    }
-//    catch (Exception e) {
-//      Assert.fail("Should not throw exception other than UniformInterfaceException");
-//    }
 
     //     Product
     ProductsResource productsResource = rootResource.getProductsResource();
@@ -207,7 +163,7 @@ public class UomResourceTest {
     Product fetchedProduct = productResource.getProduct();
     Assert.assertNotNull(fetchedProduct);
     fetchedProduct.setName("Modified Product Name");
-    
+
 
     productResource.update();
 
@@ -220,14 +176,58 @@ public class UomResourceTest {
       productResource.get();
       Assert.fail("Should have thorown exception");
     }
-    catch(UniformInterfaceException ex){
+    catch (UniformInterfaceException ex) {
       Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
     }
     catch (Exception e) {
       Assert.fail("Should not throw exception other than UniformInterfaceException");
     }
-    
 
+    // store test
+
+
+    StoresResource storesResource = rootResource.getStoresResource();
+    Assert.assertNotNull(storesResource);
+
+    StoreImpl store = new StoreImpl();
+    AddressImpl address = new AddressImpl();
+    store.setId("S1");
+    store.setName("Store 1");
+    address.setStreetAddress("Haji Chinu Mia road");
+    address.setCity("Dhaka");
+    address.setState("Dhaka");
+    address.setCountry("Bangladesh");
+    address.setZip("1207");
+    store.setAddress(address);
+
+    StoreResource storeResource = storesResource.create(store);
+    Assert.assertNotNull(storeResource);
+
+    Store fetchedStore = storeResource.getStore();
+    Assert.assertNotNull(fetchedStore);
+    System.out.println(fetchedStore.getAddress());
+    System.out.println(fetchedStore.getAddress().getGeoLocation());
+
+    fetchedStore.setName("Modified Store");
+
+
+    storeResource.update();
+
+    Store updatedStore = storeResource.getStore();
+    Assert.assertNotSame(updatedStore.getName(), store.getName());
+
+    storeResource.delete();
+
+    try {
+      storeResource.get();
+      Assert.fail("Should have thorown exception");
+    }
+    catch (UniformInterfaceException ex) {
+      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
+    }
+    catch (Exception e) {
+      Assert.fail("Should not throw exception other than UniformInterfaceException");
+    }
   }
 
   public static class ConfigurationModule extends AbstractModule {
@@ -243,5 +243,4 @@ public class UomResourceTest {
       bind(ConnectionConfig.class).toInstance(config);
     }
   }
-
 }

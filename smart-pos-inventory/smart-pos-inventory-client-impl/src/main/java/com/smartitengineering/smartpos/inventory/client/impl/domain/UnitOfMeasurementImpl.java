@@ -6,8 +6,8 @@
 package com.smartitengineering.smartpos.inventory.client.impl.domain;
 
 
-import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 
 /**
  *

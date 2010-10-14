@@ -4,11 +4,14 @@
  */
 package com.smartitengineering.pos.inventory.resource;
 
-import com.smartitengineering.smartpos.admin.api.Address;
-import com.smartitengineering.smartpos.admin.api.GeoLocation;
+import com.smartitengineering.pos.inventory.adapter.StoreAdapterHelper;
+import com.smartitengineering.smartpos.inventory.api.Address;
+import com.smartitengineering.smartpos.inventory.api.GeoLocation;
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.inventory.api.PersistantStore;
+import com.smartitengineering.smartpos.inventory.api.Store;
 import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
+import com.smartitengineering.util.bean.adapter.GenericAdapterImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -46,12 +49,12 @@ import org.slf4j.LoggerFactory;
 public class OrganizationStoreResource extends AbstractResource {
 
   protected final Logger logger = LoggerFactory.getLogger(OrganizationStoreResource.class);
-
   private PersistantStore store;
   static final UriBuilder STORE_URI_BUILDER = UriBuilder.fromResource(OrganizationStoreResource.class);
   static final UriBuilder STORE_CONTENT_URI_BUILDER;
   @Context
   private HttpServletRequest servletRequest;
+  private GenericAdapterImpl<Store, PersistantStore> adapter;
 
   static {
     STORE_CONTENT_URI_BUILDER = STORE_URI_BUILDER.clone();
@@ -64,20 +67,25 @@ public class OrganizationStoreResource extends AbstractResource {
 
     }
   }
-  @PathParam("organizationShortName")
+  @PathParam("uniqueShortName")
   private String organizationUniqueShortName;
   @PathParam("storeCode")
   private String storeCode;
 
-  public OrganizationStoreResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
-      "storeCode") String storeCode) {
-    store = Services.getInstance().getStoreService().getByStoreCodeAndOrganization(organizationShortName, storeCode);    
-
+  public OrganizationStoreResource(@PathParam("uniqueShortName") String organizationShortName,
+                                   @PathParam("storeCode") String storeCode) {
+    StoreId storeId = new PersistantStore.StoreIdImpl(organizationShortName, storeCode);
+    store = Services.getInstance().getStoreService().getById(storeId);
+    adapter = new GenericAdapterImpl<Store, PersistantStore>();
+    adapter.setHelper(new StoreAdapterHelper());
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
+    if (store == null) {
+      return Response.status(Status.NOT_FOUND).build();
+    }
     Feed userFeed = getStoreFeed();
     ResponseBuilder responseBuilder = Response.ok(userFeed);
     return responseBuilder.build();
@@ -87,7 +95,7 @@ public class OrganizationStoreResource extends AbstractResource {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
   public Response getStore() {
-    ResponseBuilder responseBuilder = Response.ok(store);
+    ResponseBuilder responseBuilder = Response.ok(adapter.convertInversely(store));
     return responseBuilder.build();
   }
 
@@ -110,11 +118,12 @@ public class OrganizationStoreResource extends AbstractResource {
   @PUT
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response update(PersistantStore store) {
-
+  public Response update(Store store) {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    try {                       
-      Services.getInstance().getStoreService().update(store);
+    store.setOrgUniqueShortName(organizationUniqueShortName);
+    PersistantStore persistantStore = adapter.convert(store);
+    try {
+      basicUpdate(persistantStore);
       responseBuilder = Response.ok(getStoreFeed());
     }
     catch (Exception ex) {
@@ -141,7 +150,7 @@ public class OrganizationStoreResource extends AbstractResource {
     // add a alternate link
     Link altLink = abderaFactory.newLink();
     altLink.setHref(STORE_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
-                                                           store.getId().getId()).toString());
+                                                            store.getId().getId()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     storeFeed.addLink(altLink);
@@ -192,19 +201,19 @@ public class OrganizationStoreResource extends AbstractResource {
         message = URLDecoder.decode(realMsg, "UTF-8");
       }
       catch (UnsupportedEncodingException ex) {
-        ex.printStackTrace();
+        logger.info(ex.getMessage());
+        ;
 
       }
     }
     else {
-      contentType = contentType;
       isHtmlPost = false;
     }
 
     if (isHtmlPost) {
       PersistantStore newStore = getStoreFromContent(message);
       try {
-        Services.getInstance().getStoreService().update(newStore);
+        basicUpdate(newStore);
         responseBuilder = Response.ok(getStoreFeed());
       }
       catch (Exception ex) {
@@ -232,41 +241,45 @@ public class OrganizationStoreResource extends AbstractResource {
     final Address address = new Address();
     final GeoLocation geoLocation = new GeoLocation();
 
-    if(keyValueMap.get("id") != null){
+    if (keyValueMap.get("id") != null) {
       StoreId storeId = new PersistantStore.StoreIdImpl();
       storeId.setId(keyValueMap.get("id"));
       store.setId(storeId);
     }
 
-    if(keyValueMap.get("name")!= null){
+    if (keyValueMap.get("name") != null) {
       store.setName(keyValueMap.get("name"));
     }
 
-    if(keyValueMap.get("streetAddress")!= null){
+    if (keyValueMap.get("streetAddress") != null) {
       address.setStreetAddress(keyValueMap.get("streetAddress"));
     }
-    if(keyValueMap.get("city")!= null){
+    if (keyValueMap.get("city") != null) {
       address.setCity(keyValueMap.get("city"));
     }
-    if(keyValueMap.get("state")!= null){
+    if (keyValueMap.get("state") != null) {
       address.setState(keyValueMap.get("state"));
     }
-    if(keyValueMap.get("country")!= null){
+    if (keyValueMap.get("country") != null) {
       address.setCountry(keyValueMap.get("country"));
     }
-    if(keyValueMap.get("zip")!= null){
+    if (keyValueMap.get("zip") != null) {
       address.setStreetAddress(keyValueMap.get("zip"));
     }
-    if(keyValueMap.get("longitude")!= null){
-      geoLocation.setLongitude( Double.parseDouble(keyValueMap.get("longitude")));
+    if (keyValueMap.get("longitude") != null) {
+      geoLocation.setLongitude(Double.parseDouble(keyValueMap.get("longitude")));
     }
-    if(keyValueMap.get("latitude")!= null){
+    if (keyValueMap.get("latitude") != null) {
       geoLocation.setLatitude(Double.parseDouble(keyValueMap.get("latitude")));
     }
 
     address.setGeoLocation(geoLocation);
     store.setAddress(address);
-   
+
     return store;
+  }
+
+  private void basicUpdate(PersistantStore persistantStore) {
+    Services.getInstance().getStoreService().update(persistantStore);
   }
 }

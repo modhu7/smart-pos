@@ -23,7 +23,7 @@ public class SupplierIdImpl implements SupplierId{
     
   }
   
-  public SupplierIdImpl(String id){
+  public SupplierIdImpl(String orgUniqueShortName,String id){
     this.id = id;         
   }
 

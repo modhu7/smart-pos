@@ -38,12 +38,20 @@ public class RootResource extends AbstractResource{
 
     Link loginLink = Abdera.getNewFactory().newLink();    
     loginLink.setHref(OrganizationUomsResource.ORGANIZATION_UOMS_URI_BUILDER.build(orgUniqueShortName).toString());
-    loginLink.setRel("uoms");
+    loginLink.setRel("uoms");    
     atomFeed.addLink(loginLink);
+
     Link organizationsLink = Abdera.getNewFactory().newLink();
     organizationsLink.setHref(OrganizationStoresResource.ORGANIZATION_STORES_URI_BUILDER.build(orgUniqueShortName).toString());
     organizationsLink.setRel("stores");
     atomFeed.addLink(organizationsLink);
+
+    Link productsLink = Abdera.getNewFactory().newLink();
+    productsLink.setHref(OrganizationProductsResource.ORGANIZATION_PRODUCTS_URI_BUILDER.build(orgUniqueShortName).toString());
+    productsLink.setRel("products");
+    atomFeed.addLink(productsLink);
+
+
     responseBuilder.entity(atomFeed);
     return responseBuilder.build();
   }

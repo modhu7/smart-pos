@@ -5,6 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.client.api.resource;
 
+
 import com.smartitengineering.smartpos.inventory.client.api.domain.Entry;
 import java.util.List;
 

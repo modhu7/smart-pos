@@ -5,8 +5,6 @@
 package com.smartitengineering.smartpos.inventory.api;
 
 import com.smartitengineering.domain.AbstractGenericPersistentDTO;
-import com.smartitengineering.smartpos.admin.api.Address;
-import com.smartitengineering.smartpos.admin.api.Organization;
 import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
 import com.smartitengineering.smartpos.inventory.impl.domainid.Utils;
 import java.io.DataInput;

@@ -22,6 +22,7 @@ public abstract class AbstractStoreService implements StoreService{
   @Inject
   protected CommonWriteDao<PersistantStore> commonWriteDao;
 
+  @Override
   public PersistantStore getById(StoreId id){
     if(id == null)
       return null;

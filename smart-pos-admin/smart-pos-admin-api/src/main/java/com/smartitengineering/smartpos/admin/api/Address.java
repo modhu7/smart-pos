@@ -20,6 +20,9 @@ public class Address extends AbstractPersistentDTO<Address> {
     private String zip;
     private GeoLocation geoLocation;
 
+    public Address(){      
+    }
+
     public GeoLocation getGeoLocation() {
       if(geoLocation == null){
         geoLocation = new GeoLocation();
