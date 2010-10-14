@@ -7,6 +7,7 @@ package com.smartitengineering.smartpos.inventory.impl.domainidinstanceprovider;
 import com.smartitengineering.dao.impl.hbase.spi.DomainIdInstanceProvider;
 import com.smartitengineering.smartpos.inventory.api.PersistantProduct;
 import com.smartitengineering.smartpos.inventory.api.PersistantStore;
+import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
 import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
 import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
@@ -29,6 +30,9 @@ public class DomainIdInstanceProviderImpl implements DomainIdInstanceProvider {
     }
     if(ProductId.class.isAssignableFrom(clazz)){
       object = new PersistantProduct.ProductIdImpl();
+    }
+    if(ProductId.class.isAssignableFrom(clazz)){
+      object = new PersistantSupplier.SupplierIdImpl();
     }
     return (IdType) object;
   }

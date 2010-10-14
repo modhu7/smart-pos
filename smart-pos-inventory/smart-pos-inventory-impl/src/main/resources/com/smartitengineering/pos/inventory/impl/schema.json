@@ -28,5 +28,16 @@
         "familyName": "sku"
       }
     ]
+  },
+  {
+    "tableName": "supplier",
+    "columnFamilyConfigurations": [
+      {
+        "familyName": "self"
+      },
+      {
+        "familyName": "address"
+      }
+    ]
   }
 ]

@@ -51,6 +51,11 @@ public class RootResource extends AbstractResource{
     productsLink.setRel("products");
     atomFeed.addLink(productsLink);
 
+    Link suppliersLink = Abdera.getNewFactory().newLink();
+    suppliersLink.setHref(SuppliersResource.SUPPLIERS_URI_BUILDER.build(orgUniqueShortName).toString());
+    suppliersLink.setRel("suppliers");
+    atomFeed.addLink(suppliersLink);
+
 
     responseBuilder.entity(atomFeed);
     return responseBuilder.build();
