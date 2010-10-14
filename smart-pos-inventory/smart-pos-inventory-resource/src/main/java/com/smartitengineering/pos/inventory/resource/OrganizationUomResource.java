@@ -70,6 +70,8 @@ public class OrganizationUomResource extends AbstractResource {
     UomId uomId = new PersistantUnitOfMeasurement.UomIdImpl(uomName);
     logger.info(uomId.toString());
     uom = Services.getInstance().getUomService().getById(uomId);
+    if(uom == null)
+      logger.info(" >>>>>>>>>>>>>>>>>>>>>>>>>>UOM NULL<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+uom);
     //uom = Services.getInstance().getUomService().getByUomId(uomId);
 
   }
