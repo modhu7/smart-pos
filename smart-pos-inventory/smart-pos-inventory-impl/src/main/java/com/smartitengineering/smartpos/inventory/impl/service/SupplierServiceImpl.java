@@ -5,14 +5,10 @@
 
 package com.smartitengineering.smartpos.inventory.impl.service;
 
-import com.smartitengineering.dao.impl.hbase.CommonDao;
-import com.smartitengineering.dao.impl.hbase.spi.AsyncExecutorService;
-import com.smartitengineering.dao.impl.hbase.spi.impl.MixedExecutorServiceImpl;
-import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
 import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
-import com.smartitengineering.smartpos.inventory.api.converter.SupplierRowConverter;
+import com.smartitengineering.smartpos.inventory.api.Supplier;
 import com.smartitengineering.smartpos.inventory.api.service.SupplierService;
-import org.apache.hadoop.hbase.HBaseConfiguration;
+import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,26 +20,7 @@ public class SupplierServiceImpl extends AbstractSupplierService implements Supp
 
   protected final Logger logger = LoggerFactory.getLogger(SupplierServiceImpl.class);
 
-//  private CommonDao<PersistantSupplier, String> supplierDao;
-//  private SupplierRowConverter supplierRowConverter;
-//  private static final MixedExecutorServiceImpl executorService = new MixedExecutorServiceImpl();
-
-//  static {
-//    executorService.setConfiguration(HBaseConfiguration.create());
-//  }
-
-//  public static AsyncExecutorService getAsyncExecutorService() {
-//    return executorService;
-//  }
-
   public SupplierServiceImpl(){
-//    supplierRowConverter = new SupplierRowConverter();
-//    supplierDao = new CommonDao<PersistantSupplier, String>();
-//    supplierDao.setExecutorService(getAsyncExecutorService());
-//    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
-//    providerImpl.setMainTableName("supplier");
-//    supplierDao.setInfoProvider(providerImpl);
-//    supplierDao.setConverter(supplierRowConverter);
   }
 
   @Override
@@ -67,7 +44,8 @@ public class SupplierServiceImpl extends AbstractSupplierService implements Supp
   }
 
   @Override
-  public PersistantSupplier getByOrganization(String organizatinUniqueShortName) {
+
+  public Collection<Supplier> getByOrganization(String organizatinUniqueShortName) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

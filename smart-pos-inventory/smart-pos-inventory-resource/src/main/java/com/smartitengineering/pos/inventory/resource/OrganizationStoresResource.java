@@ -68,7 +68,6 @@ public class OrganizationStoresResource extends AbstractResource {
                                                                                                      String.class));
     }
     catch (Exception ex) {
-      ex.printStackTrace();
     }
 
     ORGANIZATION_STORES_BEFORE_USERNAME_URI_BUILDER = UriBuilder.fromResource(OrganizationStoresResource.class);
@@ -77,7 +76,6 @@ public class OrganizationStoresResource extends AbstractResource {
                                                                                                       String.class));
     }
     catch (Exception ex) {
-      ex.printStackTrace();
     }
   }
   @DefaultValue("10")
@@ -102,8 +100,8 @@ public class OrganizationStoresResource extends AbstractResource {
 
     Collection<PersistantStore> stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName,
-                                                                                                    null,
-                                                                                                    true, count);
+        null,
+        true, count);
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
@@ -223,6 +221,7 @@ public class OrganizationStoresResource extends AbstractResource {
 
     Collection<PersistantStore> Stores = Services.getInstance().getStoreService().getByOrganization(
         organizationUniqueShortName, userName, isBefore, count);
+
 
     if (Stores != null && !Stores.isEmpty()) {
 

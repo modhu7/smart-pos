@@ -32,8 +32,7 @@ public class UomsResourceImpl extends AbstractFeedClientResource<Resource<? exte
 
   public UomsResourceImpl(Resource referrer, ResourceLink pageLink) {
     super(referrer, pageLink);
-  }  
-
+  }
   @Override
   protected void processClientConfig(ClientConfig cc) {
     throw new UnsupportedOperationException("Not supported yet.");
@@ -62,5 +61,6 @@ public class UomsResourceImpl extends AbstractFeedClientResource<Resource<? exte
       OrganizationUomResources.add(new UomResourceImpl(this,AtomClientUtil.convertFromAtomLinkToResourceLink(entry.getLink(REL_ALT))) );
     }
     return OrganizationUomResources;
-  }  
+
+  }
 }

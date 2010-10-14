@@ -2,11 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.smartpos.inventory.api.service;
 
 import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
+import com.smartitengineering.smartpos.inventory.api.Supplier;
 import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
+import java.util.Collection;
 
 /**
  *
@@ -23,15 +24,14 @@ public interface SupplierService {
   public void getAllUoms();
 
   // non paginated version
-  public PersistantSupplier getByOrganization(String organizatinUniqueShortName);
+  public Collection<Supplier> getByOrganization(String organizatinUniqueShortName);
 
   // paginated version
-  public PersistantSupplier getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count);
+  public PersistantSupplier getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan,
+                                              int count);
 
   // non paginated version
   public PersistantSupplier getByOrganizationAndSname(String organizatinUniqueShortName, String supplierName);
 
   public PersistantSupplier getById(SupplierId supplierId);
-  
-
 }

@@ -78,7 +78,6 @@ public class OrganizationStoreResource extends AbstractResource {
     store = Services.getInstance().getStoreService().getById(storeId);
     adapter = new GenericAdapterImpl<Store, PersistantStore>();
     adapter.setHelper(new StoreAdapterHelper());
-
   }
 
   @GET
