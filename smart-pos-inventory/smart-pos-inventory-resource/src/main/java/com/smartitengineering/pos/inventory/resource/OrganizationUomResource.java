@@ -2,13 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.smartitengineering.smartpos.inventory.resource;
+package com.smartitengineering.pos.inventory.resource;
 
-import com.smartitengineering.smartpos.admin.api.Address;
-import com.smartitengineering.smartpos.admin.api.GeoLocation;
+import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
-import com.smartitengineering.smartpos.inventory.api.Store;
-import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
+import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -42,43 +41,46 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-@Path("/orgs/sn/{uniqueShortName}/inv/stores/code/{storeCode}")
-public class OrganizationStoreResource extends AbstractResource {
+@Path("/inv/uoms/name/{uomName}")
+public class OrganizationUomResource extends AbstractResource {
 
-  protected final Logger logger = LoggerFactory.getLogger(OrganizationStoreResource.class);
+  protected final Logger logger = LoggerFactory.getLogger(OrganizationUomResource.class);
 
-  private Store store;
-  static final UriBuilder STORE_URI_BUILDER = UriBuilder.fromResource(OrganizationStoreResource.class);
-  static final UriBuilder STORE_CONTENT_URI_BUILDER;
+  private PersistantUnitOfMeasurement uom;
+  static final UriBuilder UOM_URI_BUILDER = UriBuilder.fromResource(OrganizationUomResource.class);
+  static final UriBuilder UOM_CONTENT_URI_BUILDER;
   @Context
   private HttpServletRequest servletRequest;
 
   static {
-    STORE_CONTENT_URI_BUILDER = STORE_URI_BUILDER.clone();
+    UOM_CONTENT_URI_BUILDER = UOM_URI_BUILDER.clone();
     try {
-      STORE_CONTENT_URI_BUILDER.path(OrganizationStoreResource.class.getMethod("getStore"));
+      UOM_CONTENT_URI_BUILDER.path(OrganizationUomResource.class.getMethod("getUom"));
     }
     catch (Exception ex) {
       ex.printStackTrace();
       throw new InstantiationError();
 
     }
-  }
-  @PathParam("organizationShortName")
-  private String organizationUniqueShortName;
-  @PathParam("storeCode")
-  private String storeCode;
+  }  
+  @PathParam("uomName")
+  private String uomName;
 
-  public OrganizationStoreResource(@PathParam("organizationShortName") String organizationShortName, @PathParam(
-      "storeCode") String storeCode) {
-    store = Services.getInstance().getStoreService().getByStoreCodeAndOrganization(organizationShortName, storeCode);    
+  public OrganizationUomResource(@PathParam("uomName") String uomName) {
+    UomId uomId = new PersistantUnitOfMeasurement.UomIdImpl(uomName);
+    logger.info(uomId.toString());
+    uom = Services.getInstance().getUomService().getById(uomId);
+    //uom = Services.getInstance().getUomService().getByUomId(uomId);
 
   }
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
-    Feed userFeed = getStoreFeed();
+    if (uom == null) {
+      return Response.status(Status.NOT_FOUND).build();
+    }
+    Feed userFeed = getUomFeed();
     ResponseBuilder responseBuilder = Response.ok(userFeed);
     return responseBuilder.build();
   }
@@ -86,8 +88,14 @@ public class OrganizationStoreResource extends AbstractResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
-  public Response getStore() {
-    ResponseBuilder responseBuilder = Response.ok(store);
+  public Response getUom() {
+    UnitOfMeasurement nUom = new UnitOfMeasurement();
+    nUom.setId(uom.getId().getId());
+    nUom.setLongName(uom.getLongName());
+    nUom.setSymbol(uom.getSymbol());
+    nUom.setUomSystem(uom.getUomSystem());
+    nUom.setUomType(uom.getUomType());
+    ResponseBuilder responseBuilder = Response.ok(nUom);
     return responseBuilder.build();
   }
 
@@ -95,13 +103,12 @@ public class OrganizationStoreResource extends AbstractResource {
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
-
-    servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
+    
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoreResource/storeDetailsHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationUomResource/uomDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoreResource/storeDetails.jsp");
-    Viewable view = new Viewable("/template/template.jsp", store);
+                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationUomResource/uomDetails.jsp");
+    Viewable view = new Viewable("/template/template.jsp", uom);
 
     responseBuilder.entity(view);
     return responseBuilder.build();
@@ -110,12 +117,12 @@ public class OrganizationStoreResource extends AbstractResource {
   @PUT
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response update(Store store) {
+  public Response update(PersistantUnitOfMeasurement uom) {
 
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
-    try {                       
-      Services.getInstance().getStoreService().update(store);
-      responseBuilder = Response.ok(getStoreFeed());
+    try {      
+      Services.getInstance().getUomService().update(uom);
+      responseBuilder = Response.ok(getUomFeed());
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
@@ -124,34 +131,33 @@ public class OrganizationStoreResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private Feed getStoreFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed storeFeed = getFeed(store.getId().getId(), new Date());
-    storeFeed.setTitle(store.getName());
+  private Feed getUomFeed() throws UriBuilderException, IllegalArgumentException {
+    Feed uomFeed = getFeed(uom.getId().getId(), new Date());
+    uomFeed.setTitle(uom.getId().getId());
 
     // add a self link
-    storeFeed.addLink(getSelfLink());
+    uomFeed.addLink(getSelfLink());
 
     // add a edit link
     Link editLink = abderaFactory.newLink();
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
-    storeFeed.addLink(editLink);
+    uomFeed.addLink(editLink);
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(STORE_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
-                                                           store.getId().getId()).toString());
+    altLink.setHref(UOM_CONTENT_URI_BUILDER.clone().build(uom.getId()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
-    storeFeed.addLink(altLink);
+    uomFeed.addLink(altLink);
 
-    return storeFeed;
+    return uomFeed;
   }
 
   @DELETE
-  public Response delete() {
-    Services.getInstance().getStoreService().delete(store);
+  public Response delete() {    
+    Services.getInstance().getUomService().delete(uom);
     ResponseBuilder responseBuilder = Response.ok();
     return responseBuilder.build();
   }
@@ -159,8 +165,14 @@ public class OrganizationStoreResource extends AbstractResource {
   @POST
   @Path("/delete")
   public Response deletePost() {
-    Services.getInstance().getStoreService().delete(store);
     ResponseBuilder responseBuilder = Response.ok();
+    try{
+      Services.getInstance().getUomService().delete(uom);
+
+    }catch(Exception ex){
+      responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+    }
+
     return responseBuilder.build();
   }
 
@@ -200,21 +212,23 @@ public class OrganizationStoreResource extends AbstractResource {
       contentType = contentType;
       isHtmlPost = false;
     }
+    logger.info(message);
 
     if (isHtmlPost) {
-      Store newStore = getStoreFromContent(message);
+      PersistantUnitOfMeasurement newUom = getUomFromContent(message);
       try {
-        Services.getInstance().getStoreService().update(newStore);
-        responseBuilder = Response.ok(getStoreFeed());
+        Services.getInstance().getUomService().update(newUom);
+        responseBuilder = Response.ok(getUomFeed());
       }
       catch (Exception ex) {
         responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+        logger.error(ex.getMessage());
       }
     }
     return responseBuilder.build();
   }
 
-  private Store getStoreFromContent(String message) {
+  private PersistantUnitOfMeasurement getUomFromContent(String message) {
 
     Map<String, String> keyValueMap = new HashMap<String, String>();
 
@@ -228,45 +242,28 @@ public class OrganizationStoreResource extends AbstractResource {
       }
     }
 
-    final Store store = new Store();
-    final Address address = new Address();
-    final GeoLocation geoLocation = new GeoLocation();
+    PersistantUnitOfMeasurement uom = new PersistantUnitOfMeasurement();
 
     if(keyValueMap.get("id") != null){
-      StoreId storeId = new Store.StoreIdImpl();
-      storeId.setId(keyValueMap.get("id"));
-      store.setId(storeId);
+      UomId uomId = new PersistantUnitOfMeasurement.UomIdImpl(keyValueMap.get("id"));
+      uom.setId(uomId);
     }
 
-    if(keyValueMap.get("name")!= null){
-      store.setName(keyValueMap.get("name"));
+    if(keyValueMap.get("longName") != null){
+      uom.setLongName(keyValueMap.get("longName"));
     }
 
-    if(keyValueMap.get("streetAddress")!= null){
-      address.setStreetAddress(keyValueMap.get("streetAddress"));
+    if(keyValueMap.get("symbol") != null){
+      uom.setSymbol(keyValueMap.get("symbol"));
     }
-    if(keyValueMap.get("city")!= null){
-      address.setCity(keyValueMap.get("city"));
-    }
-    if(keyValueMap.get("state")!= null){
-      address.setState(keyValueMap.get("state"));
-    }
-    if(keyValueMap.get("country")!= null){
-      address.setCountry(keyValueMap.get("country"));
-    }
-    if(keyValueMap.get("zip")!= null){
-      address.setStreetAddress(keyValueMap.get("zip"));
-    }
-    if(keyValueMap.get("longitude")!= null){
-      geoLocation.setLongitude( Double.parseDouble(keyValueMap.get("longitude")));
-    }
-    if(keyValueMap.get("latitude")!= null){
-      geoLocation.setLatitude(Double.parseDouble(keyValueMap.get("latitude")));
+    if(keyValueMap.get("uomType") != null){
+      uom.setUomType(keyValueMap.get("uomType"));
     }
 
-    address.setGeoLocation(geoLocation);
-    store.setAddress(address);
-   
-    return store;
+    if(keyValueMap.get("uomSystem") != null){
+      uom.setUomSystem(keyValueMap.get("uomSystem"));
+    }
+
+    return uom;
   }
 }

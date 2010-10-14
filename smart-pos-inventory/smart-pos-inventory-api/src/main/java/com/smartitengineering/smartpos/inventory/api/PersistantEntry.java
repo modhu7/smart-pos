@@ -14,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class Entry extends AbstractGenericPersistentDTO<Entry, EntryId, Long>{
+public class PersistantEntry extends AbstractGenericPersistentDTO<PersistantEntry, EntryId, Long>{
 
   public static enum TransactionType{
     INBOUND_PURCHASE,

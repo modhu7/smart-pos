@@ -27,7 +27,7 @@ import org.apache.abdera.model.Feed;
  */
 public class ProductsResourceImpl extends AbstractFeedClientResource<Resource<? extends Feed>> implements ProductsResource{
 
-  private static final String REL_ORG = "product";
+  private static final String REL_PRODUCT = "product";
   private static final String REL_ALT = "alternate";
 
   public ProductsResourceImpl(Resource referrer, ResourceLink pageLink) {
@@ -47,9 +47,12 @@ public class ProductsResourceImpl extends AbstractFeedClientResource<Resource<? 
   @Override
   public ProductResource create(Product product) {
    ClientResponse response = post(MediaType.APPLICATION_JSON, product, ClientResponse.Status.CREATED);
-    final ResourceLink orgLink = ClientUtil.createResourceLink(REL_ORG, response.getLocation(),
+   if(response.getLocation() == null)
+    logger.info("response.getLocation() is null");
+    final ResourceLink productLink = ClientUtil.createResourceLink(REL_PRODUCT, response.getLocation(),
                                                                MediaType.APPLICATION_ATOM_XML);
-    return new ProductResourceImpl(this,orgLink);
+    logger.info(productLink.getUri().toString());
+    return new ProductResourceImpl(this,productLink);
   }
 
   @Override

@@ -5,20 +5,26 @@
 
 package com.smartitengineering.smartpos.inventory.api;
 
-import com.smartitengineering.domain.AbstractGenericPersistentDTO;
-import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
-import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
  * @author russel
  */
-public class Product extends AbstractGenericPersistentDTO<Product, ProductId, Long>{
+public class Product {
+
+  private String id;
+
+  @JsonIgnore
+  private String orgUniqueShortName;
 
   private String name;
+
   private String description;
-  private Integer organizationId;
+
   private String skuId;
+
+  private String skuName;
 
   public String getDescription() {
     return description;
@@ -26,6 +32,14 @@ public class Product extends AbstractGenericPersistentDTO<Product, ProductId, Lo
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -36,26 +50,29 @@ public class Product extends AbstractGenericPersistentDTO<Product, ProductId, Lo
     this.name = name;
   }
 
-  public Integer getOrganizationId() {
-    return organizationId;
+  @JsonIgnore
+  public String getOrgUniqueShortName() {
+    return orgUniqueShortName;
   }
 
-  public void setOrganizationId(Integer parentOrganizationID) {
-    this.organizationId = parentOrganizationID;
+  @JsonIgnore
+  public void setOrgUniqueShortName(String orgUniqueShortName) {
+    this.orgUniqueShortName = orgUniqueShortName;
   }
 
   public String getSkuId() {
     return skuId;
   }
 
-  public void setSkuId(String skuID) {
-    this.skuId = skuID;
+  public void setSkuId(String skuId) {
+    this.skuId = skuId;
   }
 
-  public boolean isValid(){
-    if(StringUtils.isBlank(name))
-      return false;
-    return true;
+  public String getSkuName() {
+    return skuName;
   }
 
+  public void setSkuName(String skuName) {
+    this.skuName = skuName;
+  }
 }

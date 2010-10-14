@@ -18,7 +18,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author russel
  */
-public class Supplier extends AbstractGenericPersistentDTO<Supplier, SupplierId, Long> {
+public class PersistantSupplier extends AbstractGenericPersistentDTO<PersistantSupplier, SupplierId, Long> {
 
   private String name;
   private String email;

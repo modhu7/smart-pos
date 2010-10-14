@@ -6,7 +6,7 @@ package com.smartitengineering.smartpos.inventory.api.converter;
 
 import com.smartitengineering.dao.impl.hbase.spi.ExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.impl.AbstactObjectRowConverter;
-import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import java.util.LinkedHashMap;
 import java.util.NavigableMap;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author russel
  */
-public class UOMRowConverter extends AbstactObjectRowConverter<UnitOfMeasurement, UomId> /*implements ObjectRowConverter<UnitOfMeasurement>*/ {
+public class UOMRowConverter extends AbstactObjectRowConverter<PersistantUnitOfMeasurement, UomId> /*implements ObjectRowConverter<PersistantUnitOfMeasurement>*/ {
 
   protected final Logger logger = LoggerFactory.getLogger(getClass());
   public static final String SYMBOL = "symbol";
@@ -37,12 +37,12 @@ public class UOMRowConverter extends AbstactObjectRowConverter<UnitOfMeasurement
   public static final byte[] CELL_NAME = Bytes.toBytes(NAME);
 
   @Override
-  public UnitOfMeasurement rowsToObject(Result startRow, ExecutorService executorService) {
+  public PersistantUnitOfMeasurement rowsToObject(Result startRow, ExecutorService executorService) {
     if (startRow.isEmpty()) {
       return null;
     }
 
-    final UnitOfMeasurement measurement = new UnitOfMeasurement();
+    final PersistantUnitOfMeasurement measurement = new PersistantUnitOfMeasurement();
 
     NavigableMap<byte[], NavigableMap<byte[], byte[]>> allFamilies = startRow.getNoVersionMap();
 
@@ -71,7 +71,7 @@ public class UOMRowConverter extends AbstactObjectRowConverter<UnitOfMeasurement
   }
 
   @Override
-  protected void getPutForTable(UnitOfMeasurement instance, ExecutorService service, Put put) {
+  protected void getPutForTable(PersistantUnitOfMeasurement instance, ExecutorService service, Put put) {
     put.add(FAMILY_SELF, CELL_SYMBOL, Bytes.toBytes(instance.getSymbol()));
     put.add(FAMILY_SELF, CELL_SYSTEM, Bytes.toBytes(instance.getUomSystem()));
     put.add(FAMILY_SELF, CELL_TYPE, Bytes.toBytes(instance.getUomType()));
@@ -79,8 +79,7 @@ public class UOMRowConverter extends AbstactObjectRowConverter<UnitOfMeasurement
   }
 
   @Override
-  protected void getDeleteForTable(UnitOfMeasurement instance, ExecutorService service, Delete delete) {
-    logger.info("Deleting self family");
-    delete.deleteFamily(FAMILY_SELF);
+  protected void getDeleteForTable(PersistantUnitOfMeasurement instance, ExecutorService service, Delete delete) {
+    logger.info("Deleting whole Uom " + instance.getId().toString());
   }
 }

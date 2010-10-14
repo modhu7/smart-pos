@@ -36,7 +36,7 @@
     <init-param>
       <param-name>com.sun.jersey.config.property.packages</param-name>
       <param-value>
-        com.smartitengineering.smartpos.inventory.resource, com.smartitengineering.smartpos.admin.resource
+        com.smartitengineering.pos.inventory.resource, com.smartitengineering.smartpos.admin.resource
       </param-value>
     </init-param>
     <init-param>

@@ -10,7 +10,7 @@ import com.smartitengineering.dao.common.queryparam.QueryParameter;
 import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hbase.CommonDao;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
-import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.converter.UOMRowConverter;
 import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import com.smartitengineering.smartpos.inventory.api.service.UomService;
@@ -38,7 +38,7 @@ public class UomServiceImpl extends AbstractUomService implements UomService {
   
 
   @Override
-  public void save(UnitOfMeasurement uom) {
+  public void save(PersistantUnitOfMeasurement uom) {
     try{
       commonWriteDao.save(uom);
     }catch(Exception ex){
@@ -48,30 +48,30 @@ public class UomServiceImpl extends AbstractUomService implements UomService {
   }
 
   @Override
-  public void update(UnitOfMeasurement uom) {
+  public void update(PersistantUnitOfMeasurement uom) {
     commonWriteDao.update(uom);
   }
 
   @Override
-  public void delete(UnitOfMeasurement uom) {
+  public void delete(PersistantUnitOfMeasurement uom) {
     commonWriteDao.delete(uom);
   }
 
   @Override
-  public Collection<UnitOfMeasurement> getAllUoms() {
-    final List<UnitOfMeasurement> list = commonReadDao.getList();
+  public Collection<PersistantUnitOfMeasurement> getAllUoms() {
+    final List<PersistantUnitOfMeasurement> list = commonReadDao.getList();
     if(list == null  || list.isEmpty())
       return Collections.emptyList();
     return list;
   }
 
   @Override
-  public Collection<UnitOfMeasurement> getByOrganization(String organizatinUniqueShortName) {
+  public Collection<PersistantUnitOfMeasurement> getByOrganization(String organizatinUniqueShortName) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public Collection<UnitOfMeasurement> getByOrganization(String organizationUniqueShortName, String name,
+  public Collection<PersistantUnitOfMeasurement> getByOrganization(String organizationUniqueShortName, String name,
                                                          boolean isSmallerThan,
                                                          int count) {
 
@@ -96,13 +96,13 @@ public class UomServiceImpl extends AbstractUomService implements UomService {
     params.add(QueryParameterFactory.getMaxResultsParam(count));
     params.add(QueryParameterFactory.getOrderByParam("name", isSmallerThan?Order.DESC: Order.ASC));
 
-    List<UnitOfMeasurement> uoms = commonReadDao.getList(params);// getOtherList(params);
+    List<PersistantUnitOfMeasurement> uoms = commonReadDao.getList(params);// getOtherList(params);
 
     if(uoms != null && !uoms.isEmpty()){
-      Collections.sort(uoms, new Comparator<UnitOfMeasurement>() {
+      Collections.sort(uoms, new Comparator<PersistantUnitOfMeasurement>() {
 
         @Override
-        public int compare(UnitOfMeasurement o1, UnitOfMeasurement o2) {
+        public int compare(PersistantUnitOfMeasurement o1, PersistantUnitOfMeasurement o2) {
           return o1.getId().getId().toUpperCase().compareTo(o2.getId().getId().toUpperCase());
         }
       });
@@ -112,39 +112,39 @@ public class UomServiceImpl extends AbstractUomService implements UomService {
     }        
   }
 
-  public List<UnitOfMeasurement> getByUomNames(List<String> uomNames) {
+  public List<PersistantUnitOfMeasurement> getByUomNames(List<String> uomNames) {
 
     QueryParameter<String> param = QueryParameterFactory.<String>getIsInPropertyParam("name", uomNames.toArray(new String[uomNames.size()]));
 
-    Collection<UnitOfMeasurement> result;
+    Collection<PersistantUnitOfMeasurement> result;
     try {
       result = commonReadDao.getList(param);
     }
     catch (Exception ex) {
       ex.printStackTrace();
-      result = Collections.<UnitOfMeasurement>emptyList();
+      result = Collections.<PersistantUnitOfMeasurement>emptyList();
     }
-    return new ArrayList<UnitOfMeasurement>(result);
+    return new ArrayList<PersistantUnitOfMeasurement>(result);
 
   }
 
   @Override
-  public UnitOfMeasurement getByUomId(UomId uomId){
+  public PersistantUnitOfMeasurement getByUomId(UomId uomId){
     List<QueryParameter> params = new ArrayList<QueryParameter>();
     QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("id", uomId.getId(), MatchMode.EXACT);
     params.add(qp);
-    List<UnitOfMeasurement> uoms = commonReadDao.getList(params);
+    List<PersistantUnitOfMeasurement> uoms = commonReadDao.getList(params);
     logger.info("Size:" +uoms.size());
     return uoms.get(0);
   }
 
   @Override
-  public UnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName) {
+  public PersistantUnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public UnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name,
+  public PersistantUnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name,
                                                    boolean isSmallerThan, int count) {
     throw new UnsupportedOperationException("Not supported yet.");
   }  

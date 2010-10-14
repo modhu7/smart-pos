@@ -12,7 +12,7 @@ import com.smartitengineering.dao.impl.hbase.CommonDao;
 import com.smartitengineering.dao.impl.hbase.spi.AsyncExecutorService;
 import com.smartitengineering.dao.impl.hbase.spi.impl.MixedExecutorServiceImpl;
 import com.smartitengineering.dao.impl.hbase.spi.impl.SchemaInfoProviderImpl;
-import com.smartitengineering.smartpos.inventory.api.Store;
+import com.smartitengineering.smartpos.inventory.api.PersistantStore;
 import com.smartitengineering.smartpos.inventory.api.converter.StoreRowConverter;
 import com.smartitengineering.smartpos.inventory.api.service.StoreService;
 import java.util.ArrayList;
@@ -30,72 +30,54 @@ public class StoreServiceImpl extends AbstractStoreService implements StoreServi
 
   protected final Logger logger = LoggerFactory.getLogger(StoreServiceImpl.class);
 
-//  private CommonDao<Store, String> storeDao;
-//  private StoreRowConverter storeRowConverter;
-//
-//  private static final MixedExecutorServiceImpl executorService = new MixedExecutorServiceImpl();
-//
-//  static {
-//    executorService.setConfiguration(HBaseConfiguration.create());
-//  }
-//
-//  public static AsyncExecutorService getAsyncExecutorService() {
-//    return executorService;
-//  }
+
 
   
   public StoreServiceImpl(){
-//    storeRowConverter = new StoreRowConverter();
-//    storeDao = new CommonDao<Store, String>();
-//    storeDao.setExecutorService(StoreServiceImpl.getAsyncExecutorService());
-//    SchemaInfoProviderImpl providerImpl = new SchemaInfoProviderImpl();
-//    providerImpl.setMainTableName("store");
-//    storeDao.setInfoProvider(providerImpl);
-//    storeDao.setConverter(storeRowConverter);
   }
 
   @Override
-  public void save(Store store) {
+  public void save(PersistantStore store) {
     commonWriteDao.save(store);
   }
 
   @Override
-  public void update(Store store) {
+  public void update(PersistantStore store) {
     commonWriteDao.update(store);
   }
 
   @Override
-  public void delete(Store store) {
+  public void delete(PersistantStore store) {
     commonWriteDao.delete(store);
   }
 
   @Override
-  public Collection<Store> getAllStores() {
+  public Collection<PersistantStore> getAllStores() {
     return commonReadDao.getAll();
   }
 
   @Override
-  public Collection<Store> getStores(String storeCodeLike, String storeCode, boolean isSmallerThan, int count) {
+  public Collection<PersistantStore> getStores(String storeCodeLike, String storeCode, boolean isSmallerThan, int count) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public Collection<Store> getByOrganization(String organizationUniqueShortName, String storeCode, boolean isSmallerThan,
+  public Collection<PersistantStore> getByOrganization(String organizationUniqueShortName, String storeCode, boolean isSmallerThan,
                                              int count) {
 
     QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("id", organizationUniqueShortName, MatchMode.START);
 
-    Collection<Store> stores = commonReadDao.getList(qp);
+    Collection<PersistantStore> stores = commonReadDao.getList(qp);
     return stores;
   }
 
   @Override
-  public Store getByStoreCodeAndOrganization(String organizationUniqueShortName, String storeCode) {
+  public PersistantStore getByStoreCodeAndOrganization(String organizationUniqueShortName, String storeCode) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public Store getByCode(String storeCode) {
+  public PersistantStore getByCode(String storeCode) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

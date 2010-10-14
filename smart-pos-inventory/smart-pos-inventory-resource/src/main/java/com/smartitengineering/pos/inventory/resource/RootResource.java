@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.smartitengineering.smartpos.inventory.resource;
+package com.smartitengineering.pos.inventory.resource;
 
 import com.sun.jersey.api.view.Viewable;
 import java.util.Date;
@@ -34,7 +34,7 @@ public class RootResource extends AbstractResource{
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
-    Feed atomFeed = getFeed("ROA Demo", INIT_DATE);
+    Feed atomFeed = getFeed("Smart Pos Inventory", INIT_DATE);
 
     Link loginLink = Abdera.getNewFactory().newLink();    
     loginLink.setHref(OrganizationUomsResource.ORGANIZATION_UOMS_URI_BUILDER.build(orgUniqueShortName).toString());

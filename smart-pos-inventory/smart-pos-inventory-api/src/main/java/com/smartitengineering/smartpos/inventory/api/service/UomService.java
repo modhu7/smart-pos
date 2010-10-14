@@ -5,7 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.api.service;
 
-import com.smartitengineering.smartpos.inventory.api.UnitOfMeasurement;
+import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 import java.util.Collection;
 
@@ -15,27 +15,27 @@ import java.util.Collection;
  */
 public interface UomService {
 
-  UnitOfMeasurement getById(UomId uomId);
+  PersistantUnitOfMeasurement getById(UomId uomId);
 
-  public UnitOfMeasurement getByUomId(UomId uomId);
+  public PersistantUnitOfMeasurement getByUomId(UomId uomId);
 
-  public void save(UnitOfMeasurement uom);
+  public void save(PersistantUnitOfMeasurement uom);
 
-  public void update(UnitOfMeasurement uom);
+  public void update(PersistantUnitOfMeasurement uom);
 
-  public void delete(UnitOfMeasurement uom);
+  public void delete(PersistantUnitOfMeasurement uom);
 
-  public Collection<UnitOfMeasurement> getAllUoms();
-
-  // non paginated version
-  public Collection<UnitOfMeasurement> getByOrganization(String organizatinUniqueShortName);
-
-  // paginated version
-  public Collection<UnitOfMeasurement> getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count);
+  public Collection<PersistantUnitOfMeasurement> getAllUoms();
 
   // non paginated version
-  public UnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName);
+  public Collection<PersistantUnitOfMeasurement> getByOrganization(String organizatinUniqueShortName);
 
   // paginated version
-  public UnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name, boolean isSmallerThan, int count);
+  public Collection<PersistantUnitOfMeasurement> getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count);
+
+  // non paginated version
+  public PersistantUnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName);
+
+  // paginated version
+  public PersistantUnitOfMeasurement getByOrganizationAndUOM(String organizatinUniqueShortName, String uomName, String name, boolean isSmallerThan, int count);
 }

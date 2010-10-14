@@ -6,20 +6,22 @@
 package com.smartitengineering.smartpos.inventory.api.domainid;
 
 import com.smartitengineering.dao.impl.hbase.spi.Externalizable;
-import com.smartitengineering.smartpos.inventory.api.Store;
+import com.smartitengineering.smartpos.inventory.api.PersistantStore;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 /**
  *
  * @author russel
  */
-@JsonDeserialize(as = Store.StoreIdImpl.class)
+@JsonDeserialize(as = PersistantStore.StoreIdImpl.class)
 public interface StoreId extends Externalizable, Comparable<StoreId>{
   public String getId();
 
   public void setId(String id);
 
   public String getCompositeId();
+
+  public String getOrgUniqeShortName();
 
   /**
    * Override the toString so that it could be used to compare to ids of this instance. It should represent the state
