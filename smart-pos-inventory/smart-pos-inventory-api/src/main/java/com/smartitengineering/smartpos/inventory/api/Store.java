@@ -5,7 +5,8 @@
 
 package com.smartitengineering.smartpos.inventory.api;
 
-import com.smartitengineering.smartpos.admin.api.Address;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 /**
  *
@@ -15,13 +16,14 @@ public class Store {
 
   private String id;
   private String name;
+  @JsonIgnore
   private String orgUniqueShortName;
   private Address address;
 
   public Address getAddress() {
     return address;
   }
-
+  
   public void setAddress(Address address) {
     this.address = address;
   }
@@ -42,10 +44,12 @@ public class Store {
     this.name = name;
   }
 
+  @JsonIgnore
   public String getOrgUniqueShortName() {
     return orgUniqueShortName;
   }
 
+  @JsonIgnore
   public void setOrgUniqueShortName(String orgUniqueShortName) {
     this.orgUniqueShortName = orgUniqueShortName;
   }

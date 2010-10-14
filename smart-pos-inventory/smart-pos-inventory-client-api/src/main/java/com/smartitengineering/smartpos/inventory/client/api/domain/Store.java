@@ -5,8 +5,7 @@
 
 package com.smartitengineering.smartpos.inventory.client.api.domain;
 
-import com.smartitengineering.user.client.api.Address;
-import com.smartitengineering.user.client.api.Organization;
+import com.smartitengineering.smartpos.inventory.client.api.domain.Address;
 
 /**
  *
@@ -16,8 +15,14 @@ public interface Store {
 
   public String getName();
 
-  public String getId();  
+  public void setName(String name);
+
+  public String getId();
+
+  public void setId(String id);
 
   public Address getAddress();
+
+  public void setAddress(Address address);
 
 }

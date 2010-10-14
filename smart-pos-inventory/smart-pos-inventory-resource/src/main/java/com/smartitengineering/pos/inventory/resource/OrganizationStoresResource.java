@@ -5,16 +5,14 @@
 package com.smartitengineering.pos.inventory.resource;
 
 import com.smartitengineering.pos.inventory.adapter.StoreAdapterHelper;
-import com.smartitengineering.smartpos.admin.api.Address;
-import com.smartitengineering.smartpos.admin.api.GeoLocation;
 import com.smartitengineering.smartpos.inventory.api.factory.Services;
 import com.smartitengineering.smartpos.admin.resource.RootResource;
+import com.smartitengineering.smartpos.inventory.api.Address;
+import com.smartitengineering.smartpos.inventory.api.GeoLocation;
 import com.smartitengineering.smartpos.inventory.api.PersistantStore;
 import com.smartitengineering.smartpos.inventory.api.PersistantStore.StoreIdImpl;
 import com.smartitengineering.smartpos.inventory.api.Store;
 import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
-import com.smartitengineering.smartpos.inventory.api.service.StoreService;
-import com.smartitengineering.util.bean.adapter.GenericAdapter;
 import com.smartitengineering.util.bean.adapter.GenericAdapterImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
@@ -48,7 +46,6 @@ import org.apache.abdera.model.Link;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.security.action.GetLongAction;
 
 /**
  *
@@ -90,24 +87,23 @@ public class OrganizationStoresResource extends AbstractResource {
   private String organizationUniqueShortName;
   @Context
   private HttpServletRequest servletRequest;
-
   private GenericAdapterImpl<Store, PersistantStore> adapter;
 
-  public OrganizationStoresResource(){
+  public OrganizationStoresResource() {
     adapter = new GenericAdapterImpl<Store, PersistantStore>();
     adapter.setHelper(new StoreAdapterHelper());
 
   }
-
 
   @GET
   @Produces(MediaType.TEXT_HTML)
   public Response getHtml() {
     ResponseBuilder responseBuilder = Response.ok();
 
-    Collection<PersistantStore> stores = Services.getInstance().getStoreService().getByOrganization(organizationUniqueShortName,
-                                                                                          null,
-                                                                                          true, count);
+    Collection<PersistantStore> stores = Services.getInstance().getStoreService().getByOrganization(
+        organizationUniqueShortName,
+                                                                                                    null,
+                                                                                                    true, count);
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
@@ -325,35 +321,35 @@ public class OrganizationStoresResource extends AbstractResource {
     final Address address = new Address();
     final GeoLocation geoLocation = new GeoLocation();
 
-    if(keyValueMap.get("id") != null){
+    if (keyValueMap.get("id") != null) {
       StoreId storeId = new StoreIdImpl();
       storeId.setId(keyValueMap.get("id"));
       store.setId(storeId);
     }
 
-    if(keyValueMap.get("name")!= null){
+    if (keyValueMap.get("name") != null) {
       store.setName(keyValueMap.get("name"));
     }
 
-    if(keyValueMap.get("streetAddress")!= null){
+    if (keyValueMap.get("streetAddress") != null) {
       address.setStreetAddress(keyValueMap.get("streetAddress"));
     }
-    if(keyValueMap.get("city")!= null){
+    if (keyValueMap.get("city") != null) {
       address.setCity(keyValueMap.get("city"));
     }
-    if(keyValueMap.get("state")!= null){
+    if (keyValueMap.get("state") != null) {
       address.setState(keyValueMap.get("state"));
     }
-    if(keyValueMap.get("country")!= null){
+    if (keyValueMap.get("country") != null) {
       address.setCountry(keyValueMap.get("country"));
     }
-    if(keyValueMap.get("zip")!= null){
+    if (keyValueMap.get("zip") != null) {
       address.setStreetAddress(keyValueMap.get("zip"));
     }
-    if(keyValueMap.get("longitude")!= null){
-      geoLocation.setLongitude( Double.parseDouble(keyValueMap.get("longitude")));
+    if (keyValueMap.get("longitude") != null) {
+      geoLocation.setLongitude(Double.parseDouble(keyValueMap.get("longitude")));
     }
-    if(keyValueMap.get("latitude")!= null){
+    if (keyValueMap.get("latitude") != null) {
       geoLocation.setLatitude(Double.parseDouble(keyValueMap.get("latitude")));
     }
 
@@ -408,7 +404,7 @@ public class OrganizationStoresResource extends AbstractResource {
     return responseBuilder.build();
   }
 
-  private void basicPost(PersistantStore store) {    
+  private void basicPost(PersistantStore store) {
     logger.info(store.getId().getCompositeId());
     logger.info(store.toString());
     Services.getInstance().getStoreService().save(store);
