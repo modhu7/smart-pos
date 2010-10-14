@@ -83,10 +83,10 @@
     });
     $('#filterText').keyup(function(){
       var filterByValue = $("#filterText").val();      
-      $('li').children('div').filter(function(){
+      $("#list").children('li').children('div').filter(function(){
         return(!$(this).text().match(filterByValue));
       }).parent().slideUp();
-      $('li').children('div').filter(function(){
+      $("#list").children('li').children('div').filter(function(){
         return($(this).text().match(filterByValue));
       }).parent().slideDown();
     });
