@@ -6,7 +6,6 @@
 package com.smartitengineering.smartpos.inventory.impl.service;
 
 import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
-import com.smartitengineering.smartpos.inventory.api.Supplier;
 import com.smartitengineering.smartpos.inventory.api.service.SupplierService;
 import java.util.Collection;
 import org.slf4j.Logger;
@@ -41,13 +40,7 @@ public class SupplierServiceImpl extends AbstractSupplierService implements Supp
   @Override
   public void getAllUoms() {
     throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-
-  public Collection<Supplier> getByOrganization(String organizatinUniqueShortName) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+  }  
 
   @Override
   public PersistantSupplier getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan, int count) {
@@ -56,6 +49,11 @@ public class SupplierServiceImpl extends AbstractSupplierService implements Supp
 
   @Override
   public PersistantSupplier getByOrganizationAndSname(String organizatinUniqueShortName, String supplierName) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public Collection<PersistantSupplier> getByOrganization(String organizatinUniqueShortName) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
