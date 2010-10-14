@@ -43,12 +43,12 @@
       <artifactId>abdera-extensions-opensearch</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.smartitengineering.smart-pos</groupId>
+      <groupId>com.smartitengineering.smart-pos.admin</groupId>
       <artifactId>smart-pos-admin-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.smartitengineering.smart-pos</groupId>
+      <groupId>com.smartitengineering.smart-pos.admin</groupId>
       <artifactId>smart-pos-admin-resource</artifactId>
       <version>${project.version}</version>
     </dependency>
