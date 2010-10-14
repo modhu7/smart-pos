@@ -24,7 +24,7 @@ public interface SupplierService {
   public void getAllUoms();
 
   // non paginated version
-  public Collection<Supplier> getByOrganization(String organizatinUniqueShortName);
+  public Collection<PersistantSupplier> getByOrganization(String organizatinUniqueShortName);
 
   // paginated version
   public PersistantSupplier getByOrganization(String organizatinUniqueShortName, String name, boolean isSmallerThan,
