@@ -2,20 +2,23 @@
 import com.google.inject.AbstractModule;
 import com.smartitengineering.dao.hbase.ddl.HBaseTableGenerator;
 import com.smartitengineering.dao.hbase.ddl.config.json.ConfigurationJsonParser;
-import com.smartitengineering.smartpos.inventory.client.api.domain.Address;
 import com.smartitengineering.smartpos.inventory.client.api.domain.Product;
 import com.smartitengineering.smartpos.inventory.client.api.domain.Store;
+import com.smartitengineering.smartpos.inventory.client.api.domain.Supplier;
 import com.smartitengineering.smartpos.inventory.client.api.domain.UnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.client.api.resource.ProductResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.ProductsResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.RootResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.StoreResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.StoresResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.SupplierResource;
+import com.smartitengineering.smartpos.inventory.client.api.resource.SuppliersResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomResource;
 import com.smartitengineering.smartpos.inventory.client.api.resource.UomsResource;
 import com.smartitengineering.smartpos.inventory.client.impl.domain.AddressImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.domain.ProductImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.domain.StoreImpl;
+import com.smartitengineering.smartpos.inventory.client.impl.domain.SupplierImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.domain.UnitOfMeasurementImpl;
 import com.smartitengineering.smartpos.inventory.client.impl.resource.RootResourceImpl;
 import com.smartitengineering.smartpos.inventory.guicebinder.Initializer;
@@ -149,85 +152,133 @@ public class AllResourceTest {
 
 
     //     Product
-    ProductsResource productsResource = rootResource.getProductsResource();
-
-    ProductImpl product = new ProductImpl();
-    product.setId("P1");
-    product.setName("Product1");
-    product.setDescription("Product 1, Bekar company");
-    product.setSkuId("KG");
-
-    ProductResource productResource = productsResource.create(product);
-    Assert.assertNotNull(productResource);
-
-    Product fetchedProduct = productResource.getProduct();
-    Assert.assertNotNull(fetchedProduct);
-    fetchedProduct.setName("Modified Product Name");
-
-
-    productResource.update();
-
+//    ProductsResource productsResource = rootResource.getProductsResource();
 //
-    Product changedProduct = productResource.getProduct();
-    Assert.assertNotSame(changedProduct.getName(), product.getName());
+//    ProductImpl product = new ProductImpl();
+//    product.setId("P1");
+//    product.setName("Product1");
+//    product.setDescription("Product 1, Bekar company");
+//    product.setSkuId("KG");
 //
-    productResource.delete();
-    try {
-      productResource.get();
-      Assert.fail("Should have thorown exception");
-    }
-    catch (UniformInterfaceException ex) {
-      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
-    }
-    catch (Exception e) {
-      Assert.fail("Should not throw exception other than UniformInterfaceException");
-    }
+//    ProductResource productResource = productsResource.create(product);
+//    Assert.assertNotNull(productResource);
+//
+//    Product fetchedProduct = productResource.getProduct();
+//    Assert.assertNotNull(fetchedProduct);
+//    fetchedProduct.setName("Modified Product Name");
+//
+//
+//    productResource.update();
+//
+////
+//    Product changedProduct = productResource.getProduct();
+//    Assert.assertNotSame(changedProduct.getName(), product.getName());
+////
+//    productResource.delete();
+//    try {
+//      productResource.get();
+//      Assert.fail("Should have thorown exception");
+//    }
+//    catch (UniformInterfaceException ex) {
+//      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
+//    }
+//    catch (Exception e) {
+//      Assert.fail("Should not throw exception other than UniformInterfaceException");
+//    }
+//
+//    // store test
+//
+//
+//    StoresResource storesResource = rootResource.getStoresResource();
+//    Assert.assertNotNull(storesResource);
+//
+//    StoreImpl store = new StoreImpl();
+//    AddressImpl address = new AddressImpl();
+//    store.setId("S1");
+//    store.setName("Store 1");
+//    address.setStreetAddress("Haji Chinu Mia road");
+//    address.setCity("Dhaka");
+//    address.setState("Dhaka");
+//    address.setCountry("Bangladesh");
+//    address.setZip("1207");
+//    store.setAddress(address);
+//
+//    StoreResource storeResource = storesResource.create(store);
+//    Assert.assertNotNull(storeResource);
+//
+//    Store fetchedStore = storeResource.getStore();
+//    Assert.assertNotNull(fetchedStore);
+//    System.out.println(fetchedStore.getAddress());
+//    System.out.println(fetchedStore.getAddress().getGeoLocation());
+//
+//    fetchedStore.setName("Modified Store");
+//
+//
+//    storeResource.update();
+//
+//    Store updatedStore = storeResource.getStore();
+//    Assert.assertNotSame(updatedStore.getName(), store.getName());
+//
+//    storeResource.delete();
+//
+//    try {
+//      storeResource.get();
+//      Assert.fail("Should have thorown exception");
+//    }
+//    catch (UniformInterfaceException ex) {
+//      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
+//    }
+//    catch (Exception e) {
+//      Assert.fail("Should not throw exception other than UniformInterfaceException");
+//    }
 
-    // store test
+    // Supplier test
 
+//    SuppliersResource suppliersResource =  rootResource.getSuppliersResource();
+//    Assert.assertNotNull(suppliersResource);
+//
+//    Supplier supplier = new SupplierImpl();
+//    AddressImpl saddress = new AddressImpl();
+//    supplier.setId("S1");
+//    supplier.setName("Supplier 1");
+//    supplier.setContactNumber("01716075296");
+//    supplier.setEmail("russel@gmail.com");
+//    address.setStreetAddress("Haji Chinu Mia road");
+//    address.setCity("Dhaka");
+//    address.setState("Dhaka");
+//    address.setCountry("Bangladesh");
+//    address.setZip("1207");
+//    store.setAddress(address);
+//
+//    SupplierResource supplierResource = suppliersResource.create(supplier);
+//    Assert.assertNotNull(supplierResource);
+//
+//    Supplier fetchedSupplier = supplierResource.getSupplier();
+//    Assert.assertNotNull(fetchedSupplier);
+//    System.out.println(fetchedStore.getAddress());
+//    System.out.println(fetchedStore.getAddress().getGeoLocation());
+//
+//    fetchedStore.setName("Modified Store");
+//
+//
+//    supplierResource.update();
+//
+//    Supplier updatedSupplier = supplierResource.getSupplier();
+//    Assert.assertNotSame(updatedSupplier.getName(), supplier.getName());
+//
+//    supplierResource.delete();
+//
+//    try {
+//      supplierResource.get();
+//      Assert.fail("Should have thorown exception");
+//    }
+//    catch (UniformInterfaceException ex) {
+//      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
+//    }
+//    catch (Exception e) {
+//      Assert.fail("Should not throw exception other than UniformInterfaceException");
+//    }
 
-    StoresResource storesResource = rootResource.getStoresResource();
-    Assert.assertNotNull(storesResource);
-
-    StoreImpl store = new StoreImpl();
-    AddressImpl address = new AddressImpl();
-    store.setId("S1");
-    store.setName("Store 1");
-    address.setStreetAddress("Haji Chinu Mia road");
-    address.setCity("Dhaka");
-    address.setState("Dhaka");
-    address.setCountry("Bangladesh");
-    address.setZip("1207");
-    store.setAddress(address);
-
-    StoreResource storeResource = storesResource.create(store);
-    Assert.assertNotNull(storeResource);
-
-    Store fetchedStore = storeResource.getStore();
-    Assert.assertNotNull(fetchedStore);
-    System.out.println(fetchedStore.getAddress());
-    System.out.println(fetchedStore.getAddress().getGeoLocation());
-
-    fetchedStore.setName("Modified Store");
-
-
-    storeResource.update();
-
-    Store updatedStore = storeResource.getStore();
-    Assert.assertNotSame(updatedStore.getName(), store.getName());
-
-    storeResource.delete();
-
-    try {
-      storeResource.get();
-      Assert.fail("Should have thorown exception");
-    }
-    catch (UniformInterfaceException ex) {
-      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
-    }
-    catch (Exception e) {
-      Assert.fail("Should not throw exception other than UniformInterfaceException");
-    }
   }
 
   public static class ConfigurationModule extends AbstractModule {
