@@ -19,7 +19,7 @@
   <div id="leftmenu_header_userdeatils_1" class="leftmenu_header"><label>Individual-User</label></div>
   <div id="leftmenu_body_userdeatils_1" class="leftmenu_body">
     <ul>
-      <li><a href="/orgs/sn/${orgInitial}/inv/uoms"><fmt:message key="inv.uomtabletitle"/></a></li>
+      <li><a href="/inv/uoms"><fmt:message key="inv.uomtabletitle"/></a></li>
       <li><a href="javascript: Orgpageselect()"><fmt:message key="inv.uomeditlink"/></a></li>
 
     </ul>

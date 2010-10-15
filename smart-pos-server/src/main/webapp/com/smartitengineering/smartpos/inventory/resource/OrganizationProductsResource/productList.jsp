@@ -46,7 +46,7 @@
       <label><fmt:message key="inv.prdtitle"/></label>
     </div>
     <div id="form_ProductionEntry" class="entry_form_pos">
-      <form action="http://russel:9090/orgs/sn/${orgInitial}/inv/prds" accept="application/json" enctype="" id="productEntryForm" method="post">
+      <form action="http://localhost:10090/orgs/sn/${orgInitial}/inv/prods" accept="application/json" enctype="" id="productEntryForm" method="post">
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdinput1"/></label></div>
           <div class="form_textField_pos"><input type="text" name="name" id="name" class="textFieldPos" title="Product Name"/></div>
@@ -54,7 +54,7 @@
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdinput2"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="productCode" id="productCode" class="textFieldPos" title="Product Code"/></div>
+          <div class="form_textField_pos"><input type="text" name="id" id="id" class="textFieldPos" title="Product Code"/></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
@@ -64,7 +64,7 @@
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="inv.prdinput4"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="sku" id="sku" class="textFieldPos" title="Store Keeping Unit"/></div>
+          <div class="form_textField_pos"><input type="text" name="skuId" id="skuId" class="textFieldPos" title="Store Keeping Unit"/></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">

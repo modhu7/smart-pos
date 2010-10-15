@@ -13,9 +13,9 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $("#name")[0].value = "  --Insert Product Name--";
-    $("#productCode")[0].value = "  --Set Product Code--";
+    $("#id")[0].value = "  --Set Product Code--";
     $("#description")[0].value = "  --Description of the Product--";
-    $("#sku")[0].value = "  --Store Keeping Unit--"
+    $("#skuId")[0].value = "  --Store Keeping Unit--"
     $(".textFieldPos").each(function(){
     if($(this).val()== $(this)[0].value){
       $(this).addClass("title");
@@ -41,20 +41,35 @@
     $("#productEntryForm").validate({
       rules: {
         name: "required",
-        productCode: "required",
-        sku: "required"
+        id: "required",
+        skuId: "required"
       },
       messages:{
         name: "please enter a product name",
-        productCode: "please set a code for this product",
-        sku: "please set a valid unit for this product "
+        id: "please set a code for this product",
+        skuId: "please set a valid unit for this product "
       }
     });
+    $("#skuId").keyup(function(){
+      var uom = $(this).val();
+      $.ajax({
+        type: 'GET',
+        url: 'http://localhost:10090/inv/uoms',
+        data:uom,
+        success:function(){          
+          $(this).autocomplete(uom);
+        },
+        error:function(){
+          alert(000);
+        }
+      });
+    });
+
     var name = $("#name").val();
-    var productCode = $("#productCode").val();
+    var productCode = $("#id").val();
     var description = $("#description").val();
-    var sku = $("#sku").val();
-    var dataString = 'name='+ name +'&productCode='+ productCode +'&description='+ description +'&sku='+ sku;
+    var sku = $("#skuId").val();
+    var dataString = 'name='+ name +'&id='+ productCode +'&description='+ description +'&skuId='+ sku;
     
     $(".insertBtn").click(function(){
       $(".textFieldPos").each(function(){
@@ -65,7 +80,7 @@
       alert(dataString)
       $.ajax({
         type: "POST",
-        url: "http://russel:9090/orgs/sn/${orgInitial}/inv/prds"+name,
+        url: "http://localhost:10090/orgs/sn/${orgInitial}/inv/prods"+name,
         dataType: "xml",
         data: dataString,
         success: function(xhr){

@@ -22,6 +22,8 @@
     <link rel="Stylesheet" href="/css/smart-pos-dashboard-style.css">
     <link rel="Stylesheet" href="/css/smothness/jquery_ui_datepicker.css">
     <link rel="Stylesheet" href="/css/jqtp.css">
+    <link rel="Stylesheet" href="/css/autocomplete.css">
+
 
     <script type="text/javascript" src="/script/jquery-1.4.2.js"></script>
     <script type="text/javascript" src="/script/jquery.validate.js"></script>
@@ -29,6 +31,7 @@
     <script type="text/javascript" src="/script/commonScripts.js"></script>
     <script type="text/javascript" src="/script/jquery_ui_datepicker.js"></script>
     <script type="text/javascript" src="/script/jquery.jqtp.min.js"></script>
+    <script type="text/javascript" src="/script/jquery.autocomplete.js"></script>
 
     <c:if test="${not empty templateHeadContent}">
       <jsp:include page="${templateHeadContent}"></jsp:include>
