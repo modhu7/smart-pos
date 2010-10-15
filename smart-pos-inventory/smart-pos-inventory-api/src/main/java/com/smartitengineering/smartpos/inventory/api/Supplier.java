@@ -5,13 +5,16 @@
 package com.smartitengineering.smartpos.inventory.api;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author russel
  */
-public class Supplier{
+public class Supplier {
 
+  protected static final Logger logger = LoggerFactory.getLogger(Supplier.class);
   private String id;
   private String name;
   private String email;
@@ -21,6 +24,10 @@ public class Supplier{
   private String orgUniqueShortName;
 
   public String getId() {
+    if (id == null) {
+      logger.error("id should not null");
+      throw new RuntimeException("Id should not null");
+    }
     return id;
   }
 
@@ -29,6 +36,9 @@ public class Supplier{
   }
 
   public Address getAddress() {
+    if (address == null) {
+      address = new Address();
+    }
     return address;
   }
 
@@ -37,6 +47,9 @@ public class Supplier{
   }
 
   public String getContactNumber() {
+    if (contactNumber == null) {
+      contactNumber = "";
+    }
     return contactNumber;
   }
 
@@ -45,6 +58,9 @@ public class Supplier{
   }
 
   public String getEmail() {
+    if (email == null) {
+      email = "";
+    }
     return email;
   }
 
@@ -53,6 +69,10 @@ public class Supplier{
   }
 
   public String getName() {
+    if (name == null) {
+      name = "";
+      logger.info("name is null");
+    }
     return name;
   }
 
@@ -69,6 +89,4 @@ public class Supplier{
   public void setOrgUniqueShortName(String orgUniqueShortName) {
     this.orgUniqueShortName = orgUniqueShortName;
   }
-
-  
 }

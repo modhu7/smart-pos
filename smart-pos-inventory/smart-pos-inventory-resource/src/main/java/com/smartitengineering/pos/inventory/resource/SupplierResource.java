@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.smartitengineering.pos.inventory.resource;
 
 import com.smartitengineering.pos.inventory.adapter.SupplierAdapterHelper;
@@ -43,15 +42,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author saumitra
  */
-@Path("/orgs/sn/{uniqueShortName}/inv/supplier/name/{suppliername}")
-public class SupplierResource extends AbstractResource{
+@Path("/orgs/sn/{uniqueShortName}/inv/supplier/name/{supplierName}")
+public class SupplierResource extends AbstractResource {
 
   protected final Logger logger = LoggerFactory.getLogger(getClass());
   private PersistantSupplier supplier;
-
-  static final UriBuilder SUPPLIER_URI_BUILDER = UriBuilder.fromResource(OrganizationStoreResource.class);
+  static final UriBuilder SUPPLIER_URI_BUILDER = UriBuilder.fromResource(SupplierResource.class);
   static final UriBuilder SUPPLIER_CONTENT_URI_BUILDER;
-
   @Context
   private HttpServletRequest servletRequest;
   private GenericAdapterImpl<Supplier, PersistantSupplier> adapter;
@@ -59,28 +56,40 @@ public class SupplierResource extends AbstractResource{
   static {
     SUPPLIER_CONTENT_URI_BUILDER = SUPPLIER_URI_BUILDER.clone();
     try {
-      SUPPLIER_CONTENT_URI_BUILDER.path(OrganizationStoreResource.class.getMethod("getStore"));
+      SUPPLIER_CONTENT_URI_BUILDER.path(SupplierResource.class.getMethod("getSupplier"));
     }
-    catch (Exception ex) {      
+    catch (Exception ex) {
       throw new InstantiationError();
     }
   }
 
-  public SupplierResource(){
-      adapter = new GenericAdapterImpl<Supplier, PersistantSupplier>();
-    adapter.setHelper(new SupplierAdapterHelper());
-  }
+  public SupplierResource(@PathParam("uniqueShortName")String organizationUniqueShortName, @PathParam("supplierName")String supplierName) {
+    logger.info("Org Name: "+organizationUniqueShortName);
+    logger.info("supplierName: "+ supplierName);
+    supplier = Services.getInstance().getSupplierService().getById(new PersistantSupplier.SupplierIdImpl(
+        organizationUniqueShortName, supplierName));
 
-  @PathParam("organizationShortName")
+    if(supplier == null)
+      logger.error("supplier is null");
+    adapter = new GenericAdapterImpl<Supplier, PersistantSupplier>();
+    adapter.setHelper(new SupplierAdapterHelper());
+
+  }
+  @PathParam("uniqueShortName")
   private String organizationUniqueShortName;
-  @PathParam("suppliername")
-  private String suppliername;
+  @PathParam("supplierName")
+  private String supplierName;
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
+    ResponseBuilder responseBuilder = Response.status(Status.NOT_FOUND);
+    if(supplier == null){
+      responseBuilder = Response.status(Status.NOT_FOUND);
+      return responseBuilder.build();
+    }
     Feed userFeed = getSupplierFeed();
-    ResponseBuilder responseBuilder = Response.ok(userFeed);
+    responseBuilder = Response.ok(userFeed);
     return responseBuilder.build();
   }
 
@@ -91,9 +100,9 @@ public class SupplierResource extends AbstractResource{
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoreResource/supplierDetailsHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/SupplierResource/supplierDetailsHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoreResource/supplierDetails.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/SupplierResource/supplierDetails.jsp");
     Viewable view = new Viewable("/template/template.jsp", supplier);
 
     responseBuilder.entity(view);
@@ -103,7 +112,7 @@ public class SupplierResource extends AbstractResource{
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/content")
-  public Response getStore() {
+  public Response getSupplier() {
     ResponseBuilder responseBuilder = Response.ok(adapter.convertInversely(supplier));
     return responseBuilder.build();
   }
@@ -117,7 +126,7 @@ public class SupplierResource extends AbstractResource{
     supplier.setOrgUniqueShortName(organizationUniqueShortName);
     PersistantSupplier persistantSupplier = adapter.convert(supplier);
 
-    try {            
+    try {
       basicUpdate(persistantSupplier);
       responseBuilder = Response.ok(getSupplierFeed());
     }
@@ -129,30 +138,29 @@ public class SupplierResource extends AbstractResource{
   }
 
   private Feed getSupplierFeed() throws UriBuilderException, IllegalArgumentException {
-    Feed storeFeed = getFeed(supplier.getId().getId().toString(), new Date());
-    storeFeed.setTitle(supplier.getName());
+    Feed supplierFeed = getFeed(supplier.getId().getId().toString(), new Date());
+    supplierFeed.setTitle(supplier.getName());
 
     // add a self link
-    storeFeed.addLink(getSelfLink());
+    supplierFeed.addLink(getSelfLink());
 
     // add a edit link
     Link editLink = abderaFactory.newLink();
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
-    storeFeed.addLink(editLink);
+    supplierFeed.addLink(editLink);
 
     // add a alternate link
     Link altLink = abderaFactory.newLink();
     altLink.setHref(SUPPLIER_CONTENT_URI_BUILDER.clone().build(organizationUniqueShortName,
-                                                           supplier.getId().getId()).toString());
+                                                               supplier.getId().getId()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
-    storeFeed.addLink(altLink);
+    supplierFeed.addLink(altLink);
 
-    return storeFeed;
+    return supplierFeed;
   }
-
 
   @POST
   @Path("/update")
@@ -181,13 +189,11 @@ public class SupplierResource extends AbstractResource{
         //Decode the message to ignore the form encodings and make them human readable
         message = URLDecoder.decode(realMsg, "UTF-8");
       }
-      catch (UnsupportedEncodingException ex) {
-        ex.printStackTrace();
-
+      catch (UnsupportedEncodingException ex) {        
       }
     }
     else {
-      contentType = contentType;
+      
       isHtmlPost = false;
     }
 
@@ -232,11 +238,11 @@ public class SupplierResource extends AbstractResource{
         keyValueMap.put(keyValuePair[0], keyValuePair[1]);
       }
     }
-    PersistantSupplier newSupplier= new PersistantSupplier();
+    PersistantSupplier newSupplier = new PersistantSupplier();
     return newSupplier;
   }
 
-  private void basicUpdate(PersistantSupplier persistantSupplier){
+  private void basicUpdate(PersistantSupplier persistantSupplier) {
     Services.getInstance().getSupplierService().update(persistantSupplier);
   }
 }

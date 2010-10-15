@@ -5,6 +5,9 @@
 
 package com.smartitengineering.smartpos.inventory.impl.service;
 
+import com.smartitengineering.dao.common.queryparam.MatchMode;
+import com.smartitengineering.dao.common.queryparam.QueryParameter;
+import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
 import com.smartitengineering.smartpos.inventory.api.service.SupplierService;
 import java.util.Collection;
@@ -53,8 +56,11 @@ public class SupplierServiceImpl extends AbstractSupplierService implements Supp
   }
 
   @Override
-  public Collection<PersistantSupplier> getByOrganization(String organizatinUniqueShortName) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public Collection<PersistantSupplier> getByOrganization(String organizationUniqueShortName) {
+    QueryParameter qp = QueryParameterFactory.getStringLikePropertyParam("id", organizationUniqueShortName, MatchMode.START);
+
+    Collection<PersistantSupplier> suppliers = commonReadDao.getList(qp);
+    return suppliers;
   }
 
 }

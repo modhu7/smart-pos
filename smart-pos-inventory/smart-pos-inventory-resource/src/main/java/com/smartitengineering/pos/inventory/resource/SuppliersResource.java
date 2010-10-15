@@ -13,11 +13,9 @@ import com.smartitengineering.util.bean.adapter.GenericAdapterImpl;
 import com.sun.jersey.api.view.Viewable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -29,7 +27,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -75,9 +72,9 @@ public class SuppliersResource extends AbstractResource {
 
     servletRequest.setAttribute("orgInitial", organizationUniqueShortName);
     servletRequest.setAttribute("templateHeadContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoresResource/supplierListHeader.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/SuppliersResource/supplierListHeader.jsp");
     servletRequest.setAttribute("templateContent",
-                                "/com/smartitengineering/smartpos/inventory/resource/OrganizationStoresResource/supplierList.jsp");
+                                "/com/smartitengineering/smartpos/inventory/resource/SuppliersResource/supplierList.jsp");
 
     Viewable view = new Viewable("/template/template.jsp", suppliers);
 
@@ -103,10 +100,7 @@ public class SuppliersResource extends AbstractResource {
     Collection<PersistantSupplier> suppliers = Services.getInstance().getSupplierService().getByOrganization(
         organizationUniqueShortName);
 
-    if (suppliers != null && !suppliers.isEmpty()) {
-
-      MultivaluedMap<String, String> queryParam = uriInfo.getQueryParameters();
-      List<PersistantSupplier> SupplierList = new ArrayList<PersistantSupplier>(suppliers);
+    if (suppliers != null && !suppliers.isEmpty()) {      
 
       for (PersistantSupplier supplier : suppliers) {
 
@@ -118,7 +112,7 @@ public class SuppliersResource extends AbstractResource {
 
         // setting link to the each individual user
         Link supplierLink = abderaFactory.newLink();
-        supplierLink.setHref(OrganizationStoreResource.STORE_URI_BUILDER.clone().build(organizationUniqueShortName, supplier.
+        supplierLink.setHref(SupplierResource.SUPPLIER_URI_BUILDER.clone().build(organizationUniqueShortName, supplier.
             getId().getId()).toString());
         supplierLink.setRel(Link.REL_ALTERNATE);
         supplierLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
@@ -137,6 +131,11 @@ public class SuppliersResource extends AbstractResource {
   public Response post(Supplier supplier) {
     ResponseBuilder responseBuilder;
     supplier.setOrgUniqueShortName(organizationUniqueShortName);
+
+    if(supplier.getAddress() == null){
+      logger.info("Supplier Address is null");
+    }
+
     PersistantSupplier persistantSupplier = adapter.convert(supplier);
 
     try {

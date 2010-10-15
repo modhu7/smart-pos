@@ -152,132 +152,132 @@ public class AllResourceTest {
 
 
     //     Product
-//    ProductsResource productsResource = rootResource.getProductsResource();
-//
-//    ProductImpl product = new ProductImpl();
-//    product.setId("P1");
-//    product.setName("Product1");
-//    product.setDescription("Product 1, Bekar company");
-//    product.setSkuId("KG");
-//
-//    ProductResource productResource = productsResource.create(product);
-//    Assert.assertNotNull(productResource);
-//
-//    Product fetchedProduct = productResource.getProduct();
-//    Assert.assertNotNull(fetchedProduct);
-//    fetchedProduct.setName("Modified Product Name");
-//
-//
-//    productResource.update();
-//
-////
-//    Product changedProduct = productResource.getProduct();
-//    Assert.assertNotSame(changedProduct.getName(), product.getName());
-////
-//    productResource.delete();
-//    try {
-//      productResource.get();
-//      Assert.fail("Should have thorown exception");
-//    }
-//    catch (UniformInterfaceException ex) {
-//      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
-//    }
-//    catch (Exception e) {
-//      Assert.fail("Should not throw exception other than UniformInterfaceException");
-//    }
-//
-//    // store test
-//
-//
-//    StoresResource storesResource = rootResource.getStoresResource();
-//    Assert.assertNotNull(storesResource);
-//
-//    StoreImpl store = new StoreImpl();
-//    AddressImpl address = new AddressImpl();
-//    store.setId("S1");
-//    store.setName("Store 1");
-//    address.setStreetAddress("Haji Chinu Mia road");
-//    address.setCity("Dhaka");
-//    address.setState("Dhaka");
-//    address.setCountry("Bangladesh");
-//    address.setZip("1207");
-//    store.setAddress(address);
-//
-//    StoreResource storeResource = storesResource.create(store);
-//    Assert.assertNotNull(storeResource);
-//
-//    Store fetchedStore = storeResource.getStore();
-//    Assert.assertNotNull(fetchedStore);
-//    System.out.println(fetchedStore.getAddress());
-//    System.out.println(fetchedStore.getAddress().getGeoLocation());
-//
-//    fetchedStore.setName("Modified Store");
-//
-//
-//    storeResource.update();
-//
-//    Store updatedStore = storeResource.getStore();
-//    Assert.assertNotSame(updatedStore.getName(), store.getName());
-//
-//    storeResource.delete();
-//
-//    try {
-//      storeResource.get();
-//      Assert.fail("Should have thorown exception");
-//    }
-//    catch (UniformInterfaceException ex) {
-//      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
-//    }
-//    catch (Exception e) {
-//      Assert.fail("Should not throw exception other than UniformInterfaceException");
-//    }
+    ProductsResource productsResource = rootResource.getProductsResource();
 
-    // Supplier test
+    ProductImpl product = new ProductImpl();
+    product.setId("P1");
+    product.setName("Product1");
+    product.setDescription("Product 1, Bekar company");
+    product.setSkuId("KG");
 
-//    SuppliersResource suppliersResource =  rootResource.getSuppliersResource();
-//    Assert.assertNotNull(suppliersResource);
+    ProductResource productResource = productsResource.create(product);
+    Assert.assertNotNull(productResource);
+
+    Product fetchedProduct = productResource.getProduct();
+    Assert.assertNotNull(fetchedProduct);
+    fetchedProduct.setName("Modified Product Name");
+
+
+    productResource.update();
+
 //
-//    Supplier supplier = new SupplierImpl();
-//    AddressImpl saddress = new AddressImpl();
-//    supplier.setId("S1");
-//    supplier.setName("Supplier 1");
-//    supplier.setContactNumber("01716075296");
-//    supplier.setEmail("russel@gmail.com");
-//    address.setStreetAddress("Haji Chinu Mia road");
-//    address.setCity("Dhaka");
-//    address.setState("Dhaka");
-//    address.setCountry("Bangladesh");
-//    address.setZip("1207");
-//    store.setAddress(address);
+    Product changedProduct = productResource.getProduct();
+    Assert.assertNotSame(changedProduct.getName(), product.getName());
 //
-//    SupplierResource supplierResource = suppliersResource.create(supplier);
-//    Assert.assertNotNull(supplierResource);
-//
-//    Supplier fetchedSupplier = supplierResource.getSupplier();
-//    Assert.assertNotNull(fetchedSupplier);
-//    System.out.println(fetchedStore.getAddress());
-//    System.out.println(fetchedStore.getAddress().getGeoLocation());
-//
-//    fetchedStore.setName("Modified Store");
-//
-//
-//    supplierResource.update();
-//
-//    Supplier updatedSupplier = supplierResource.getSupplier();
-//    Assert.assertNotSame(updatedSupplier.getName(), supplier.getName());
-//
-//    supplierResource.delete();
-//
-//    try {
-//      supplierResource.get();
-//      Assert.fail("Should have thorown exception");
-//    }
-//    catch (UniformInterfaceException ex) {
-//      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
-//    }
-//    catch (Exception e) {
-//      Assert.fail("Should not throw exception other than UniformInterfaceException");
-//    }
+    productResource.delete();
+    try {
+      productResource.get();
+      Assert.fail("Should have thorown exception");
+    }
+    catch (UniformInterfaceException ex) {
+      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
+    }
+    catch (Exception e) {
+      Assert.fail("Should not throw exception other than UniformInterfaceException");
+    }
+
+    // store test
+
+
+    StoresResource storesResource = rootResource.getStoresResource();
+    Assert.assertNotNull(storesResource);
+
+    StoreImpl store = new StoreImpl();
+    AddressImpl address = new AddressImpl();
+    store.setId("S1");
+    store.setName("Store 1");
+    address.setStreetAddress("Haji Chinu Mia road");
+    address.setCity("Dhaka");
+    address.setState("Dhaka");
+    address.setCountry("Bangladesh");
+    address.setZip("1207");
+    store.setAddress(address);
+
+    StoreResource storeResource = storesResource.create(store);
+    Assert.assertNotNull(storeResource);
+
+    Store fetchedStore = storeResource.getStore();
+    Assert.assertNotNull(fetchedStore);
+    System.out.println(fetchedStore.getAddress());
+    System.out.println(fetchedStore.getAddress().getGeoLocation());
+
+    fetchedStore.setName("Modified Store");
+
+
+    storeResource.update();
+
+    Store updatedStore = storeResource.getStore();
+    Assert.assertNotSame(updatedStore.getName(), store.getName());
+
+    storeResource.delete();
+
+    try {
+      storeResource.get();
+      Assert.fail("Should have thorown exception");
+    }
+    catch (UniformInterfaceException ex) {
+      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
+    }
+    catch (Exception e) {
+      Assert.fail("Should not throw exception other than UniformInterfaceException");
+    }
+
+//     Supplier test
+
+    SuppliersResource suppliersResource =  rootResource.getSuppliersResource();
+    Assert.assertNotNull(suppliersResource);
+
+    Supplier supplier = new SupplierImpl();
+    AddressImpl saddress = new AddressImpl();
+    supplier.setId("S1");
+    supplier.setName("Supplier 1");
+    supplier.setContactNumber("01716075296");
+    supplier.setEmail("russel@gmail.com");
+    address.setStreetAddress("Haji Chinu Mia road");
+    address.setCity("Dhaka");
+    address.setState("Dhaka");
+    address.setCountry("Bangladesh");
+    address.setZip("1207");
+    store.setAddress(address);
+
+    SupplierResource supplierResource = suppliersResource.create(supplier);
+    Assert.assertNotNull(supplierResource);
+
+    Supplier fetchedSupplier = supplierResource.getSupplier();
+    Assert.assertNotNull(fetchedSupplier);
+    System.out.println(fetchedSupplier.getAddress());
+    System.out.println(fetchedSupplier.getAddress().getGeoLocation());
+
+    fetchedSupplier.setName("Modified Store");
+
+
+    supplierResource.update();
+
+    Supplier updatedSupplier = supplierResource.getSupplier();
+    Assert.assertNotSame(updatedSupplier.getName(), supplier.getName());
+
+    supplierResource.delete();
+
+    try {
+      supplierResource.get();
+      Assert.fail("Should have thorown exception");
+    }
+    catch (UniformInterfaceException ex) {
+      Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), ex.getResponse().getStatus());
+    }
+    catch (Exception e) {
+      Assert.fail("Should not throw exception other than UniformInterfaceException");
+    }
 
   }
 

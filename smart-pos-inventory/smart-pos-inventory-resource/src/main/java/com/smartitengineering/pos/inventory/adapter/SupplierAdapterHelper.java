@@ -5,6 +5,7 @@
 
 package com.smartitengineering.pos.inventory.adapter;
 
+import com.smartitengineering.smartpos.inventory.api.Address;
 import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
 import com.smartitengineering.smartpos.inventory.api.Supplier;
 import com.smartitengineering.util.bean.adapter.AbstractAdapterHelper;
@@ -23,7 +24,10 @@ public class SupplierAdapterHelper extends AbstractAdapterHelper<Supplier, Persi
   @Override
   protected void mergeFromF2T(Supplier fromBean, PersistantSupplier toBean) {
     toBean.setId(new PersistantSupplier.SupplierIdImpl(fromBean.getOrgUniqueShortName(), fromBean.getId()));
-    toBean.setAddress(fromBean.getAddress());
+    if(fromBean.getAddress() != null){
+      toBean.setAddress(fromBean.getAddress());
+    }else
+      toBean.setAddress(new Address());
     toBean.setContactNumber(fromBean.getContactNumber());
     toBean.setEmail(fromBean.getEmail());
     toBean.setName(fromBean.getName());
