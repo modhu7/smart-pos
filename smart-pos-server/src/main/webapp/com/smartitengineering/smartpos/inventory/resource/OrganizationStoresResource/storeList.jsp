@@ -6,7 +6,7 @@
 
 <%--Uzzal-start-here--%>
 <%@page import="java.util.Collection"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -31,6 +31,8 @@
     <label><fmt:message key="str.title"/></label>
   </div>
   <div id="top_row" class="list_column_names">
+    <input type="text" id="filterText" style="float: left"/>
+    <c:set var="str" scope="page" value="${it}"></c:set>
     <div class="tableheadname_user">
       <label class="tablehead_label"><fmt:message key="org.tablehead2"/></label>
     </div>
@@ -40,13 +42,34 @@
     <div class="tableheadname_user">
       <label class="tablehead_label"><fmt:message key="org.tablehead3"/></label>
     </div>
+
+    <div class="">
+      <form action="" onsubmit="return false" method="GET" id="search-form">
+        <input id="search"/>
+      </form>
+    </div>
+
   </div>
 
-  <div class="row_of_list">
+  <%--<div class="row_of_list">
     <div class="storeOrgs_column">Smart It Engineering</div>
     <div class="storeName_column">Personal Computer</div>
     <div class="storeCode_column">sitel001</div>
-  </div>
+  </div>--%>
+
+  <ul id="list">
+
+    <c:forEach varStatus="status" items="${it}">
+      <li>
+        <div id="strRow${status.index}" class="row_of_list">
+          <div id="strName${uom[status.index]}" class="strName_column">${str[status.index].name}</div>
+          <div id="strAddress${uom[status.index]}" class="strAddress_column">${str[status.index].address}</div>
+          <div id="strCode${status.index}" class="id_column"><label>(${str[status.index].id})</label></div>
+          <div id="${status.index}"><a href="uoms/name/${str[status.index].id}">edit</a></div>
+        </div>
+      </li>
+    </c:forEach>
+  </ul>
 
   <%--<div class="tablecontentname" id="tablecontentid"></div>--%>
 </div>
@@ -61,15 +84,15 @@
       <label>Store Entry Hardcored</label>
     </div>
     <div id="form_storeEntry" class="entry_form_pos">
-      <form action="/orgs" method="post" accept="application/json" enctype="" id="storeform">
+      <form action="/orgs/sn/${orgInitial}/inv/stores" method="post" accept="application/json" enctype="" id="storeform">
         <div class="individual_field_container">
           <div class="form_label_pos" ><label><fmt:message key="str.inputlabel1"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="storeName"  class="textFieldPos"></div>
+          <div class="form_textField_pos"><input type="text" name="name" id="name"  class="textFieldPos"></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="str.inputlabel2"/></label></div>
-          <div class="form_textField_pos" align="left"><input type="text" name="code" Id="code"  class="textFieldPos"><label id ="alertlabel" class="alertlabel"></label></div>
+          <div class="form_textField_pos" align="left"><input type="text" name="id" Id="id"  class="textFieldPos"><label id ="alertlabel" class="alertlabel"></label></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
@@ -79,7 +102,7 @@
         </div>
         <div class="individual_field_container">
           <div class="form_label_pos"><label><fmt:message key="str.inputlabel4"/></label></div>
-          <div class="form_textField_pos"><input type="text" name="street" class="textFieldPos"></div>
+          <div class="form_textField_pos"><input type="text" name="streetAddress" class="textFieldPos"></div>
           <div class="clear"></div>
         </div>
         <div class="individual_field_container">
