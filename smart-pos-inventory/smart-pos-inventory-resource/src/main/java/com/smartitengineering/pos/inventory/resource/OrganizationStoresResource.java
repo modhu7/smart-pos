@@ -343,7 +343,7 @@ public class OrganizationStoresResource extends AbstractResource {
       address.setCountry(keyValueMap.get("country"));
     }
     if (keyValueMap.get("zip") != null) {
-      address.setStreetAddress(keyValueMap.get("zip"));
+      address.setZip(keyValueMap.get("zip"));
     }
     if (keyValueMap.get("longitude") != null) {
       geoLocation.setLongitude(Double.parseDouble(keyValueMap.get("longitude")));
