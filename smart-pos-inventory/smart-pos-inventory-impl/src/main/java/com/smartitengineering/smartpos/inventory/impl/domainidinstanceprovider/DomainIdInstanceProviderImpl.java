@@ -11,6 +11,7 @@ import com.smartitengineering.smartpos.inventory.api.PersistantSupplier;
 import com.smartitengineering.smartpos.inventory.api.PersistantUnitOfMeasurement;
 import com.smartitengineering.smartpos.inventory.api.domainid.ProductId;
 import com.smartitengineering.smartpos.inventory.api.domainid.StoreId;
+import com.smartitengineering.smartpos.inventory.api.domainid.SupplierId;
 import com.smartitengineering.smartpos.inventory.api.domainid.UomId;
 
 /**
@@ -31,7 +32,7 @@ public class DomainIdInstanceProviderImpl implements DomainIdInstanceProvider {
     if(ProductId.class.isAssignableFrom(clazz)){
       object = new PersistantProduct.ProductIdImpl();
     }
-    if(ProductId.class.isAssignableFrom(clazz)){
+    if(SupplierId.class.isAssignableFrom(clazz)){
       object = new PersistantSupplier.SupplierIdImpl();
     }
     return (IdType) object;
